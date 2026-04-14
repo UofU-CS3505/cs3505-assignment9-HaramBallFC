@@ -1,5 +1,7 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
+
+#include "models/Lesson.h"
+#include "models/LessonRepository.h"
 
 #include <QMainWindow>
 
@@ -9,15 +11,59 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+class QStackedWidget;
+class HomePage;
+class ModeSelectionPage;
+class FanModePage;
+class PlayerModePage;
+class LessonMenuPage;
+class LessonViewerPage;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void showHomePage();
+    void showModeSelectionPage();
+    void showFanModePage();
+    void showPlayerModePage();
+    void showFanLessons();
+    void showPlayerLessons();
+    void openLessonById(int lessonId);
+    void returnToLessonMenu();
+
 private:
+    enum class PageId {
+        Home = 0,
+        ModeSelection,
+        FanMode,
+        PlayerMode,
+        LessonMenu,
+        LessonViewer
+    };
+
+    void buildPageStack();
+    void connectNavigation();
+    void setCurrentPage(PageId pageId);
+    void loadLessonsForMode(LessonMode mode);
+
     Ui::MainWindow *ui;
+
+    QStackedWidget *m_pageStack;
+
+    HomePage *m_homePage;
+    ModeSelectionPage *m_modeSelectionPage;
+    FanModePage *m_fanModePage;
+    PlayerModePage *m_playerModePage;
+    LessonMenuPage *m_lessonMenuPage;
+    LessonViewerPage *m_lessonViewerPage;
+
+    LessonRepository m_lessonRepository;
+    LessonMode m_currentMode;
+    int m_currentLessonId;
 };
-#endif // MAINWINDOW_H
