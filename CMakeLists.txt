@@ -92,6 +92,9 @@ qt_add_executable(HaramBallFC
     include/pages/LessonViewerPage.h
     src/pages/LessonViewerPage.cpp
 
+    include/pages/BracketPage.h
+    src/pages/BracketPage.cpp
+
     include/pages/PenaltyGame.h
     src/pages/PenaltyGame.cpp
 
@@ -100,8 +103,8 @@ qt_add_executable(HaramBallFC
 
 target_include_directories(HaramBallFC
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(HaramBallFC

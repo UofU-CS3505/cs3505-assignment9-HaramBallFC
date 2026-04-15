@@ -18,6 +18,7 @@ class FanModePage;
 class PlayerModePage;
 class LessonMenuPage;
 class LessonViewerPage;
+class BracketPage;
 class PenaltyGamePage;
 
 class MainWindow : public QMainWindow
@@ -35,6 +36,7 @@ private slots:
     void showPlayerModePage();
     void showFanLessons();
     void showPlayerLessons();
+    void showBracketPage();
     void openLessonById(int lessonId);
     void returnToLessonMenu();
 
@@ -46,8 +48,8 @@ private:
         FanMode,
         PlayerMode,
         LessonMenu,
-        LessonViewer
-
+        LessonViewer,
+        Bracket
     };
 
 
@@ -67,6 +69,7 @@ private:
     PlayerModePage *m_playerModePage;
     LessonMenuPage *m_lessonMenuPage;
     LessonViewerPage *m_lessonViewerPage;
+    BracketPage *m_bracketPage;
 
     LessonRepository m_lessonRepository;
     LessonMode m_currentMode;

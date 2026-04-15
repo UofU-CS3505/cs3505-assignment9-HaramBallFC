@@ -18,15 +18,23 @@ HomePage::HomePage(QWidget *parent)
     subtitleLabel->setAlignment(Qt::AlignCenter);
     subtitleLabel->setWordWrap(true);
 
-    QPushButton *startButton = new QPushButton("Start Learning", this);
+    QPushButton *fanButton = new QPushButton("Fan Mode", this);
+    QPushButton *playerButton = new QPushButton("Player Mode", this);
+    QPushButton *bracketButton = new QPushButton("Bracket", this);
 
     layout->addStretch();
     layout->addWidget(titleLabel);
     layout->addWidget(subtitleLabel);
     layout->addSpacing(20);
-    layout->addWidget(startButton, 0, Qt::AlignCenter);
+    layout->addWidget(fanButton, 0, Qt::AlignCenter);
+    layout->addWidget(playerButton, 0, Qt::AlignCenter);
+    layout->addWidget(bracketButton, 0, Qt::AlignCenter);
     layout->addStretch();
 
-    connect(startButton, &QPushButton::clicked,
-            this, &HomePage::startClicked);
+    connect(fanButton, &QPushButton::clicked,
+            this, &HomePage::fanModeClicked);
+    connect(playerButton, &QPushButton::clicked,
+            this, &HomePage::playerModeClicked);
+    connect(bracketButton, &QPushButton::clicked,
+            this, &HomePage::bracketClicked);
 }
