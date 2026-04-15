@@ -242,7 +242,20 @@ QStringList LessonViewerPage::imageUrlsForLesson(int lessonId)
 {
     QStringList urls;
 
-    if (lessonId == 3) {
+    if (lessonId == 1) {
+        // Lesson 1: Qualifications
+        // Slide 1: Overview
+        // Slide 2: Confederation qualifying
+        // Slide 3: Inter-confederation playoff
+    } else if (lessonId == 2) {
+        // Lesson 2: Countries represented
+        // Slide 1: Europe
+        // Slide 2: South America
+        // Slide 3: Africa
+        // Slide 4: Asia
+        // Slide 5: North/Central America
+        // Slide 6: Oceania
+    } else if (lessonId == 3) {
         // Lesson 3: Rules and Regulations
         // Slide 1: Offside Rule
         urls << "https://cdn.sanity.io/images/8dhz9iqq/production/c5ac4b9adc456f3a94bcdd512e11496f1917661f-1236x810.png"
