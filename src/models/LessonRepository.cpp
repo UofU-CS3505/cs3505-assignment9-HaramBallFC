@@ -54,6 +54,22 @@ Lesson LessonRepository::lessonById(int lessonId) const
 void LessonRepository::loadSampleLessons()
 {
     m_lessons = {
+        // ── Lesson 1: Qualifications (placeholder for Diego) ──
+        {1, "Lesson 1: Qualifications",
+         "How teams qualify for the FIFA World Cup through each regional confederation.",
+         "Section 1: Coming Soon\n"
+         "Lesson content is being developed by another team member.\n"
+         "This lesson will cover the qualification process for the 2026 World Cup.",
+         "Qualifications", LessonMode::General},
+
+        // ── Lesson 2: Countries Represented (placeholder for Diego) ──
+        {2, "Lesson 2: Countries Represented",
+         "Which countries are competing in the 2026 World Cup, including first-timers and records.",
+         "Section 1: Coming Soon\n"
+         "Lesson content is being developed by another team member.\n"
+         "This lesson will cover the 48 participating nations by confederation.",
+         "Countries", LessonMode::General},
+
         // ── Lesson 3: Rules and Regulations ──
         {3, "Lesson 3: Rules and Regulations",
          "The most important and commonly misunderstood soccer rules for following real matches.",

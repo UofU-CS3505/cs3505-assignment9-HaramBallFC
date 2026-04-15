@@ -18,7 +18,7 @@ PlayerModePage::PlayerModePage(QWidget *parent)
     titleLabel->setStyleSheet("font-size: 28px; font-weight: 700;");
 
     QLabel *infoLabel = new QLabel(
-        "This section can later focus on roles, positioning, strategy, and player decision-making.",
+        "Go through lessons on rules and strategy, test your knowledge with quizzes, and play the penalty kick game.",
         this
         );
     infoLabel->setAlignment(Qt::AlignCenter);

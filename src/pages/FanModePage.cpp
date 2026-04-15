@@ -7,16 +7,22 @@
 FanModePage::FanModePage(QWidget *parent)
     : QWidget(parent)
 {
+    setStyleSheet("background-color: #2f2f2f; color: white;");
+
     QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(40, 40, 40, 40);
+    layout->setSpacing(20);
 
     QLabel *titleLabel = new QLabel("Fan Mode", this);
     titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setStyleSheet("font-size: 28px; font-weight: 700;");
 
     QLabel *infoLabel = new QLabel(
-        "This section can later focus on tournament history, famous matches, fan knowledge, and match viewing skills.",
+        "Explore lessons on soccer rules, World Cup history, and tournament formats so you can understand and enjoy every match.",
         this);
     infoLabel->setAlignment(Qt::AlignCenter);
     infoLabel->setWordWrap(true);
+    infoLabel->setStyleSheet("font-size: 16px; color: #d0d0d0;");
 
     QPushButton *lessonsButton = new QPushButton("Open Fan Lessons", this);
     QPushButton *backButton = new QPushButton("Back to Mode Selection", this);

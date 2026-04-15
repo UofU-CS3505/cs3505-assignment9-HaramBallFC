@@ -3,9 +3,15 @@
 #include "models/Lesson.h"
 
 #include <QWidget>
+#include <QStringList>
+#include <QMap>
+#include <QPixmap>
 
 class QLabel;
 class QTextEdit;
+class QPushButton;
+class QNetworkAccessManager;
+class QNetworkReply;
 
 class LessonViewerPage : public QWidget
 {
@@ -20,8 +26,38 @@ signals:
     void backRequested();
     void homeRequested();
 
+private slots:
+    void nextSlide();
+    void prevSlide();
+    void onImageDownloaded(QNetworkReply *reply);
+
 private:
+    void parseSlides(const QString &content);
+    void showSlide(int index);
+    void downloadImage(int slideIndex);
+    QStringList imageUrlsForLesson(int lessonId);
+
+    // Header
     QLabel *m_titleLabel;
-    QLabel *m_categoryLabel;
-    QTextEdit *m_contentView;
+
+    // Slide content
+    QLabel *m_slideTitle;
+    QLabel *m_imageLabel;
+    QLabel *m_slideText;
+
+    // Navigation
+    QPushButton *m_prevButton;
+    QPushButton *m_nextButton;
+    QLabel *m_slideCounter;
+
+    // Network
+    QNetworkAccessManager *m_networkManager;
+
+    // Slide data
+    QStringList m_slideTitles;
+    QStringList m_slideTexts;
+    QStringList m_imageUrls;
+    QMap<int, QPixmap> m_imageCache;
+    int m_currentSlide;
+    int m_currentLessonId;
 };
