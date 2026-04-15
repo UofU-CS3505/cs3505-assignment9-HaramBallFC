@@ -12,4 +12,5 @@ public:
 signals:
     void openLessonsRequested();
     void backRequested();
+    void playGameClicked();
 };

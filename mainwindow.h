@@ -18,6 +18,7 @@ class FanModePage;
 class PlayerModePage;
 class LessonMenuPage;
 class LessonViewerPage;
+class PenaltyGamePage;
 
 class MainWindow : public QMainWindow
 {
@@ -38,6 +39,7 @@ private slots:
     void returnToLessonMenu();
 
 private:
+    PenaltyGamePage *m_penaltyGamePage;
     enum class PageId {
         Home = 0,
         ModeSelection,
@@ -45,7 +47,10 @@ private:
         PlayerMode,
         LessonMenu,
         LessonViewer
+
     };
+
+
 
     void buildPageStack();
     void connectNavigation();

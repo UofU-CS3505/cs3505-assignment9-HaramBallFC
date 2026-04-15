@@ -36,6 +36,11 @@ qt_add_executable(HaramBallFC
 
     include/pages/LessonViewerPage.h
     src/pages/LessonViewerPage.cpp
+    include/pages/PenaltyGame.h
+    src/pages/PenaltyGame.cpp
+
+    include/pages/PenaltyGame.h
+    src/pages/PenaltyGame.cpp
 )
 
 target_include_directories(HaramBallFC

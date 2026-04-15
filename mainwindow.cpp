@@ -7,6 +7,7 @@
 #include "pages/LessonViewerPage.h"
 #include "pages/ModeSelectionPage.h"
 #include "pages/PlayerModePage.h"
+#include "pages/PenaltyGame.h"
 
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -24,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_lessonViewerPage(nullptr)
     , m_currentMode(LessonMode::General)
     , m_currentLessonId(-1)
+    , m_penaltyGamePage(nullptr)
 {
     ui->setupUi(this);
 
@@ -106,6 +108,9 @@ void MainWindow::buildPageStack()
     m_pageStack->addWidget(m_lessonMenuPage);
     m_pageStack->addWidget(m_lessonViewerPage);
 
+    m_penaltyGamePage = new PenaltyGamePage(this);
+    m_pageStack->addWidget(m_penaltyGamePage);
+
     layout->addWidget(m_pageStack);
     layout->setContentsMargins(0, 0, 0, 0);
 
@@ -134,18 +139,29 @@ void MainWindow::connectNavigation()
     connect(m_playerModePage, &PlayerModePage::backRequested,
             this, &MainWindow::showModeSelectionPage);
 
+    connect(m_playerModePage, &PlayerModePage::playGameClicked,
+            this, [this]() {
+                m_pageStack->setCurrentWidget(m_penaltyGamePage);
+            });
+
+    connect(m_penaltyGamePage, &PenaltyGamePage::backClicked,
+            this, [this]() {
+                m_pageStack->setCurrentWidget(m_playerModePage);
+            });
+
     connect(m_lessonMenuPage, &LessonMenuPage::lessonSelected,
             this, &MainWindow::openLessonById);
 
-    connect(m_lessonMenuPage, &LessonMenuPage::backRequested, [this]() {
-        if (m_currentMode == LessonMode::Fan) {
-            showFanModePage();
-        } else if (m_currentMode == LessonMode::Player) {
-            showPlayerModePage();
-        } else {
-            showModeSelectionPage();
-        }
-    });
+    connect(m_lessonMenuPage, &LessonMenuPage::backRequested,
+            this, [this]() {
+                if (m_currentMode == LessonMode::Fan) {
+                    showFanModePage();
+                } else if (m_currentMode == LessonMode::Player) {
+                    showPlayerModePage();
+                } else {
+                    showModeSelectionPage();
+                }
+            });
 
     connect(m_lessonMenuPage, &LessonMenuPage::homeRequested,
             this, &MainWindow::showHomePage);

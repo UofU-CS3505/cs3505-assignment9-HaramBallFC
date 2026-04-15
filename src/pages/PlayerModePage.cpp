@@ -20,6 +20,7 @@ PlayerModePage::PlayerModePage(QWidget *parent)
 
     QPushButton *lessonsButton = new QPushButton("Open Player Lessons", this);
     QPushButton *backButton = new QPushButton("Back to Mode Selection", this);
+    QPushButton *playGameButton = new QPushButton("Play the Game", this);
 
     layout->addStretch();
     layout->addWidget(titleLabel);
@@ -33,4 +34,6 @@ PlayerModePage::PlayerModePage(QWidget *parent)
             this, &PlayerModePage::openLessonsRequested);
     connect(backButton, &QPushButton::clicked,
             this, &PlayerModePage::backRequested);
+    connect(playGameButton, &QPushButton::clicked,
+            this, &PlayerModePage::playGameClicked);
 }
