@@ -7,16 +7,23 @@
 PlayerModePage::PlayerModePage(QWidget *parent)
     : QWidget(parent)
 {
+    setStyleSheet("background-color: #2f2f2f; color: white;");
+
     QVBoxLayout *layout = new QVBoxLayout(this);
+    layout->setContentsMargins(40, 40, 40, 40);
+    layout->setSpacing(20);
 
     QLabel *titleLabel = new QLabel("Player Mode", this);
     titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setStyleSheet("font-size: 28px; font-weight: 700;");
 
     QLabel *infoLabel = new QLabel(
         "This section can later focus on roles, positioning, strategy, and player decision-making.",
-        this);
+        this
+        );
     infoLabel->setAlignment(Qt::AlignCenter);
     infoLabel->setWordWrap(true);
+    infoLabel->setStyleSheet("font-size: 16px; color: #d0d0d0;");
 
     QPushButton *lessonsButton = new QPushButton("Open Player Lessons", this);
     QPushButton *backButton = new QPushButton("Back to Mode Selection", this);
@@ -28,6 +35,7 @@ PlayerModePage::PlayerModePage(QWidget *parent)
     layout->addSpacing(20);
     layout->addWidget(lessonsButton);
     layout->addWidget(backButton);
+    layout->addWidget(playGameButton);
     layout->addStretch();
 
     connect(lessonsButton, &QPushButton::clicked,

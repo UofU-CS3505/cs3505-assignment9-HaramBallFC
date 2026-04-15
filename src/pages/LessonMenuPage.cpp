@@ -13,17 +13,70 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     , m_previewLabel(new QLabel("Select a lesson to preview it.", this))
     , m_lessonList(new QListWidget(this))
 {
+    setStyleSheet("background-color: #1a1a2e; color: white;");
+
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
+    mainLayout->setContentsMargins(30, 20, 30, 20);
+    mainLayout->setSpacing(14);
+
     QHBoxLayout *contentLayout = new QHBoxLayout();
     QHBoxLayout *buttonRow = new QHBoxLayout();
 
+    // Title
     m_titleLabel->setAlignment(Qt::AlignCenter);
+    m_titleLabel->setStyleSheet("font-size: 28px; font-weight: 800; color: #f0c040;");
+
+    // Lesson list styling
+    m_lessonList->setStyleSheet(
+        "QListWidget {"
+        "  background-color: #16213e; color: white; border: 2px solid #0f3460;"
+        "  border-radius: 8px; font-size: 15px; padding: 6px;"
+        "}"
+        "QListWidget::item {"
+        "  padding: 12px; border-bottom: 1px solid #0f3460;"
+        "}"
+        "QListWidget::item:selected {"
+        "  background-color: #0f3460; color: #f0c040;"
+        "}"
+        "QListWidget::item:hover {"
+        "  background-color: #1c2a4a;"
+        "}");
+
+    // Preview panel
     m_previewLabel->setWordWrap(true);
-    m_previewLabel->setMinimumWidth(260);
+    m_previewLabel->setMinimumWidth(280);
+    m_previewLabel->setStyleSheet(
+        "font-size: 14px; color: #c0c0d0; "
+        "background-color: #16213e; border: 2px solid #0f3460; "
+        "border-radius: 8px; padding: 20px;");
+    m_previewLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+    // Button styling
+    QString buttonStyle =
+        "QPushButton {"
+        "  background-color: #16213e; color: white; border: 2px solid #0f3460;"
+        "  border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 600;"
+        "}"
+        "QPushButton:hover {"
+        "  background-color: #0f3460; border-color: #f0c040;"
+        "}";
+
+    QString openStyle =
+        "QPushButton {"
+        "  background-color: #0f3460; color: #f0c040; border: 2px solid #f0c040;"
+        "  border-radius: 8px; padding: 10px 24px; font-size: 14px; font-weight: 700;"
+        "}"
+        "QPushButton:hover {"
+        "  background-color: #f0c040; color: #1a1a2e;"
+        "}";
 
     QPushButton *openButton = new QPushButton("Open Selected Lesson", this);
     QPushButton *backButton = new QPushButton("Back", this);
     QPushButton *homeButton = new QPushButton("Home", this);
+
+    openButton->setStyleSheet(openStyle);
+    backButton->setStyleSheet(buttonStyle);
+    homeButton->setStyleSheet(buttonStyle);
 
     contentLayout->addWidget(m_lessonList, 2);
     contentLayout->addWidget(m_previewLabel, 1);

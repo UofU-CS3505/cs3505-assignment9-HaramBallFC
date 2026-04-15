@@ -1,7 +1,13 @@
-#ifndef PENALTYGAMEPAGE_H
-#define PENALTYGAMEPAGE_H
+#pragma once
 
 #include <QWidget>
+#include <QTimer>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QMouseEvent>
+#include <QPoint>
+#include <QPushButton>
+#include "Box2D/Box2D.h"
 
 class PenaltyGamePage : public QWidget
 {
@@ -12,6 +18,32 @@ public:
 
 signals:
     void backClicked();
-};
 
-#endif
+private slots:
+    void updateWorld();
+    void resetBall();
+
+protected:
+    void paintEvent(QPaintEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
+private:
+    b2World world;
+    b2Body* ball;
+    QTimer timer;
+
+    bool scored;
+    bool dragging;
+    bool ballVisible;
+
+    QPoint dragStart;
+    QPoint dragCurrent;
+
+    QPushButton *resetButton;
+    QPushButton *backButton;
+
+    int worldToScreenX(float x);
+    int worldToScreenY(float y);
+};
