@@ -123,15 +123,30 @@ QuizPage::QuizPage(QWidget *parent)
     m_nextButton->hide();
     connect(m_nextButton, &QPushButton::clicked, this, &QuizPage::onNextClicked);
 
-    QHBoxLayout *nextRow = new QHBoxLayout();
-    nextRow->addStretch();
-    nextRow->addWidget(m_nextButton);
+    // ── Back button ──
+    QPushButton *backButton = new QPushButton("← Back to Lesson Menu", this);
+    backButton->setCursor(Qt::PointingHandCursor);
+    backButton->setStyleSheet(
+        QString(
+            "QPushButton {"
+            "  background-color: %1; color: %2;"
+            "  border: none; border-radius: 6px;"
+            "  padding: 10px 18px; font-size: 13px;"
+            "}"
+            "QPushButton:hover { background-color: #4a4a4a; }"
+        ).arg(kCard, kTextLight));
+    connect(backButton, &QPushButton::clicked, this, &QuizPage::backRequested);
+
+    QHBoxLayout *bottomRow = new QHBoxLayout();
+    bottomRow->addWidget(backButton);
+    bottomRow->addStretch();
+    bottomRow->addWidget(m_nextButton);
 
     quizLayout->addLayout(topRow);
     quizLayout->addWidget(m_questionLabel);
     quizLayout->addLayout(grid);
     quizLayout->addWidget(m_feedbackLabel);
-    quizLayout->addLayout(nextRow);
+    quizLayout->addLayout(bottomRow);
     quizLayout->addStretch();
 
     // ════════════════════════════════
