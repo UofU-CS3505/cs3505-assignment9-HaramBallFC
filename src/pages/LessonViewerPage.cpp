@@ -320,10 +320,10 @@ QStringList LessonViewerPage::imageUrlsForLesson(int lessonId)
              << "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Ivory_Coast_penalty.jpg/500px-Ivory_Coast_penalty.jpg";
     } else if (lessonId == 4) {
         // Lesson 4: History of the World Cup
-        // Slide 1: Beginning of the World Cup - Griezmann with World Cup trophy
-        urls << "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Antoine_Griezmann_World_Cup_Trophy.jpg/500px-Antoine_Griezmann_World_Cup_Trophy.jpg"
-        // Slide 2: Growth of the Tournament - Estadio Centenario, first World Cup 1930
-             << "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Estadio_Centenario_1930.jpg/500px-Estadio_Centenario_1930.jpg"
+        // Slide 1: Beginning of the World Cup
+        urls << ":/images/lesson4_section1_hero.jpg"
+        // Slide 2: Growth of the Tournament
+             << ":/images/lesson4_section2_growth_collage.jpg"
         // Slide 3: Successful Countries - Maradona's Goal of the Century 1986
              << "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Maradona_gol_a_inglaterra.jpg/500px-Maradona_gol_a_inglaterra.jpg"
         // Slide 4: 2026 World Cup Changes - Official 2026 emblem
