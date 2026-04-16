@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="lesson4_section1_hero.jpg">images/lesson4_section1_hero.jpg</file>
+        <file alias="lesson4_section2_growth_collage.jpg">images/lesson4_section2_growth_collage.jpg</file>
+    </qresource>
+</RCC>

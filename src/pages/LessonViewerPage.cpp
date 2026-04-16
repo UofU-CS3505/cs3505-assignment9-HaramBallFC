@@ -10,6 +10,7 @@
 #include <QNetworkRequest>
 #include <QCoreApplication>
 #include <QDir>
+#include <QFileInfo>
 
 LessonViewerPage::LessonViewerPage(QWidget *parent)
     : QWidget(parent)
@@ -163,12 +164,38 @@ void LessonViewerPage::showSlide(int index)
     } else if (index < m_imageUrls.size() && !m_imageUrls.at(index).isEmpty()) {
         QString path = m_imageUrls.at(index);
         if (!path.startsWith("http")) {
-            // Local file - resolve relative to app directory
+            auto findByWalkingUp = [](const QString &relativePath) -> QString {
+                QDir dir(QCoreApplication::applicationDirPath());
+                for (int i = 0; i < 10; ++i) {
+                    const QString candidate = dir.absoluteFilePath(relativePath);
+                    if (QFileInfo::exists(candidate)) {
+                        return candidate;
+                    }
+                    if (!dir.cdUp()) {
+                        break;
+                    }
+                }
+                return QString();
+            };
+
+            // Local file or Qt resource (:/images/...)
             QString filePath = path;
-            if (!QDir::isAbsolutePath(filePath)) {
-                filePath = QCoreApplication::applicationDirPath() + "/../../../" + filePath;
+            if (!path.startsWith(":/") && !QDir::isAbsolutePath(path)) {
+                const QString resolved = findByWalkingUp(path);
+                if (!resolved.isEmpty()) {
+                    filePath = resolved;
+                }
             }
+
             QPixmap pixmap(filePath);
+            // Fallback: if Qt resources are not packaged in this build, load from repo files.
+            if (pixmap.isNull() && path.startsWith(":/images/")) {
+                const QString imageName = path.mid(QString(":/images/").size());
+                const QString repoImagePath = findByWalkingUp("resources/images/" + imageName);
+                if (!repoImagePath.isEmpty()) {
+                    pixmap.load(repoImagePath);
+                }
+            }
             if (!pixmap.isNull()) {
                 m_imageCache[index] = pixmap;
                 m_imageLabel->setPixmap(
@@ -244,35 +271,54 @@ QStringList LessonViewerPage::imageUrlsForLesson(int lessonId)
 
     if (lessonId == 1) {
         // Lesson 1: Qualifications
-        // Slide 1: Overview
-        // Slide 2: Confederation qualifying
-        // Slide 3: Inter-confederation playoff
+        // Slide 1: Qualifications Overview
+        urls << "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/2026_FIFA_World_Cup_emblem.svg/500px-2026_FIFA_World_Cup_emblem.svg.png"
+        // Slide 2: Asian Football Confederation (AFC)
+             << "https://upload.wikimedia.org/wikipedia/en/thumb/2/28/Asian_Football_Confederation_logo_2025.svg/500px-Asian_Football_Confederation_logo_2025.svg.png"
+        // Slide 3: Union of European Football Associations (UEFA)
+             << "https://upload.wikimedia.org/wikipedia/en/thumb/9/9d/UEFA_full_logo.svg/500px-UEFA_full_logo.svg.png"
+        // Slide 4: Confederation of African Football (CAF)
+             << "https://upload.wikimedia.org/wikipedia/en/thumb/7/72/Confederation_of_African_Football_logo.svg/500px-Confederation_of_African_Football_logo.svg.png"
+        // Slide 5: South American Football Confederation (CONMEBOL)
+             << "https://upload.wikimedia.org/wikipedia/en/thumb/a/a8/CONMEBOL_logo_%282017%29.svg/500px-CONMEBOL_logo_%282017%29.svg.png"
+        // Slide 6: Confederation of North, Central America and Caribbean Association Football (CONCACAF)
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Concacaf_logo.svg/500px-Concacaf_logo.svg.png"
+        // Slide 7: Oceania Football Confederation (OFC)
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Oceania_Football_Confederation_logo.svg/500px-Oceania_Football_Confederation_logo.svg.png"
+        // Slide 8: Inter-confederation Playoff
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Estadio_Azteca_y_sus_alrededores_46.jpg/500px-Estadio_Azteca_y_sus_alrededores_46.jpg";
     } else if (lessonId == 2) {
-        // Lesson 2: Countries represented
-        // Slide 1: Europe
-        // Slide 2: South America
-        // Slide 3: Africa
-        // Slide 4: Asia
-        // Slide 5: North/Central America
-        // Slide 6: Oceania
+        // Lesson 2: Countries Represented
+        // Slide 1: Europe (16 teams)
+        urls << "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Europe_orthographic_Caucasus_Urals_boundary_%28with_borders%29.svg/330px-Europe_orthographic_Caucasus_Urals_boundary_%28with_borders%29.svg.png"
+        // Slide 2: South America (6 teams)
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/South_America_%28orthographic_projection%29.svg/500px-South_America_%28orthographic_projection%29.svg.png"
+        // Slide 3: Africa (10 teams)
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Africa_%28orthographic_projection%29.svg/330px-Africa_%28orthographic_projection%29.svg.png"
+        // Slide 4: Asia (9 teams)
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Asia_%28orthographic_projection%29_without_New_Guinea.svg/500px-Asia_%28orthographic_projection%29_without_New_Guinea.svg.png"
+        // Slide 5: North/Central America and Caribbean (6 teams)
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Location_North_America.svg/500px-Location_North_America.svg.png"
+        // Slide 6: Oceania (1 team)
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Oceania_%28centered_orthographic_projection%29.svg/330px-Oceania_%28centered_orthographic_projection%29.svg.png";
     } else if (lessonId == 3) {
         // Lesson 3: Rules and Regulations
         // Slide 1: Offside Rule
         urls << "https://cdn.sanity.io/images/8dhz9iqq/production/c5ac4b9adc456f3a94bcdd512e11496f1917661f-1236x810.png"
         // Slide 2: Fouls and Penalties
-             << "/Users/henishpatel/Documents/untitled folder/resources/images/fouls.jpeg"
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/ASV_Dra%C3%9Fburg_vs._SC_Ritzing_20190601_%2878%29.jpg/500px-ASV_Dra%C3%9Fburg_vs._SC_Ritzing_20190601_%2878%29.jpg"
         // Slide 3: Extra Time and Penalty Shootouts
-             << "/Users/henishpatel/Documents/untitled folder/resources/images/penalty.jpeg";
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Ivory_Coast_penalty.jpg/500px-Ivory_Coast_penalty.jpg";
     } else if (lessonId == 4) {
         // Lesson 4: History of the World Cup
-        // Slide 1: Beginning of the World Cup
-        urls << "/Users/henishpatel/Documents/untitled folder/resources/images/worldcup_trophy.webp"
-        // Slide 2: Growth of the Tournament
-             << "/Users/henishpatel/Documents/untitled folder/resources/images/worldcup_bracket.jpg"
-        // Slide 3: Successful Countries
-             << "/Users/henishpatel/Documents/untitled folder/resources/images/worldcup_slide3.png"
-        // Slide 4: 2026 World Cup Changes
-             << "/Users/henishpatel/Documents/untitled folder/resources/images/worldcup_slide4.png";
+        // Slide 1: High-quality trophy celebration image
+        urls << ":/images/lesson4_section1_hero.jpg"
+        // Slide 2: High-quality winners collage across eras
+             << ":/images/lesson4_section2_growth_collage.jpg"
+        // Slide 3: Successful Countries - Maradona's iconic goal 1986
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Maradona_gol_a_inglaterra.jpg/500px-Maradona_gol_a_inglaterra.jpg"
+        // Slide 4: 2026 World Cup Changes - Official emblem
+             << "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/2026_FIFA_World_Cup_emblem.svg/500px-2026_FIFA_World_Cup_emblem.svg.png";
     }
 
     return urls;

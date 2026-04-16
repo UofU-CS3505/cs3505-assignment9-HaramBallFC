@@ -98,6 +98,8 @@ qt_add_executable(HaramBallFC
     include/pages/PenaltyGame.h
     src/pages/PenaltyGame.cpp
 
+    resources/resources.qrc
+
     ${BOX2D_SOURCES}
 )
 
