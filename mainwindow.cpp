@@ -10,6 +10,7 @@
 #include "pages/BracketPage.h"
 #include "pages/PenaltyGame.h"
 #include "pages/QuizPage.h"
+#include "pages/JugglingGame.h"
 
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -85,9 +86,19 @@ void MainWindow::showBracketPage()
 
 void MainWindow::openLessonById(int lessonId)
 {
+    if (m_currentMode == LessonMode::Fan && lessonId == 5) {
+        showQuizPage(lessonId);
+        return;
+    }
+
+    if (m_currentMode == LessonMode::Fan && lessonId == 6) {
+        m_pageStack->setCurrentWidget(m_jugglingGame);
+        return;
+    }
+
     Lesson lesson = m_lessonRepository.lessonById(lessonId);
     m_currentLessonId = lessonId;
-    m_lessonViewerPage->setLesson(lesson);
+    m_lessonViewerPage->setLesson(lesson, m_currentMode);
     setCurrentPage(PageId::LessonViewer);
 }
 
@@ -116,6 +127,7 @@ void MainWindow::buildPageStack()
     m_lessonMenuPage = new LessonMenuPage(m_pageStack);
     m_lessonViewerPage = new LessonViewerPage(m_pageStack);
     m_bracketPage = new BracketPage(m_pageStack);
+    m_jugglingGame = new JugglingGame(m_pageStack);
 
     m_pageStack->addWidget(m_homePage);          // 0 = Home
     m_pageStack->addWidget(m_modeSelectionPage); // 1 = ModeSelection
@@ -123,7 +135,8 @@ void MainWindow::buildPageStack()
     m_pageStack->addWidget(m_playerModePage);     // 3 = PlayerMode
     m_pageStack->addWidget(m_lessonMenuPage);     // 4 = LessonMenu
     m_pageStack->addWidget(m_lessonViewerPage);   // 5 = LessonViewer
-    m_pageStack->addWidget(m_bracketPage);        // 6 = Bracket
+    m_pageStack->addWidget(m_bracketPage);
+    m_pageStack->addWidget(m_jugglingGame);
 
     m_penaltyGamePage = new PenaltyGamePage(this);
     m_pageStack->addWidget(m_penaltyGamePage);   // 7 (uses setCurrentWidget)
@@ -201,6 +214,8 @@ void MainWindow::connectNavigation()
             this, &MainWindow::returnToLessonMenu);
     connect(m_quizPage, &QuizPage::homeRequested,
             this, &MainWindow::showHomePage);
+    connect(m_jugglingGame, &JugglingGame::backRequested,
+            this, &MainWindow::returnToLessonMenu);
 
     // Bracket placeholder
     connect(m_bracketPage, &BracketPage::backRequested,

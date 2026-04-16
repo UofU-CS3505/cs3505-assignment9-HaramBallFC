@@ -20,7 +20,7 @@ class LessonViewerPage : public QWidget
 public:
     explicit LessonViewerPage(QWidget *parent = nullptr);
 
-    void setLesson(const Lesson &lesson);
+    void setLesson(const Lesson &lesson, LessonMode mode);
 
 signals:
     void backRequested();
@@ -50,6 +50,7 @@ private:
     QPushButton *m_prevButton;
     QPushButton *m_nextButton;
     QLabel *m_slideCounter;
+    QPushButton *m_quizButton;
 
     // Network
     QNetworkAccessManager *m_networkManager;

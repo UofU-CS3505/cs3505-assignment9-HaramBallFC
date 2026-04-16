@@ -21,6 +21,7 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     , m_prevButton(new QPushButton("Previous", this))
     , m_nextButton(new QPushButton("Next", this))
     , m_slideCounter(new QLabel("Slide 1 of 1", this))
+    , m_quizButton(new QPushButton("Take Quiz ✎", this))
     , m_networkManager(new QNetworkAccessManager(this))
     , m_currentSlide(0)
     , m_currentLessonId(-1)
@@ -74,8 +75,7 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     QHBoxLayout *buttonRow = new QHBoxLayout();
     QPushButton *backButton = new QPushButton("Back to Lesson Menu", this);
     QPushButton *homeButton = new QPushButton("Home", this);
-    QPushButton *quizButton = new QPushButton("Take Quiz ✎", this);
-    quizButton->setStyleSheet(
+    m_quizButton->setStyleSheet(
         "QPushButton { background-color: #27ae60; color: white; border: none;"
         "  border-radius: 6px; padding: 8px 18px; font-size: 14px; font-weight: 600; }"
         "QPushButton:hover { background-color: #1e8449; }");
@@ -83,7 +83,7 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     buttonRow->addWidget(backButton);
     buttonRow->addWidget(homeButton);
     buttonRow->addStretch();
-    buttonRow->addWidget(quizButton);
+    buttonRow->addWidget(m_quizButton);
 
     // ── Assemble layout ──
     mainLayout->addWidget(m_titleLabel);
@@ -98,19 +98,21 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     connect(m_nextButton, &QPushButton::clicked, this, &LessonViewerPage::nextSlide);
     connect(backButton, &QPushButton::clicked, this, &LessonViewerPage::backRequested);
     connect(homeButton, &QPushButton::clicked, this, &LessonViewerPage::homeRequested);
-    connect(quizButton, &QPushButton::clicked, this, [this]() {
+    connect(m_quizButton, &QPushButton::clicked, this, [this]() {
         emit quizRequested(m_currentLessonId);
     });
     connect(m_networkManager, &QNetworkAccessManager::finished,
             this, &LessonViewerPage::onImageDownloaded);
 }
 
-void LessonViewerPage::setLesson(const Lesson &lesson)
+void LessonViewerPage::setLesson(const Lesson &lesson, LessonMode mode)
 {
     m_titleLabel->setText(lesson.title);
     m_currentLessonId = lesson.id;
     m_currentSlide = 0;
     m_imageCache.clear();
+
+    m_quizButton->setVisible(mode == LessonMode::Player);
 
     parseSlides(lesson.content);
     m_imageUrls = imageUrlsForLesson(lesson.id);

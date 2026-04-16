@@ -8,9 +8,19 @@ QuizRepository::QuizRepository()
 QVector<QuizQuestion> QuizRepository::questionsForLesson(int lessonId) const
 {
     QVector<QuizQuestion> result;
-    for (const QuizQuestion &q : m_questions)
-        if (q.lessonId == lessonId)
-            result.append(q);
+
+    for (const QuizQuestion &q : m_questions) {
+        if (lessonId == 5) { //this is for Fan mode as it is "lesson" #4, it makes the quiz review a COMBINED OVERALL one
+            if (q.lessonId >= 1 && q.lessonId <= 4) {
+                result.append(q);
+            }
+        } else {
+            if (q.lessonId == lessonId) {
+                result.append(q); // for the rest, logic remains the same
+            }
+        }
+    }
+
     return result;
 }
 

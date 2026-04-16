@@ -108,6 +108,9 @@ qt_add_executable(HaramBallFC
     resources/resources.qrc
 
     ${BOX2D_SOURCES}
+
+    include/pages/JugglingGame.h
+    src/pages/JugglingGame.cpp
 )
 
 target_include_directories(HaramBallFC

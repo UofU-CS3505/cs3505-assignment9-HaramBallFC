@@ -313,6 +313,22 @@ void LessonRepository::loadSampleLessons()
          "make their World Cup debuts. The tournament is expected to draw over 6 million fans in total "
          "attendance, breaking the 1994 record.",
 
-         "History", LessonMode::General}
+         "History", LessonMode::General},
+
+        {5, "Lesson 5: Quiz to Review the Lessons",
+         "Review all Fan Mode lessons with a short quiz.",
+         "Section 1: Fan Mode Review Quiz\n"
+         "This is a placeholder for the Fan Mode review quiz.\n\n"
+         "Users will be able to test what they learned from the first four lessons here.",
+
+         "Review Quiz", LessonMode::Fan},
+
+        {6, "Lesson 6: Juggling Game Review",
+         "A short interactive juggling game to review Fan Mode content.",
+         "Section 1: Juggling Game Review\n"
+         "This is a placeholder for the Fan Mode juggling game.\n\n"
+         "Later, this page can launch a mini-game where the user keeps the ball in the air while reviewing key ideas from the lessons.",
+
+         "Game Review", LessonMode::Fan}
     };
 }

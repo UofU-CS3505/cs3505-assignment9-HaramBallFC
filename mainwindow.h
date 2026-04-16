@@ -21,6 +21,7 @@ class LessonViewerPage;
 class BracketPage;
 class PenaltyGamePage;
 class QuizPage;
+class JugglingGame;
 
 class MainWindow : public QMainWindow
 {
@@ -73,6 +74,7 @@ private:
     LessonViewerPage *m_lessonViewerPage;
     BracketPage *m_bracketPage;
     QuizPage *m_quizPage;
+    JugglingGame *m_jugglingGame;
 
     LessonRepository m_lessonRepository;
     LessonMode m_currentMode;
