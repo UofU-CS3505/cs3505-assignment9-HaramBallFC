@@ -74,6 +74,10 @@ qt_add_executable(HaramBallFC
     include/models/LessonRepository.h
     src/models/LessonRepository.cpp
 
+    include/models/QuizQuestion.h
+    include/models/QuizRepository.h
+    src/models/QuizRepository.cpp
+
     include/pages/HomePage.h
     src/pages/HomePage.cpp
 
@@ -94,6 +98,9 @@ qt_add_executable(HaramBallFC
 
     include/pages/BracketPage.h
     src/pages/BracketPage.cpp
+
+    include/pages/QuizPage.h
+    src/pages/QuizPage.cpp
 
     include/pages/PenaltyGame.h
     src/pages/PenaltyGame.cpp

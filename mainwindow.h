@@ -20,6 +20,7 @@ class LessonMenuPage;
 class LessonViewerPage;
 class BracketPage;
 class PenaltyGamePage;
+class QuizPage;
 
 class MainWindow : public QMainWindow
 {
@@ -39,6 +40,7 @@ private slots:
     void showBracketPage();
     void openLessonById(int lessonId);
     void returnToLessonMenu();
+    void showQuizPage(int lessonId);
 
 private:
     PenaltyGamePage *m_penaltyGamePage;
@@ -70,6 +72,7 @@ private:
     LessonMenuPage *m_lessonMenuPage;
     LessonViewerPage *m_lessonViewerPage;
     BracketPage *m_bracketPage;
+    QuizPage *m_quizPage;
 
     LessonRepository m_lessonRepository;
     LessonMode m_currentMode;

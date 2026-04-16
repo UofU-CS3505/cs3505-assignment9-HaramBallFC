@@ -9,6 +9,7 @@
 #include "pages/PlayerModePage.h"
 #include "pages/BracketPage.h"
 #include "pages/PenaltyGame.h"
+#include "pages/QuizPage.h"
 
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -25,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_lessonMenuPage(nullptr)
     , m_lessonViewerPage(nullptr)
     , m_bracketPage(nullptr)
+    , m_quizPage(nullptr)
     , m_currentMode(LessonMode::General)
     , m_currentLessonId(-1)
     , m_penaltyGamePage(nullptr)
@@ -94,6 +96,12 @@ void MainWindow::returnToLessonMenu()
     setCurrentPage(PageId::LessonMenu);
 }
 
+void MainWindow::showQuizPage(int lessonId)
+{
+    m_quizPage->startQuiz(lessonId);
+    m_pageStack->setCurrentWidget(m_quizPage);
+}
+
 void MainWindow::buildPageStack()
 {
     QWidget *central = new QWidget(this);
@@ -119,6 +127,9 @@ void MainWindow::buildPageStack()
 
     m_penaltyGamePage = new PenaltyGamePage(this);
     m_pageStack->addWidget(m_penaltyGamePage);   // 7 (uses setCurrentWidget)
+
+    m_quizPage = new QuizPage(m_pageStack);
+    m_pageStack->addWidget(m_quizPage);          // 8 = Quiz
 
     layout->addWidget(m_pageStack);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -186,6 +197,13 @@ void MainWindow::connectNavigation()
     connect(m_lessonViewerPage, &LessonViewerPage::backRequested,
             this, &MainWindow::returnToLessonMenu);
     connect(m_lessonViewerPage, &LessonViewerPage::homeRequested,
+            this, &MainWindow::showHomePage);
+    connect(m_lessonViewerPage, &LessonViewerPage::quizRequested,
+            this, &MainWindow::showQuizPage);
+
+    connect(m_quizPage, &QuizPage::backRequested,
+            this, &MainWindow::returnToLessonMenu);
+    connect(m_quizPage, &QuizPage::homeRequested,
             this, &MainWindow::showHomePage);
 
     // Bracket placeholder

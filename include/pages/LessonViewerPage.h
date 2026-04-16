@@ -25,6 +25,7 @@ public:
 signals:
     void backRequested();
     void homeRequested();
+    void quizRequested(int lessonId);
 
 private slots:
     void nextSlide();

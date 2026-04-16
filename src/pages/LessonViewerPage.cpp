@@ -74,10 +74,16 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     QHBoxLayout *buttonRow = new QHBoxLayout();
     QPushButton *backButton = new QPushButton("Back to Lesson Menu", this);
     QPushButton *homeButton = new QPushButton("Home", this);
+    QPushButton *quizButton = new QPushButton("Take Quiz ✎", this);
+    quizButton->setStyleSheet(
+        "QPushButton { background-color: #27ae60; color: white; border: none;"
+        "  border-radius: 6px; padding: 8px 18px; font-size: 14px; font-weight: 600; }"
+        "QPushButton:hover { background-color: #1e8449; }");
 
     buttonRow->addWidget(backButton);
     buttonRow->addWidget(homeButton);
     buttonRow->addStretch();
+    buttonRow->addWidget(quizButton);
 
     // ── Assemble layout ──
     mainLayout->addWidget(m_titleLabel);
@@ -92,6 +98,9 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     connect(m_nextButton, &QPushButton::clicked, this, &LessonViewerPage::nextSlide);
     connect(backButton, &QPushButton::clicked, this, &LessonViewerPage::backRequested);
     connect(homeButton, &QPushButton::clicked, this, &LessonViewerPage::homeRequested);
+    connect(quizButton, &QPushButton::clicked, this, [this]() {
+        emit quizRequested(m_currentLessonId);
+    });
     connect(m_networkManager, &QNetworkAccessManager::finished,
             this, &LessonViewerPage::onImageDownloaded);
 }
@@ -271,8 +280,8 @@ QStringList LessonViewerPage::imageUrlsForLesson(int lessonId)
 
     if (lessonId == 1) {
         // Lesson 1: Qualifications
-        // Slide 1: Qualifications Overview
-        urls << "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/2026_FIFA_World_Cup_emblem.svg/500px-2026_FIFA_World_Cup_emblem.svg.png"
+        // Slide 1: Qualifications Overview - 2026 World Cup qualification logo
+        urls << "https://upload.wikimedia.org/wikipedia/en/thumb/b/bc/2026_FIFA_World_Cup_qualification_logo.png/330px-2026_FIFA_World_Cup_qualification_logo.png"
         // Slide 2: Asian Football Confederation (AFC)
              << "https://upload.wikimedia.org/wikipedia/en/thumb/2/28/Asian_Football_Confederation_logo_2025.svg/500px-Asian_Football_Confederation_logo_2025.svg.png"
         // Slide 3: Union of European Football Associations (UEFA)
@@ -281,43 +290,43 @@ QStringList LessonViewerPage::imageUrlsForLesson(int lessonId)
              << "https://upload.wikimedia.org/wikipedia/en/thumb/7/72/Confederation_of_African_Football_logo.svg/500px-Confederation_of_African_Football_logo.svg.png"
         // Slide 5: South American Football Confederation (CONMEBOL)
              << "https://upload.wikimedia.org/wikipedia/en/thumb/a/a8/CONMEBOL_logo_%282017%29.svg/500px-CONMEBOL_logo_%282017%29.svg.png"
-        // Slide 6: Confederation of North, Central America and Caribbean Association Football (CONCACAF)
+        // Slide 6: Confederation of North, Central America and Caribbean (CONCACAF)
              << "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Concacaf_logo.svg/500px-Concacaf_logo.svg.png"
         // Slide 7: Oceania Football Confederation (OFC)
              << "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Oceania_Football_Confederation_logo.svg/500px-Oceania_Football_Confederation_logo.svg.png"
-        // Slide 8: Inter-confederation Playoff
+        // Slide 8: Inter-confederation Playoff - Estadio Azteca, 2026 host
              << "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Estadio_Azteca_y_sus_alrededores_46.jpg/500px-Estadio_Azteca_y_sus_alrededores_46.jpg";
     } else if (lessonId == 2) {
         // Lesson 2: Countries Represented
-        // Slide 1: Europe (16 teams)
-        urls << "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Europe_orthographic_Caucasus_Urals_boundary_%28with_borders%29.svg/330px-Europe_orthographic_Caucasus_Urals_boundary_%28with_borders%29.svg.png"
-        // Slide 2: South America (6 teams)
-             << "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/South_America_%28orthographic_projection%29.svg/500px-South_America_%28orthographic_projection%29.svg.png"
-        // Slide 3: Africa (10 teams)
-             << "https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Africa_%28orthographic_projection%29.svg/330px-Africa_%28orthographic_projection%29.svg.png"
-        // Slide 4: Asia (9 teams)
-             << "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Asia_%28orthographic_projection%29_without_New_Guinea.svg/500px-Asia_%28orthographic_projection%29_without_New_Guinea.svg.png"
-        // Slide 5: North/Central America and Caribbean (6 teams)
-             << "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Location_North_America.svg/500px-Location_North_America.svg.png"
-        // Slide 6: Oceania (1 team)
-             << "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Oceania_%28centered_orthographic_projection%29.svg/330px-Oceania_%28centered_orthographic_projection%29.svg.png";
+        // Slide 1: Europe (16 teams) - Spain celebrating 2010 World Cup win
+        urls << "https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/2010_FIFA_World_Cup_Spain_with_cup.JPG/500px-2010_FIFA_World_Cup_Spain_with_cup.JPG"
+        // Slide 2: South America (6 teams) - Brazil 1970 World Cup squad
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Brazil_1970.JPG/500px-Brazil_1970.JPG"
+        // Slide 3: Africa (10 teams) - Morocco vs Iran, 2018 World Cup
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Iran-Morocco_by_soccer.ru_14.jpg/500px-Iran-Morocco_by_soccer.ru_14.jpg"
+        // Slide 4: Asia (9 teams) - Japan lineup vs Germany, 2022 World Cup
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/2022_FIFA_World_Cup_Germany_1%E2%80%932_Japan_-_%285%29.jpg/500px-2022_FIFA_World_Cup_Germany_1%E2%80%932_Japan_-_%285%29.jpg"
+        // Slide 5: North/Central America & Caribbean - Landon Donovan vs Algeria 2010
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Landon_Donovan_vs_Algeria.jpg/500px-Landon_Donovan_vs_Algeria.jpg"
+        // Slide 6: Oceania (1 team) - New Zealand vs Bahrain 2010 World Cup qualification
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Westpac_Stadium_14112009.jpg/500px-Westpac_Stadium_14112009.jpg";
     } else if (lessonId == 3) {
         // Lesson 3: Rules and Regulations
-        // Slide 1: Offside Rule
+        // Slide 1: Offside Rule - diagram
         urls << "https://cdn.sanity.io/images/8dhz9iqq/production/c5ac4b9adc456f3a94bcdd512e11496f1917661f-1236x810.png"
-        // Slide 2: Fouls and Penalties
+        // Slide 2: Fouls and Penalties - tackle in a match
              << "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/ASV_Dra%C3%9Fburg_vs._SC_Ritzing_20190601_%2878%29.jpg/500px-ASV_Dra%C3%9Fburg_vs._SC_Ritzing_20190601_%2878%29.jpg"
-        // Slide 3: Extra Time and Penalty Shootouts
+        // Slide 3: Extra Time and Penalty Shootouts - penalty kick in action
              << "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Ivory_Coast_penalty.jpg/500px-Ivory_Coast_penalty.jpg";
     } else if (lessonId == 4) {
         // Lesson 4: History of the World Cup
-        // Slide 1: High-quality trophy celebration image
-        urls << ":/images/lesson4_section1_hero.jpg"
-        // Slide 2: High-quality winners collage across eras
-             << ":/images/lesson4_section2_growth_collage.jpg"
-        // Slide 3: Successful Countries - Maradona's iconic goal 1986
+        // Slide 1: Beginning of the World Cup - Griezmann with World Cup trophy
+        urls << "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Antoine_Griezmann_World_Cup_Trophy.jpg/500px-Antoine_Griezmann_World_Cup_Trophy.jpg"
+        // Slide 2: Growth of the Tournament - Estadio Centenario, first World Cup 1930
+             << "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Estadio_Centenario_1930.jpg/500px-Estadio_Centenario_1930.jpg"
+        // Slide 3: Successful Countries - Maradona's Goal of the Century 1986
              << "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Maradona_gol_a_inglaterra.jpg/500px-Maradona_gol_a_inglaterra.jpg"
-        // Slide 4: 2026 World Cup Changes - Official emblem
+        // Slide 4: 2026 World Cup Changes - Official 2026 emblem
              << "https://upload.wikimedia.org/wikipedia/en/thumb/1/17/2026_FIFA_World_Cup_emblem.svg/500px-2026_FIFA_World_Cup_emblem.svg.png";
     }
 
