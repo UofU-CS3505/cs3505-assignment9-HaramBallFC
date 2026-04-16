@@ -11,7 +11,4 @@ public:
 
 signals:
     void startClicked();
-    void fanModeClicked();
-    void playerModeClicked();
-    void bracketClicked();
 };

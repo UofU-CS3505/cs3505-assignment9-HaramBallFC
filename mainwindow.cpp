@@ -139,21 +139,17 @@ void MainWindow::buildPageStack()
 
 void MainWindow::connectNavigation()
 {
+    //Connections for Home Page according to UI
     connect(m_homePage, &HomePage::startClicked,
             this, &MainWindow::showModeSelectionPage);
 
-    // HomePage direct mode buttons
-    connect(m_homePage, &HomePage::fanModeClicked,
-            this, &MainWindow::showFanModePage);
-    connect(m_homePage, &HomePage::playerModeClicked,
-            this, &MainWindow::showPlayerModePage);
-    connect(m_homePage, &HomePage::bracketClicked,
-            this, &MainWindow::showBracketPage);
-
+    //Connections for Mode Selection (2nd) Page according to UI
     connect(m_modeSelectionPage, &ModeSelectionPage::fanModeSelected,
             this, &MainWindow::showFanModePage);
     connect(m_modeSelectionPage, &ModeSelectionPage::playerModeSelected,
             this, &MainWindow::showPlayerModePage);
+    connect(m_modeSelectionPage, &ModeSelectionPage::bracketSelected,
+            this, &MainWindow::showBracketPage);
     connect(m_modeSelectionPage, &ModeSelectionPage::backRequested,
             this, &MainWindow::showHomePage);
 

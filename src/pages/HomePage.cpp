@@ -18,29 +18,29 @@ HomePage::HomePage(QWidget *parent)
     titleLabel->setStyleSheet("font-size: 28px; font-weight: 700;");
 
     QLabel *subtitleLabel = new QLabel(
-        "A World Cup inspired soccer learning app built with Qt Widgets.",
+        "Welcome to our educational app about the World Cup 2026. We wanted to help users learn about the upcoming FIFA World Cup hosted in North America through lessons, quizzes, and interactive features designed for both fans.",
         this);
     subtitleLabel->setAlignment(Qt::AlignCenter);
     subtitleLabel->setWordWrap(true);
     subtitleLabel->setStyleSheet("font-size: 16px; color: #d0d0d0;");
 
-    QPushButton *fanButton = new QPushButton("Fan Mode", this);
-    QPushButton *playerButton = new QPushButton("Player Mode", this);
-    QPushButton *bracketButton = new QPushButton("Bracket", this);
+    QLabel *teamLabel = new QLabel(
+        "Created by: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan, Henish Patel, Reman Adhikari, Ethan Cobler",
+        this);
+    teamLabel->setAlignment(Qt::AlignCenter);
+    teamLabel->setWordWrap(true);
+    teamLabel->setStyleSheet("font-size: 14px; color: #d0d0d0;");
+
+    QPushButton *startButton = new QPushButton("Start your journey!", this);
 
     layout->addStretch();
     layout->addWidget(titleLabel);
     layout->addWidget(subtitleLabel);
+    layout->addWidget(teamLabel);
     layout->addSpacing(20);
-    layout->addWidget(fanButton);
-    layout->addWidget(playerButton);
-    layout->addWidget(bracketButton);
+    layout->addWidget(startButton);
     layout->addStretch();
 
-    connect(fanButton, &QPushButton::clicked,
-            this, &HomePage::fanModeClicked);
-    connect(playerButton, &QPushButton::clicked,
-            this, &HomePage::playerModeClicked);
-    connect(bracketButton, &QPushButton::clicked,
-            this, &HomePage::bracketClicked);
+    connect(startButton, &QPushButton::clicked,
+            this, &HomePage::startClicked);
 }

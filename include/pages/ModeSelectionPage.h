@@ -12,5 +12,6 @@ public:
 signals:
     void fanModeSelected();
     void playerModeSelected();
+    void bracketSelected();
     void backRequested();
 };

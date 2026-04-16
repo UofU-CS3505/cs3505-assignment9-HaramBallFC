@@ -27,6 +27,7 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
 
     QPushButton *fanButton = new QPushButton("Fan Mode", this);
     QPushButton *playerButton = new QPushButton("Player Mode", this);
+    QPushButton *bracketButton = new QPushButton("Bracket", this);
     QPushButton *backButton = new QPushButton("Back", this);
 
     layout->addStretch();
@@ -35,6 +36,7 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     layout->addSpacing(20);
     layout->addWidget(fanButton);
     layout->addWidget(playerButton);
+    layout->addWidget(bracketButton);
     layout->addWidget(backButton);
     layout->addStretch();
 
@@ -42,6 +44,8 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
             this, &ModeSelectionPage::fanModeSelected);
     connect(playerButton, &QPushButton::clicked,
             this, &ModeSelectionPage::playerModeSelected);
+    connect(bracketButton, &QPushButton::clicked,
+            this, &ModeSelectionPage::bracketSelected);
     connect(backButton, &QPushButton::clicked,
             this, &ModeSelectionPage::backRequested);
 }
