@@ -1,3 +1,4 @@
+// AI was used to assist with this file.
 #include "pages/BracketPage.h"
 
 #include <QFrame>
