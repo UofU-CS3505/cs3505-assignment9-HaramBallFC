@@ -88,7 +88,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     float centerX = (width() / 2.0f - 100.0f) / 60.0f;
-    bodyDef.position.Set(centerX, 1.5f);
+    bodyDef.position.Set(centerX, 1.1f);
 
     ball = world.CreateBody(&bodyDef);
 
@@ -146,7 +146,7 @@ void PenaltyGamePage::resetBall()
 
     if (ball != nullptr) {
         float centerX = (width() / 2.0f - 100.0f) / 60.0f;
-        ball->SetTransform(b2Vec2(centerX, 1.5f), 0.0f);
+        ball->SetTransform(b2Vec2(centerX, 1.1f), 0.0f);
         ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
         ball->SetAngularVelocity(0.0f);
     }
@@ -192,7 +192,7 @@ void PenaltyGamePage::shootBall()
     scored = false;
     ballVisible = true;
     float centerX = (width() / 2.0f - 100.0f) / 60.0f;
-    ball->SetTransform(b2Vec2(centerX, 1.5f), 0.0f);
+    ball->SetTransform(b2Vec2(centerX, 1.1f), 0.0f);
     ball->SetLinearVelocity(b2Vec2(0, 0));
     ball->SetAngularVelocity(0);
 
@@ -231,7 +231,7 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     int w = 280;
     int h = 90;
     int gx = width()/2 - w/2;
-    int gy = 40;
+    int gy = 195;
 
     QPen pen(Qt::white);
     pen.setWidth(6);
@@ -243,7 +243,7 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
 
 
     // Keep Messi fixed on the screen
-    playerRect = QRect(width() / 2 - 120, height() - 310, 90, 140);
+    playerRect = QRect(width() / 2 - 120, height() - 270, 90, 140);
 
     if (!playerPixmap.isNull()) {
         p.drawPixmap(playerRect, playerPixmap);
@@ -309,7 +309,7 @@ void PenaltyGamePage::mouseReleaseEvent(QMouseEvent *event)
     scored = false;
 
     float centerX = (width() / 2.0f - 100.0f) / 60.0f;
-    ball->SetTransform(b2Vec2(centerX, 1.5f), 0.0f);
+    ball->SetTransform(b2Vec2(centerX, 1.1f), 0.0f);
     ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
     ball->SetAngularVelocity(0.0f);
 
