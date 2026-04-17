@@ -86,7 +86,8 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     // -------------------------------------------------------------------------
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(5.5f, 1.5f);
+    float centerX = (width() / 2.0f - 100.0f) / 60.0f;
+    bodyDef.position.Set(centerX, 1.5f);
 
     ball = world.CreateBody(&bodyDef);
 
@@ -306,7 +307,8 @@ void PenaltyGamePage::mouseReleaseEvent(QMouseEvent *event)
     dragCurrent = event->pos();
     scored = false;
 
-    ball->SetTransform(b2Vec2(5.5f, 1.5f), 0.0f);
+    float centerX = (width() / 2.0f - 100.0f) / 60.0f;
+    ball->SetTransform(b2Vec2(centerX, 1.5f), 0.0f);
     ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
     ball->SetAngularVelocity(0.0f);
 
