@@ -9,6 +9,7 @@
 #include <QPushButton>
 #include <QPixmap>
 #include <QRect>
+#include <QSlider>
 #include "Box2D/Box2D.h"
 
 class PenaltyGamePage : public QWidget
@@ -24,6 +25,7 @@ signals:
 private slots:
     void updateWorld();
     void resetBall();
+    void shootBall();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -45,6 +47,12 @@ private:
 
     QPushButton *resetButton;
     QPushButton *backButton;
+
+    QPushButton *shootButton;
+    QSlider *angleSlider;
+    QSlider *powerSlider;
+
+
 
     QPixmap fieldPixmap;
     QPixmap playerPixmap;

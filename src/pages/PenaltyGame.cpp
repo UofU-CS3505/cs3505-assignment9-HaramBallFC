@@ -43,12 +43,21 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     , ballVisible(true)
     , resetButton(new QPushButton("Reset Shot", this))
     , backButton(new QPushButton("Back to Player Mode", this))
+    , shootButton(new QPushButton("Shoot", this))
+    , angleSlider(new QSlider(Qt::Horizontal, this))
+    , powerSlider(new QSlider(Qt::Vertical, this))
+
 {
     setMinimumSize(1000, 700);
     setMouseTracking(true);
 
     backButton->setGeometry(20, 20, 180, 40);
     resetButton->setGeometry(820, 20, 140, 40);
+    shootButton->setGeometry(650, 500, 100, 40);
+    angleSlider->setGeometry(200, 540, 350, 30);
+    powerSlider->setGeometry(150, 200, 30, 350);
+
+
 
     QString fieldPath = findAsset("resources/images/field.png");
     QString playerPath = findAsset("resources/images/messiSprite.png");
@@ -98,6 +107,21 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     connect(&timer, &QTimer::timeout, this, &PenaltyGamePage::updateWorld);
     connect(resetButton, &QPushButton::clicked, this, &PenaltyGamePage::resetBall);
     connect(backButton, &QPushButton::clicked, this, &PenaltyGamePage::backClicked);
+    connect(shootButton, &QPushButton::clicked, this, &PenaltyGamePage::shootBall);
+
+
+    //NEW
+
+
+    // Angle slider
+    angleSlider->setMinimum(-75);
+    angleSlider->setMaximum(75);
+    angleSlider->setValue(0);
+
+    // Power slider
+    powerSlider->setMinimum(4);
+    powerSlider->setMaximum(30);
+    powerSlider->setValue(12);
 
     timer.start(10);
 }
@@ -119,7 +143,8 @@ void PenaltyGamePage::resetBall()
     ballVisible = true;
 
     if (ball != nullptr) {
-        ball->SetTransform(b2Vec2(5.5f, 1.5f), 0.0f);
+        float centerX = (width() / 2.0f - 100.0f) / 60.0f;
+        ball->SetTransform(b2Vec2(centerX, 1.5f), 0.0f);
         ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
         ball->SetAngularVelocity(0.0f);
     }
@@ -150,9 +175,103 @@ void PenaltyGamePage::updateWorld()
 
     backButton->setGeometry(20, 20, 180, 40);
     resetButton->setGeometry(width() - 160, 20, 140, 40);
+    shootButton->setGeometry(650, 500, 100, 40);
+
 
     update();
 }
+
+
+//NEW
+void PenaltyGamePage::shootBall()
+{
+    if (!ball) return;
+
+    scored = false;
+    ballVisible = true;
+    float centerX = (width() / 2.0f - 100.0f) / 60.0f;
+    ball->SetTransform(b2Vec2(centerX, 1.5f), 0.0f);
+    ball->SetLinearVelocity(b2Vec2(0, 0));
+    ball->SetAngularVelocity(0);
+
+    float power = static_cast<float>(powerSlider->value());
+    float angleDeg = static_cast<float>(angleSlider->value());
+
+    float rad = angleDeg * 3.14159265f / 180.0f;
+
+    float vx = std::sin(rad) * power;
+    float vy = std::cos(rad) * power;
+
+    if (std::abs(vx) < 0.15f) vx = 0.0f;
+
+    ball->SetLinearVelocity(b2Vec2(vx, vy));
+
+    update();
+}
+
+void PenaltyGamePage::paintEvent(QPaintEvent *event)
+{
+    QWidget::paintEvent(event);
+
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
+
+    // Draw field background image
+    if (!fieldPixmap.isNull()) {
+        p.drawPixmap(rect(), fieldPixmap);
+    } else {
+        p.setPen(Qt::NoPen);
+        p.setBrush(QColor(35, 130, 55));
+        p.drawRect(rect());
+    }
+
+    // Goal
+    int w = 280;
+    int h = 90;
+    int gx = width()/2 - w/2;
+    int gy = 40;
+
+    QPen pen(Qt::white);
+    pen.setWidth(6);
+    p.setPen(pen);
+
+    p.drawLine(gx, gy, gx, gy+h);
+    p.drawLine(gx+w, gy, gx+w, gy+h);
+    p.drawLine(gx, gy, gx+w, gy);
+
+
+    // Keep Messi fixed on the screen
+    playerRect = QRect(width() / 2 - 120, height() - 310, 90, 140);
+
+    if (!playerPixmap.isNull()) {
+        p.drawPixmap(playerRect, playerPixmap);
+    }
+
+    // Ball
+    if (ball && ballVisible) {
+        b2Vec2 pos = ball->GetPosition();
+
+        int x = worldToScreenX(pos.x);
+        int y = worldToScreenY(pos.y);
+        int r = 18;
+
+        p.setPen(Qt::black);
+        p.setBrush(Qt::white);
+        p.drawEllipse(x-r, y-r, r*2, r*2);
+
+        p.setBrush(Qt::black);
+        p.drawEllipse(x-5, y-5, 10, 10);
+    }
+
+    // Goal text
+    if (scored) {
+        p.setPen(Qt::yellow);
+        p.setFont(QFont("Arial", 24, QFont::Bold));
+        p.drawText(width()/2 - 45, 155, "GOAL!");
+    }
+}
+
+
 
 void PenaltyGamePage::mousePressEvent(QMouseEvent *event)
 {
@@ -223,82 +342,3 @@ void PenaltyGamePage::mouseReleaseEvent(QMouseEvent *event)
     update();
 }
 
-void PenaltyGamePage::paintEvent(QPaintEvent *event)
-{
-    QWidget::paintEvent(event);
-
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
-
-    // Draw field background image
-    if (!fieldPixmap.isNull()) {
-        painter.drawPixmap(rect(), fieldPixmap);
-    } else {
-        painter.setPen(Qt::NoPen);
-        painter.setBrush(QColor(35, 130, 55));
-        painter.drawRect(rect());
-    }
-
-
-
-    int goalWidth = 280;
-    int goalHeight = 90;
-    int goalX = width() / 2 - goalWidth / 2;
-    int goalY = 40;
-
-    QPen goalPen(Qt::white);
-    goalPen.setWidth(6);
-    goalPen.setCapStyle(Qt::RoundCap);
-    painter.setPen(goalPen);
-    painter.setBrush(Qt::NoBrush);
-
-    painter.drawLine(goalX, goalY, goalX, goalY + goalHeight);
-    painter.drawLine(goalX + goalWidth, goalY,
-                     goalX + goalWidth, goalY + goalHeight);
-    painter.drawLine(goalX, goalY, goalX + goalWidth, goalY);
-
-    // Keep Messi fixed on the screen
-    playerRect = QRect(width() / 2 - 170, height() - 310, 90, 140);
-
-    if (!playerPixmap.isNull()) {
-        painter.drawPixmap(playerRect, playerPixmap);
-    }
-
-
-    // Draw ball on top
-    if (ball != nullptr && ballVisible) {
-        b2Vec2 pos = ball->GetPosition();
-
-        int x = worldToScreenX(pos.x);
-        int y = worldToScreenY(pos.y);
-        int r = 18;
-
-        painter.setPen(Qt::black);
-        painter.setBrush(Qt::white);
-        painter.drawEllipse(x - r, y - r, r * 2, r * 2);
-
-        painter.setBrush(Qt::black);
-        painter.drawEllipse(x - 5, y - 5, 10, 10);
-
-        if (dragging) {
-            int dx = dragCurrent.x() - dragStart.x();
-            int dy = dragCurrent.y() - dragStart.y();
-
-            int length = static_cast<int>(std::sqrt(dx * dx + dy * dy));
-            int thickness = std::min(20, 4 + length / 12);
-
-            QPen dragPen(Qt::red);
-            dragPen.setWidth(thickness);
-            dragPen.setCapStyle(Qt::RoundCap);
-
-            painter.setPen(dragPen);
-            painter.drawLine(dragStart, dragCurrent);
-        }
-    }
-
-    if (scored) {
-        painter.setPen(Qt::yellow);
-        painter.setFont(QFont("Arial", 24, QFont::Bold));
-        painter.drawText(width() / 2 - 45, 155, "GOAL!");
-    }
-}
