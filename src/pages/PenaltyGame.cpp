@@ -60,7 +60,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
 
 
 
-    QString fieldPath = findAsset("resources/images/field.png");
+    QString fieldPath = findAsset("resources/images/newPitch.png");
     QString playerPath = findAsset("resources/images/messiSprite.png");
 
 

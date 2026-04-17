@@ -4,6 +4,6 @@
         <file alias="lesson4_section2_growth_collage.jpg">images/lesson4_section2_growth_collage.jpg</file>
         <file alias="wc2026_emblem.png">images/wc2026_emblem_200.png</file>
         <file alias="messiSprite.png">images/messiSprite.png</file>
-        <file alias="field.png">images/field.png</file>
+        <file alias="field.png">images/newPitch.png</file>
     </qresource>
 </RCC>
