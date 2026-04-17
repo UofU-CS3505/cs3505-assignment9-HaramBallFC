@@ -1,10 +1,28 @@
 #include "pages/ModeSelectionPage.h"
 
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QPixmap>
 #include <QPushButton>
 #include <QVBoxLayout>
+
+// Walk up from the executable directory until we find the asset file.
+static QString findAsset(const QString &relativePath)
+{
+    QDir dir(QCoreApplication::applicationDirPath());
+    for (int i = 0; i < 10; ++i) {
+        const QString candidate = dir.absoluteFilePath(relativePath);
+        if (QFileInfo::exists(candidate))
+            return candidate;
+        if (!dir.cdUp())
+            break;
+    }
+    return {};
+}
 
 // ── Helper: build one mode card ───────────────────────────────────────────
 static QFrame *makeCard(const QString &icon,
@@ -12,6 +30,7 @@ static QFrame *makeCard(const QString &icon,
                          const QString &desc,
                          const QString &btnText,
                          const QString &btnStyle,
+                         const QString &imagePath,
                          QWidget       *parent,
                          QPushButton  **outBtn)
 {
@@ -47,6 +66,21 @@ static QFrame *makeCard(const QString &icon,
         "font-size: 13px; color: #8FA3B8; background: transparent;"
     );
 
+    // Card illustration — loaded from resources/images/
+    QLabel *imgLabel = new QLabel(card);
+    imgLabel->setAlignment(Qt::AlignCenter);
+    imgLabel->setStyleSheet("background: transparent;");
+    imgLabel->setFixedSize(120, 120);
+    if (!imagePath.isEmpty()) {
+        const QString fullPath = findAsset(imagePath);
+        if (!fullPath.isEmpty()) {
+            QPixmap px(fullPath);
+            if (!px.isNull())
+                imgLabel->setPixmap(
+                    px.scaled(120, 120, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        }
+    }
+
     QPushButton *btn = new QPushButton(btnText, card);
     btn->setStyleSheet(btnStyle);
     btn->setMinimumHeight(42);
@@ -57,6 +91,8 @@ static QFrame *makeCard(const QString &icon,
     l->addWidget(ttl);
     l->addWidget(dsc);
     l->addStretch();
+    l->addWidget(imgLabel, 0, Qt::AlignCenter);
+    l->addSpacing(12);
     l->addWidget(btn);
 
     return card;
@@ -118,21 +154,27 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
         "Learn the rules, history, and key moments\n"
         "of the World Cup so you can follow\n"
         "every match with confidence.",
-        "Enter Fan Mode  \u2192", redBtn, body, &fanBtn);
+        "Enter Fan Mode  \u2192", redBtn,
+        "resources/images/card_fan.png",
+        body, &fanBtn);
 
     QFrame *playerCard = makeCard(
         "", "Player Mode",
         "Go through lessons on rules and strategy,\n"
         "test your knowledge with quizzes,\n"
         "and play the penalty kick game.",
-        "Enter Player Mode  \u2192", goldBtn, body, &playerBtn);
+        "Enter Player Mode  \u2192", goldBtn,
+        "resources/images/card_player.png",
+        body, &playerBtn);
 
     QFrame *bracketCard = makeCard(
         "", "Bracket",
         "View and explore the 2026 FIFA World Cup\n"
         "tournament bracket.\n"
         "(Coming soon)",
-        "View Bracket  \u2192", greenBtn, body, &bracketBtn);
+        "View Bracket  \u2192", greenBtn,
+        "resources/images/card_bracket.png",
+        body, &bracketBtn);
 
     QHBoxLayout *cards = new QHBoxLayout;
     cards->setSpacing(20);
