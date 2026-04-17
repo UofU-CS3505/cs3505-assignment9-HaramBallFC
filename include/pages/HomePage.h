@@ -1,5 +1,8 @@
 #pragma once
 
+#include <QLabel>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
 #include <QWidget>
 
 class HomePage : public QWidget
@@ -11,4 +14,12 @@ public:
 
 signals:
     void startClicked();
+
+private slots:
+    void onImageLoaded(QNetworkReply *reply);
+
+private:
+    QLabel                *m_emblemLabel;
+    QLabel                *m_mapLabel;
+    QNetworkAccessManager *m_net;
 };

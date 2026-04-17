@@ -21,49 +21,57 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     , m_prevButton(new QPushButton("Previous", this))
     , m_nextButton(new QPushButton("Next", this))
     , m_slideCounter(new QLabel("Slide 1 of 1", this))
-    , m_quizButton(new QPushButton("Take Quiz ✎", this))
+    , m_quizButton(new QPushButton("Take Quiz", this))
     , m_networkManager(new QNetworkAccessManager(this))
     , m_currentSlide(0)
     , m_currentLessonId(-1)
 {
-    setStyleSheet("background-color: #2f2f2f; color: white;");
-
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setContentsMargins(40, 30, 40, 20);
     mainLayout->setSpacing(12);
 
     // ── Lesson title ──
     m_titleLabel->setAlignment(Qt::AlignCenter);
-    m_titleLabel->setStyleSheet("font-size: 28px; font-weight: 700;");
+    m_titleLabel->setStyleSheet(
+        "font-size: 26px; font-weight: 700; color: #FFFFFF;");
 
     // ── Slide section title ──
     m_slideTitle->setAlignment(Qt::AlignCenter);
-    m_slideTitle->setStyleSheet("font-size: 18px; font-weight: 600; color: #d0d0d0;");
+    m_slideTitle->setStyleSheet(
+        "font-size: 16px; font-weight: 600; color: #D4A843;");
 
     // ── Image area ──
     m_imageLabel->setAlignment(Qt::AlignCenter);
     m_imageLabel->setMinimumHeight(240);
     m_imageLabel->setMaximumHeight(280);
     m_imageLabel->setStyleSheet(
-        "background-color: #3a3a3a; border-radius: 6px; color: #808080; font-size: 14px;");
+        "background-color: #112035;"
+        "border: 1px solid #1E3A5F;"
+        "border-radius: 10px;"
+        "color: #3A5070; font-size: 14px;");
     m_imageLabel->setText("Loading image...");
     m_imageLabel->setScaledContents(false);
 
     // ── Slide text in scroll area ──
     m_slideText->setWordWrap(true);
     m_slideText->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-    m_slideText->setStyleSheet("font-size: 15px; color: #d0d0d0; padding: 12px;");
+    m_slideText->setStyleSheet(
+        "font-size: 15px; color: #B0C4D8; padding: 14px;");
 
     QScrollArea *scrollArea = new QScrollArea(this);
     scrollArea->setWidget(m_slideText);
     scrollArea->setWidgetResizable(true);
     scrollArea->setStyleSheet(
-        "QScrollArea { background-color: #3a3a3a; border: none; border-radius: 6px; }");
+        "QScrollArea {"
+        "  background-color: #0F1E35;"
+        "  border: 1px solid #1E3A5F;"
+        "  border-radius: 8px;"
+        "}");
 
     // ── Slide navigation ──
     QHBoxLayout *slideNav = new QHBoxLayout();
     m_slideCounter->setAlignment(Qt::AlignCenter);
-    m_slideCounter->setStyleSheet("font-size: 14px; color: #a0a0a0;");
+    m_slideCounter->setStyleSheet("font-size: 13px; color: #5A7090;");
 
     slideNav->addWidget(m_prevButton);
     slideNav->addStretch();
@@ -73,12 +81,27 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
 
     // ── Bottom buttons ──
     QHBoxLayout *buttonRow = new QHBoxLayout();
-    QPushButton *backButton = new QPushButton("Back to Lesson Menu", this);
+    QPushButton *backButton = new QPushButton("\u2190 Back", this);
     QPushButton *homeButton = new QPushButton("Home", this);
+
+    const QString ghostBtn =
+        "QPushButton {"
+        "  background-color: transparent; color: #8FA3B8;"
+        "  border: 1px solid #1E3A5F; border-radius: 8px;"
+        "  padding: 8px 18px; font-size: 13px;"
+        "}"
+        "QPushButton:hover { color: #FFFFFF; border-color: #D4A843; }";
+    backButton->setStyleSheet(ghostBtn);
+    homeButton->setStyleSheet(ghostBtn);
+
     m_quizButton->setStyleSheet(
-        "QPushButton { background-color: #27ae60; color: white; border: none;"
-        "  border-radius: 6px; padding: 8px 18px; font-size: 14px; font-weight: 600; }"
-        "QPushButton:hover { background-color: #1e8449; }");
+        "QPushButton {"
+        "  background-color: #D4A843; color: #0B1829;"
+        "  border: none; border-radius: 8px;"
+        "  padding: 9px 22px; font-size: 14px; font-weight: 700;"
+        "}"
+        "QPushButton:hover   { background-color: #B8922E; color: #FFFFFF; }"
+        "QPushButton:pressed { background-color: #9A7A24; }");
 
     buttonRow->addWidget(backButton);
     buttonRow->addWidget(homeButton);

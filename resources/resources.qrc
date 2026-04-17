@@ -2,5 +2,6 @@
     <qresource prefix="/images">
         <file alias="lesson4_section1_hero.jpg">images/lesson4_section1_hero.jpg</file>
         <file alias="lesson4_section2_growth_collage.jpg">images/lesson4_section2_growth_collage.jpg</file>
+        <file alias="wc2026_emblem.png">images/wc2026_emblem_200.png</file>
     </qresource>
 </RCC>

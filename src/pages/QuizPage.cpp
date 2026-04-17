@@ -10,30 +10,31 @@
 #include <algorithm>
 #include <random>
 
-// ── Shared style helpers ──
-static const QString kDark      = "#2f2f2f";
-static const QString kCard      = "#3a3a3a";
-static const QString kGreen     = "#27ae60";
-static const QString kRed       = "#e74c3c";
-static const QString kBlue      = "#2980b9";
-static const QString kBlueDark  = "#1f6391";
-static const QString kTextLight = "#d0d0d0";
-static const QString kTextMuted = "#a0a0a0";
+// ── Shared style helpers (World Cup theme) ──
+static const QString kDark      = "#0B1829";   // deep navy background
+static const QString kCard      = "#112035";   // card panels
+static const QString kGreen     = "#27AE60";   // correct answer
+static const QString kRed       = "#C8102E";   // wrong answer / FIFA red
+static const QString kBlue      = "#1E3A5F";   // default answer button
+static const QString kBlueDark  = "#D4A843";   // next button (gold)
+static const QString kTextLight = "#F0F4F8";
+static const QString kTextMuted = "#5A7090";
 
 static QString answerBtnStyle(const QString &bg, const QString &hover)
 {
     return QString(
         "QPushButton {"
         "  background-color: %1;"
-        "  color: white;"
-        "  border: none;"
-        "  border-radius: 6px;"
-        "  padding: 14px 10px;"
+        "  color: #F0F4F8;"
+        "  border: 1px solid #1E3A5F;"
+        "  border-radius: 8px;"
+        "  padding: 16px 14px;"
         "  font-size: 14px;"
+        "  font-weight: 500;"
         "  text-align: left;"
         "}"
-        "QPushButton:hover { background-color: %2; }"
-        "QPushButton:disabled { color: #c0c0c0; }"
+        "QPushButton:hover { background-color: %2; border-color: #D4A843; }"
+        "QPushButton:disabled { color: #8FA3B8; }"
     ).arg(bg, hover);
 }
 
@@ -41,7 +42,7 @@ static QString answerBtnStyle(const QString &bg, const QString &hover)
 QuizPage::QuizPage(QWidget *parent)
     : QWidget(parent)
 {
-    setStyleSheet(QString("background-color: %1; color: white;").arg(kDark));
+    setStyleSheet(QString("background-color: %1; color: #F0F4F8;").arg(kDark));
 
     // ── Master stacked layout: quiz view vs results view ──
     QStackedLayout *stack = new QStackedLayout(this);
@@ -75,25 +76,27 @@ QuizPage::QuizPage(QWidget *parent)
     m_questionLabel->setWordWrap(true);
     m_questionLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     m_questionLabel->setStyleSheet(
-        QString(
-            "background-color: %1;"
-            "border-radius: 8px;"
-            "padding: 18px;"
-            "font-size: 17px;"
-            "font-weight: 600;"
-            "color: white;"
-        ).arg(kCard));
+        "background-color: #112035;"
+        "border: 1px solid #1E3A5F;"
+        "border-radius: 10px;"
+        "padding: 20px;"
+        "font-size: 17px;"
+        "font-weight: 600;"
+        "color: #FFFFFF;");
     m_questionLabel->setMinimumHeight(90);
 
     // ── Answer buttons (2 × 2 grid) ──
     QGridLayout *grid = new QGridLayout();
-    grid->setSpacing(10);
+    grid->setSpacing(12);
+    grid->setColumnStretch(0, 1);
+    grid->setColumnStretch(1, 1);
 
     for (int i = 0; i < 4; ++i) {
         m_answerButtons[i] = new QPushButton(this);
         m_answerButtons[i]->setCursor(Qt::PointingHandCursor);
-        m_answerButtons[i]->setStyleSheet(answerBtnStyle(kCard, "#4a4a4a"));
-        m_answerButtons[i]->setMinimumHeight(60);
+        m_answerButtons[i]->setStyleSheet(answerBtnStyle(kCard, "#1E3A5F"));
+        m_answerButtons[i]->setMinimumHeight(68);
+        m_answerButtons[i]->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         grid->addWidget(m_answerButtons[i], i / 2, i % 2);
 
         connect(m_answerButtons[i], &QPushButton::clicked, this, [this, i]() {
@@ -105,36 +108,34 @@ QuizPage::QuizPage(QWidget *parent)
     m_feedbackLabel = new QLabel(this);
     m_feedbackLabel->setWordWrap(true);
     m_feedbackLabel->setAlignment(Qt::AlignCenter);
-    m_feedbackLabel->setStyleSheet("font-size: 15px; font-weight: 600; padding: 8px;");
+    m_feedbackLabel->setStyleSheet(
+        "font-size: 15px; font-weight: 600; padding: 8px;");
     m_feedbackLabel->hide();
 
-    // ── Next button ──
-    m_nextButton = new QPushButton("Next Question →", this);
+    // ── Next button (gold) ──
+    m_nextButton = new QPushButton("Next Question \u2192", this);
     m_nextButton->setCursor(Qt::PointingHandCursor);
     m_nextButton->setStyleSheet(
-        QString(
-            "QPushButton {"
-            "  background-color: %1; color: white;"
-            "  border: none; border-radius: 6px;"
-            "  padding: 12px 24px; font-size: 15px; font-weight: 600;"
-            "}"
-            "QPushButton:hover { background-color: %2; }"
-        ).arg(kBlue, kBlueDark));
+        "QPushButton {"
+        "  background-color: #D4A843; color: #0B1829;"
+        "  border: none; border-radius: 8px;"
+        "  padding: 12px 28px; font-size: 15px; font-weight: 700;"
+        "}"
+        "QPushButton:hover   { background-color: #B8922E; color: #FFFFFF; }"
+        "QPushButton:pressed { background-color: #9A7A24; }");
     m_nextButton->hide();
     connect(m_nextButton, &QPushButton::clicked, this, &QuizPage::onNextClicked);
 
-    // ── Back button ──
-    QPushButton *backButton = new QPushButton("← Back to Lesson Menu", this);
+    // ── Back button (ghost) ──
+    QPushButton *backButton = new QPushButton("\u2190 Back to Lesson Menu", this);
     backButton->setCursor(Qt::PointingHandCursor);
     backButton->setStyleSheet(
-        QString(
-            "QPushButton {"
-            "  background-color: %1; color: %2;"
-            "  border: none; border-radius: 6px;"
-            "  padding: 10px 18px; font-size: 13px;"
-            "}"
-            "QPushButton:hover { background-color: #4a4a4a; }"
-        ).arg(kCard, kTextLight));
+        "QPushButton {"
+        "  background-color: transparent; color: #8FA3B8;"
+        "  border: 1px solid #1E3A5F; border-radius: 8px;"
+        "  padding: 10px 18px; font-size: 13px;"
+        "}"
+        "QPushButton:hover { color: #FFFFFF; border-color: #D4A843; }");
     connect(backButton, &QPushButton::clicked, this, &QuizPage::backRequested);
 
     QHBoxLayout *bottomRow = new QHBoxLayout();
@@ -159,37 +160,41 @@ QuizPage::QuizPage(QWidget *parent)
 
     m_resultsTitleLabel = new QLabel("Quiz Complete!", m_resultsWidget);
     m_resultsTitleLabel->setAlignment(Qt::AlignCenter);
-    m_resultsTitleLabel->setStyleSheet("font-size: 32px; font-weight: 700;");
+    m_resultsTitleLabel->setStyleSheet(
+        "font-size: 32px; font-weight: 700; color: #FFFFFF;");
 
     m_resultsScoreLabel = new QLabel(m_resultsWidget);
     m_resultsScoreLabel->setAlignment(Qt::AlignCenter);
-    m_resultsScoreLabel->setStyleSheet("font-size: 52px; font-weight: 700; color: #f0f0f0;");
+    m_resultsScoreLabel->setStyleSheet(
+        "font-size: 56px; font-weight: 700; color: #D4A843;");
 
     m_resultsMessageLabel = new QLabel(m_resultsWidget);
     m_resultsMessageLabel->setAlignment(Qt::AlignCenter);
     m_resultsMessageLabel->setWordWrap(true);
-    m_resultsMessageLabel->setStyleSheet(
-        QString("font-size: 16px; color: %1;").arg(kTextLight));
+    m_resultsMessageLabel->setStyleSheet("font-size: 16px; color: #8FA3B8;");
 
-    m_resultsBackButton = new QPushButton("Back to Lesson Menu", m_resultsWidget);
+    m_resultsBackButton = new QPushButton("\u2190 Back to Lesson Menu", m_resultsWidget);
     m_resultsBackButton->setCursor(Qt::PointingHandCursor);
     m_resultsBackButton->setStyleSheet(
-        QString(
-            "QPushButton { background-color: %1; color: white; border: none;"
-            "  border-radius: 6px; padding: 12px 24px; font-size: 14px; }"
-            "QPushButton:hover { background-color: %2; }"
-        ).arg(kCard, "#4a4a4a"));
+        "QPushButton {"
+        "  background-color: transparent; color: #8FA3B8;"
+        "  border: 1px solid #1E3A5F; border-radius: 8px;"
+        "  padding: 12px 24px; font-size: 14px;"
+        "}"
+        "QPushButton:hover { color: #FFFFFF; border-color: #D4A843; }");
     connect(m_resultsBackButton, &QPushButton::clicked,
             this, &QuizPage::backRequested);
 
     m_resultsHomeButton = new QPushButton("Home", m_resultsWidget);
     m_resultsHomeButton->setCursor(Qt::PointingHandCursor);
     m_resultsHomeButton->setStyleSheet(
-        QString(
-            "QPushButton { background-color: %1; color: white; border: none;"
-            "  border-radius: 6px; padding: 12px 24px; font-size: 14px; }"
-            "QPushButton:hover { background-color: %2; }"
-        ).arg(kBlue, kBlueDark));
+        "QPushButton {"
+        "  background-color: #D4A843; color: #0B1829;"
+        "  border: none; border-radius: 8px;"
+        "  padding: 12px 24px; font-size: 14px; font-weight: 700;"
+        "}"
+        "QPushButton:hover   { background-color: #B8922E; color: #FFFFFF; }"
+        "QPushButton:pressed { background-color: #9A7A24; }");
     connect(m_resultsHomeButton, &QPushButton::clicked,
             this, &QuizPage::homeRequested);
 
