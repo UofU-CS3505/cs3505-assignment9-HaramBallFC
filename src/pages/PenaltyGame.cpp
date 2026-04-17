@@ -12,6 +12,26 @@
 // Standard library includes
 #include <cmath>
 #include <algorithm>
+#include <QDebug>
+#include <QFileInfo>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
+
+
+//used a method similar to harry's to import the picture.
+static QString findAsset(const QString &relativePath)
+{
+    QDir dir(QCoreApplication::applicationDirPath());
+    for (int i = 0; i < 10; ++i) {
+        const QString candidate = dir.absoluteFilePath(relativePath);
+        if (QFileInfo::exists(candidate))
+            return candidate;
+        if (!dir.cdUp())
+            break;
+    }
+    return {};
+}
 
 PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     : QWidget(parent)
@@ -29,6 +49,15 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
 
     backButton->setGeometry(20, 20, 180, 40);
     resetButton->setGeometry(820, 20, 140, 40);
+
+    QString fieldPath = findAsset("resources/images/field.png");
+    QString playerPath = findAsset("resources/images/messiSprite.png");
+
+
+    fieldPixmap = QPixmap(fieldPath);
+    playerPixmap = QPixmap(playerPath);
+
+
 
     // -------------------------------------------------------------------------
     // STATIC GROUND BODY
@@ -48,7 +77,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     // -------------------------------------------------------------------------
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
-    bodyDef.position.Set(5.0f, 1.5f);
+    bodyDef.position.Set(5.5f, 1.5f);
 
     ball = world.CreateBody(&bodyDef);
 
@@ -90,7 +119,7 @@ void PenaltyGamePage::resetBall()
     ballVisible = true;
 
     if (ball != nullptr) {
-        ball->SetTransform(b2Vec2(5.0f, 1.5f), 0.0f);
+        ball->SetTransform(b2Vec2(5.5f, 1.5f), 0.0f);
         ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
         ball->SetAngularVelocity(0.0f);
     }
@@ -158,7 +187,7 @@ void PenaltyGamePage::mouseReleaseEvent(QMouseEvent *event)
     dragCurrent = event->pos();
     scored = false;
 
-    ball->SetTransform(b2Vec2(5.0f, 1.5f), 0.0f);
+    ball->SetTransform(b2Vec2(5.5f, 1.5f), 0.0f);
     ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
     ball->SetAngularVelocity(0.0f);
 
@@ -201,12 +230,16 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(QColor(35, 130, 55));
-    painter.drawRect(rect());
+    // Draw field background image
+    if (!fieldPixmap.isNull()) {
+        painter.drawPixmap(rect(), fieldPixmap);
+    } else {
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(QColor(35, 130, 55));
+        painter.drawRect(rect());
+    }
 
-    painter.setPen(QPen(Qt::white, 3));
-    painter.drawLine(40, height() - 110, width() - 40, height() - 110);
+
 
     int goalWidth = 280;
     int goalHeight = 90;
@@ -224,6 +257,15 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
                      goalX + goalWidth, goalY + goalHeight);
     painter.drawLine(goalX, goalY, goalX + goalWidth, goalY);
 
+    // Keep Messi fixed on the screen
+    playerRect = QRect(width() / 2 - 170, height() - 310, 90, 140);
+
+    if (!playerPixmap.isNull()) {
+        painter.drawPixmap(playerRect, playerPixmap);
+    }
+
+
+    // Draw ball on top
     if (ball != nullptr && ballVisible) {
         b2Vec2 pos = ball->GetPosition();
 

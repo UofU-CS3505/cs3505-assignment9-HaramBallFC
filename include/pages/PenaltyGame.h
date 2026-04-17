@@ -7,6 +7,8 @@
 #include <QMouseEvent>
 #include <QPoint>
 #include <QPushButton>
+#include <QPixmap>
+#include <QRect>
 #include "Box2D/Box2D.h"
 
 class PenaltyGamePage : public QWidget
@@ -43,6 +45,10 @@ private:
 
     QPushButton *resetButton;
     QPushButton *backButton;
+
+    QPixmap fieldPixmap;
+    QPixmap playerPixmap;
+    QRect playerRect;
 
     int worldToScreenX(float x);
     int worldToScreenY(float y);
