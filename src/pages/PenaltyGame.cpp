@@ -54,8 +54,9 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     backButton->setGeometry(20, 20, 180, 40);
     resetButton->setGeometry(820, 20, 140, 40);
     shootButton->setGeometry(650, 500, 100, 40);
-    angleSlider->setGeometry(200, 540, 350, 30);
-    powerSlider->setGeometry(150, 200, 30, 350);
+
+    angleSlider->setGeometry(width()/2-180, height() - 120, 360, 24);
+    powerSlider->setGeometry(width()/2-290, height() - 290, 24, 170);
 
 
 
