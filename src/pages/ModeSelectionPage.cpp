@@ -208,8 +208,8 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     QFrame *fanCard = makeCard(
         "FAN MODE",
         "Learn the rules, history, and\n"
-        "key moments of the World Cup\n"
-        "so you can follow every match.",
+        "key moments of the World Cup.\n"
+        "Finish with a 10-question quiz.",
         "ENTER  \u2192", redBtn, "#C8102E",
         "resources/images/card_fan.png",
         body, &fanBtn);
@@ -225,9 +225,9 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
 
     QFrame *bracketCard = makeCard(
         "BRACKET",
-        "View and explore the 2026\n"
-        "FIFA World Cup tournament\n"
-        "bracket. (Coming soon)",
+        "View the official 2026 FIFA\n"
+        "World Cup group stage and\n"
+        "full knockout bracket.",
         "VIEW  \u2192", greenBtn, "#27AE60",
         "resources/images/card_bracket.png",
         body, &bracketBtn);

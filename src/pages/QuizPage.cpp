@@ -243,12 +243,13 @@ void QuizPage::startQuiz(int lessonId)
     m_score        = 0;
     m_questions    = m_repo.questionsForLesson(lessonId);
 
-    // Shuffle and pick only 8 questions from the full pool
+    // Shuffle and pick questions — 10 for the Fan Mode combined quiz, 8 for all others
     std::random_device rd;
     std::mt19937 rng(rd());
     std::shuffle(m_questions.begin(), m_questions.end(), rng);
-    if (m_questions.size() > 8)
-        m_questions = m_questions.mid(0, 8);
+    int cap = (lessonId == 5) ? 10 : 8;
+    if (m_questions.size() > cap)
+        m_questions = m_questions.mid(0, cap);
 
     // Switch to quiz view
     static_cast<QStackedLayout *>(layout())->setCurrentIndex(0);
