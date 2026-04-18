@@ -29,14 +29,15 @@ private slots:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
+    //void mousePressEvent(QMouseEvent *event) override;
+    //void mouseMoveEvent(QMouseEvent *event) override;
+    //void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
     b2World world;
     b2Body* ball;
     QTimer timer;
+    QString answerTarget;
 
     bool scored;
     bool dragging;

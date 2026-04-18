@@ -165,14 +165,47 @@ void PenaltyGamePage::updateWorld()
         int ballX = worldToScreenX(pos.x);
         int ballY = worldToScreenY(pos.y);
 
-        QRect goalRect(width() / 2 - 140, 40, 280, 90);
+        //GOAL DIMENSIONS
+        int goalWidth = 750;
+        int goalHeight = 90;
+        int goalX = width()/2 - goalWidth/2;
+        int goalY = 195;
 
-        if (goalRect.contains(ballX, ballY)) {
+        int boxWidth = 150;
+        int boxHeight = 60;
+        int squareMargin = 30;
+
+        //Left Box True
+        QRect leftSquare(goalX + squareMargin, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
+
+         //Right Box False
+        QRect rightSquare(goalX + goalWidth - squareMargin - boxWidth, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
+
+        //Goal Box
+        QRect goalRect(goalX, goalY, goalWidth, goalHeight);
+
+        if (leftSquare.contains(ballX, ballY)) {
             scored = true;
+            answerTarget = "TRUE";
             ballVisible = false;
             ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
             ball->SetAngularVelocity(0.0f);
         }
+
+        else if (rightSquare.contains(ballX, ballY)) {
+            scored = true;
+            answerTarget = "FALSE";
+            ballVisible = false;
+            ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+            ball->SetAngularVelocity(0.0f);
+        }
+
+        // else if(goalRect.contains(ballX, ballY)) {
+        //     scored = true;
+        //     ballVisible = false;
+        //     ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+        //     ball->SetAngularVelocity(0.0f);
+        // }
     }
 
     backButton->setGeometry(20, 20, 180, 40);
@@ -228,18 +261,50 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     }
 
     // Goal
-    int w = 280;
+    int w = 750;
     int h = 90;
     int gx = width()/2 - w/2;
     int gy = 195;
 
     QPen pen(Qt::white);
-    pen.setWidth(6);
+    pen.setWidth(8);
     p.setPen(pen);
 
+    //Draw Goal Rectangle
     p.drawLine(gx, gy, gx, gy+h);
     p.drawLine(gx+w, gy, gx+w, gy+h);
     p.drawLine(gx, gy, gx+w, gy);
+
+    //Draw Two Square Boxes
+    int boxWidth = 150;
+    int boxHeight = 60;
+    int squareMargin = 30;
+
+    QRect leftSquare(gx + squareMargin, gy + (h - boxHeight) / 2, boxWidth, boxHeight);
+    QRect rightSquare(gx + w - squareMargin - boxWidth, gy + (h - boxHeight) / 2, boxWidth, boxHeight);
+
+
+    // Fill boxess with a gradient background
+    QLinearGradient leftGradient(leftSquare.topLeft(), leftSquare.bottomLeft());
+    leftGradient.setColorAt(0, QColor(255, 255, 255, 180));
+    leftGradient.setColorAt(1, QColor(255, 255, 255, 180));
+
+
+    QLinearGradient rightGradient(rightSquare.topLeft(), rightSquare.bottomLeft());
+    rightGradient.setColorAt(0, QColor(255, 255, 255, 180));
+    rightGradient.setColorAt(1, QColor(255, 255, 255, 180));
+
+    p.setPen(QPen(Qt::white, 3));
+    p.setBrush(leftGradient);
+    p.drawRoundedRect(leftSquare, 8, 8);
+
+    p.setBrush(rightGradient);
+    p.drawRoundedRect(rightSquare, 8, 8);
+
+    //DRAW T/F BOXES
+    p.setPen(Qt::black);
+    p.drawText(leftSquare, Qt::AlignCenter, "TRUE");
+    p.drawText(rightSquare, Qt::AlignCenter, "FALSE");
 
 
     // Keep Messi fixed on the screen
@@ -265,83 +330,88 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
         p.drawEllipse(x-5, y-5, 10, 10);
     }
 
-    // Goal text
+    // Logic to Print when Box was Hit
     if (scored) {
-        p.setPen(Qt::yellow);
+        p.setPen(Qt::red);
         p.setFont(QFont("Arial", 24, QFont::Bold));
-        p.drawText(width()/2 - 45, 155, "GOAL!");
+        if(answerTarget == "TRUE") {
+            p.drawText(rect(), Qt::AlignHCenter, "TRUE DETECTED!");
+        }
+        else if(answerTarget == "FALSE") {
+
+            p.drawText(rect(), Qt::AlignHCenter, "FALSE DETECTED!");
     }
 }
 
 
 
-void PenaltyGamePage::mousePressEvent(QMouseEvent *event)
-{
-    if (ball == nullptr || !ballVisible) return;
+// void PenaltyGamePage::mousePressEvent(QMouseEvent *event)
+// {
+//     if (ball == nullptr || !ballVisible) return;
 
-    int ballX = worldToScreenX(ball->GetPosition().x);
-    int ballY = worldToScreenY(ball->GetPosition().y);
+//     int ballX = worldToScreenX(ball->GetPosition().x);
+//     int ballY = worldToScreenY(ball->GetPosition().y);
 
-    int dx = event->pos().x() - ballX;
-    int dy = event->pos().y() - ballY;
+//     int dx = event->pos().x() - ballX;
+//     int dy = event->pos().y() - ballY;
 
-    if (dx * dx + dy * dy <= 30 * 30) {
-        dragging = true;
-        dragStart = event->pos();
-        dragCurrent = event->pos();
-    }
+//     if (dx * dx + dy * dy <= 30 * 30) {
+//         dragging = true;
+//         dragStart = event->pos();
+//         dragCurrent = event->pos();
+//     }
+// }
+
+// void PenaltyGamePage::mouseMoveEvent(QMouseEvent *event)
+// {
+//     if (!dragging) return;
+
+//     dragCurrent = event->pos();
+//     update();
+// }
+
+// void PenaltyGamePage::mouseReleaseEvent(QMouseEvent *event)
+// {
+//     if (!dragging || ball == nullptr || !ballVisible) return;
+
+//     dragging = false;
+//     dragCurrent = event->pos();
+//     scored = false;
+
+//     float centerX = (width() / 2.0f - 100.0f) / 60.0f;
+//     ball->SetTransform(b2Vec2(centerX, 1.1f), 0.0f);
+//     ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+//     ball->SetAngularVelocity(0.0f);
+
+//     int dx = dragCurrent.x() - dragStart.x();
+//     int dy = dragCurrent.y() - dragStart.y();
+
+//     float length = std::sqrt(static_cast<float>(dx * dx + dy * dy));
+
+//     if (length < 1.0f) {
+//         update();
+//         return;
+//     }
+
+//     float dirX = dx / length;
+//     float dirY = dy / length;
+//     dirY = -dirY;
+
+//     float power = length / 4.0f;
+
+//     float vx = -dirX * power;
+//     float vy = dirY * power;
+
+//     if (std::abs(dx) < 4) {
+//         vx = 0.0f;
+//     }
+
+//     if (vy < 4.0f) {
+//         vy = 4.0f;
+//     }
+
+//     ball->SetLinearVelocity(b2Vec2(vx, vy));
+
+//     update();
+// }
 }
-
-void PenaltyGamePage::mouseMoveEvent(QMouseEvent *event)
-{
-    if (!dragging) return;
-
-    dragCurrent = event->pos();
-    update();
-}
-
-void PenaltyGamePage::mouseReleaseEvent(QMouseEvent *event)
-{
-    if (!dragging || ball == nullptr || !ballVisible) return;
-
-    dragging = false;
-    dragCurrent = event->pos();
-    scored = false;
-
-    float centerX = (width() / 2.0f - 100.0f) / 60.0f;
-    ball->SetTransform(b2Vec2(centerX, 1.1f), 0.0f);
-    ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-    ball->SetAngularVelocity(0.0f);
-
-    int dx = dragCurrent.x() - dragStart.x();
-    int dy = dragCurrent.y() - dragStart.y();
-
-    float length = std::sqrt(static_cast<float>(dx * dx + dy * dy));
-
-    if (length < 1.0f) {
-        update();
-        return;
-    }
-
-    float dirX = dx / length;
-    float dirY = dy / length;
-    dirY = -dirY;
-
-    float power = length / 4.0f;
-
-    float vx = -dirX * power;
-    float vy = dirY * power;
-
-    if (std::abs(dx) < 4) {
-        vx = 0.0f;
-    }
-
-    if (vy < 4.0f) {
-        vy = 4.0f;
-    }
-
-    ball->SetLinearVelocity(b2Vec2(vx, vy));
-
-    update();
-}
-
