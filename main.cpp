@@ -2,12 +2,30 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
+#include <QFontDatabase>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    // ── Global World Cup Theme ──────────────────────────────────────────────
+    // ── Load pixel font ────────────────────────────────────────────────────
+    {
+        QDir dir(QCoreApplication::applicationDirPath());
+        for (int i = 0; i < 10; ++i) {
+            QString candidate = dir.absoluteFilePath(
+                "resources/fonts/PressStart2P-Regular.ttf");
+            if (QFileInfo::exists(candidate)) {
+                QFontDatabase::addApplicationFont(candidate);
+                break;
+            }
+            if (!dir.cdUp()) break;
+        }
+    }
+
+    // ── Global Pixel / World Cup Theme ────────────────────────────────────
     app.setStyleSheet(R"(
 
         /* ── Base ── */
@@ -15,28 +33,34 @@ int main(int argc, char *argv[])
             background-color: #0B1829;
             color: #F0F4F8;
             font-family: "Segoe UI", Arial, Helvetica, sans-serif;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        /* ── Default Button ── */
+        /* ── Default pixel button ── */
         QPushButton {
-            background-color: #16284A;
+            background-color: #1A3050;
             color: #F0F4F8;
-            border: 1px solid #1E3A5F;
-            border-radius: 8px;
-            padding: 9px 22px;
-            font-size: 13px;
-            font-weight: 600;
+            border-radius: 0px;
+            border-top:    3px solid #2E4E7A;
+            border-left:   3px solid #2E4E7A;
+            border-bottom: 3px solid #060D1A;
+            border-right:  3px solid #060D1A;
+            padding: 10px 22px;
+            font-family: "Press Start 2P";
+            font-size: 6px;
             min-height: 36px;
+            letter-spacing: 1px;
         }
         QPushButton:hover {
             background-color: #1E3A5F;
-            border-color: #D4A843;
-            color: #FFFFFF;
+            color: #D4A843;
         }
         QPushButton:pressed {
-            background-color: #0d1e38;
-            border-color: #C8102E;
+            border-top:    3px solid #060D1A;
+            border-left:   3px solid #060D1A;
+            border-bottom: 3px solid #2E4E7A;
+            border-right:  3px solid #2E4E7A;
+            padding: 12px 20px 8px 24px;
         }
         QPushButton:disabled {
             background-color: #0f1a2a;
@@ -53,15 +77,18 @@ int main(int argc, char *argv[])
         /* ── List Widget ── */
         QListWidget {
             background-color: #0F1E35;
-            border: 1px solid #1E3A5F;
-            border-radius: 8px;
+            border-top:    3px solid #1A3A5F;
+            border-left:   3px solid #1A3A5F;
+            border-bottom: 3px solid #060D1A;
+            border-right:  3px solid #060D1A;
+            border-radius: 0px;
             padding: 6px;
             outline: none;
-            font-size: 14px;
+            font-size: 12px;
         }
         QListWidget::item {
             padding: 10px 14px;
-            border-radius: 6px;
+            border-radius: 0px;
             color: #8FA3B8;
             margin: 2px 0px;
         }
@@ -72,7 +99,8 @@ int main(int argc, char *argv[])
         QListWidget::item:selected {
             background-color: #C8102E;
             color: #FFFFFF;
-            font-weight: 600;
+            font-family: "Press Start 2P";
+            font-size: 8px;
         }
 
         /* ── Scroll Bars ── */
@@ -80,11 +108,9 @@ int main(int argc, char *argv[])
             background-color: #0B1829;
             width: 6px;
             margin: 0;
-            border-radius: 3px;
         }
         QScrollBar::handle:vertical {
             background-color: #1E3A5F;
-            border-radius: 3px;
             min-height: 24px;
         }
         QScrollBar::handle:vertical:hover { background-color: #D4A843; }
@@ -94,11 +120,9 @@ int main(int argc, char *argv[])
         QScrollBar:horizontal {
             background-color: #0B1829;
             height: 6px;
-            border-radius: 3px;
         }
         QScrollBar::handle:horizontal {
             background-color: #1E3A5F;
-            border-radius: 3px;
             min-width: 24px;
         }
         QScrollBar::handle:horizontal:hover { background-color: #D4A843; }
@@ -116,7 +140,7 @@ int main(int argc, char *argv[])
         QStackedWidget { background-color: #0B1829; }
 
     )");
-    // ───────────────────────────────────────────────────────────────────────
+    // ──────────────────────────────────────────────────────────────────────
 
     MainWindow window;
     window.show();

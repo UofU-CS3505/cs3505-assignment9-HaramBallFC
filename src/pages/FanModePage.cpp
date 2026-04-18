@@ -28,12 +28,13 @@ FanModePage::FanModePage(QWidget *parent)
     QLabel *eyebrow = new QLabel("FAN MODE", body);
     eyebrow->setAlignment(Qt::AlignCenter);
     eyebrow->setStyleSheet(
-        "font-size: 11px; font-weight: 700; letter-spacing: 4px; color: #D4A843;"
+        "font-family: 'Press Start 2P'; font-size: 9px; letter-spacing: 4px; color: #D4A843;"
     );
 
     QLabel *titleLabel = new QLabel("Fan Mode", body);
     titleLabel->setAlignment(Qt::AlignCenter);
-    titleLabel->setStyleSheet("font-size: 42px; font-weight: 700; color: #FFFFFF;");
+    titleLabel->setStyleSheet(
+        "font-family: 'Press Start 2P'; font-size: 22px; color: #FFFFFF;");
 
     QLabel *infoLabel = new QLabel(
         "Explore lessons on soccer rules, World Cup history, and tournament\n"
@@ -41,33 +42,43 @@ FanModePage::FanModePage(QWidget *parent)
         body);
     infoLabel->setAlignment(Qt::AlignCenter);
     infoLabel->setWordWrap(true);
-    infoLabel->setStyleSheet("font-size: 16px; color: #8FA3B8;");
+    infoLabel->setStyleSheet(
+        "font-family: 'Press Start 2P'; font-size: 8px; color: #8FA3B8; line-height: 250%;");
 
     // Gold divider
     QFrame *div = new QFrame(body);
     div->setFixedSize(50, 3);
     div->setStyleSheet("background-color: #D4A843; border: none;");
 
-    QPushButton *lessonsButton = new QPushButton("Browse Lessons  \u2192", body);
-    lessonsButton->setFixedSize(240, 50);
+    QPushButton *lessonsButton = new QPushButton("BROWSE LESSONS  \u2192", body);
+    lessonsButton->setFixedHeight(50);
+    lessonsButton->setMinimumWidth(280);
     lessonsButton->setStyleSheet(
         "QPushButton {"
         "  background-color: #C8102E; color: #FFFFFF;"
-        "  border: none; border-radius: 25px;"
-        "  font-size: 15px; font-weight: 700;"
+        "  border-radius: 0px;"
+        "  border-top: 4px solid #E83A58; border-left: 4px solid #E83A58;"
+        "  border-bottom: 4px solid #7A0018; border-right: 4px solid #7A0018;"
+        "  font-family: 'Press Start 2P'; font-size: 7px; letter-spacing: 1px;"
+        "  padding: 10px 24px;"
         "}"
-        "QPushButton:hover   { background-color: #A50D26; }"
-        "QPushButton:pressed { background-color: #8A0A1F; }"
+        "QPushButton:hover { background-color: #E83A58; }"
+        "QPushButton:pressed {"
+        "  border-top: 4px solid #7A0018; border-left: 4px solid #7A0018;"
+        "  border-bottom: 4px solid #E83A58; border-right: 4px solid #E83A58; }"
     );
 
-    QPushButton *backButton = new QPushButton("\u2190 Back to Mode Selection", body);
+    QPushButton *backButton = new QPushButton("\u2190 BACK", body);
     backButton->setStyleSheet(
         "QPushButton {"
         "  background-color: transparent; color: #8FA3B8;"
-        "  border: 1px solid #1E3A5F; border-radius: 8px;"
-        "  padding: 9px 22px; font-size: 13px;"
+        "  border-radius: 0px;"
+        "  border-top: 2px solid #2E4E7A; border-left: 2px solid #2E4E7A;"
+        "  border-bottom: 2px solid #060D1A; border-right: 2px solid #060D1A;"
+        "  font-family: 'Press Start 2P'; font-size: 6px; letter-spacing: 1px;"
+        "  padding: 9px 22px;"
         "}"
-        "QPushButton:hover { color: #FFFFFF; border-color: #D4A843; }"
+        "QPushButton:hover { color: #D4A843; border-color: #D4A843; }"
     );
 
     auto centered = [](QWidget *w) -> QHBoxLayout* {

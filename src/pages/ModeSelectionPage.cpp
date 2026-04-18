@@ -25,75 +25,123 @@ static QString findAsset(const QString &relativePath)
     return {};
 }
 
+// ── Pixel button style builder ────────────────────────────────────────────
+// bg: main color   hi: lighter highlight (top/left border)   sh: shadow (bottom/right)
+static QString pixelBtn(const QString &bg, const QString &hi,
+                         const QString &sh, const QString &fg)
+{
+    return QString(
+        "QPushButton {"
+        "  background-color: %1;"
+        "  color: %4;"
+        "  border-radius: 0px;"
+        "  border-top:    4px solid %2;"
+        "  border-left:   4px solid %2;"
+        "  border-bottom: 4px solid %3;"
+        "  border-right:  4px solid %3;"
+        "  font-family: 'Press Start 2P';"
+        "  font-size: 5px;"
+        "  letter-spacing: 1px;"
+        "  padding: 10px 16px;"
+        "  min-height: 38px;"
+        "}"
+        "QPushButton:hover {"
+        "  background-color: %2;"
+        "  color: #FFFFFF;"
+        "}"
+        "QPushButton:pressed {"
+        "  border-top:    4px solid %3;"
+        "  border-left:   4px solid %3;"
+        "  border-bottom: 4px solid %2;"
+        "  border-right:  4px solid %2;"
+        "  padding: 12px 14px 8px 18px;"
+        "}"
+    ).arg(bg, hi, sh, fg);
+}
+
 // ── Helper: build one mode card ───────────────────────────────────────────
-static QFrame *makeCard(const QString &icon,
-                         const QString &cardTitle,
+static QFrame *makeCard(const QString &cardTitle,
                          const QString &desc,
                          const QString &btnText,
                          const QString &btnStyle,
+                         const QString &accentColor,
                          const QString &imagePath,
                          QWidget       *parent,
                          QPushButton  **outBtn)
 {
     QFrame *card = new QFrame(parent);
-    card->setStyleSheet(
+    // Pixel panel: sharp corners, 3D inset border in accent color
+    card->setStyleSheet(QString(
         "QFrame {"
-        "  background-color: #112035;"
-        "  border: 1px solid #1E3A5F;"
-        "  border-radius: 14px;"
+        "  background-color: #0F1E35;"
+        "  border-top:    4px solid %1;"
+        "  border-left:   4px solid %1;"
+        "  border-bottom: 4px solid #060D1A;"
+        "  border-right:  4px solid #060D1A;"
+        "  border-radius: 0px;"
         "}"
-    );
-    card->setMinimumSize(240, 280);
+    ).arg(accentColor));
+    card->setMinimumSize(240, 300);
 
     QVBoxLayout *l = new QVBoxLayout(card);
-    l->setContentsMargins(28, 30, 28, 28);
+    l->setContentsMargins(24, 26, 24, 24);
     l->setSpacing(10);
 
-    QLabel *ico = new QLabel(icon, card);
-    ico->setAlignment(Qt::AlignCenter);
-    ico->setStyleSheet("font-size: 38px; background: transparent;");
-    ico->setVisible(!icon.isEmpty());
+    // Pixel accent line at top
+    QFrame *accentBar = new QFrame(card);
+    accentBar->setFixedHeight(4);
+    accentBar->setStyleSheet(
+        QString("background-color: %1; border: none;").arg(accentColor));
 
+    // Title in pixel font
     QLabel *ttl = new QLabel(cardTitle, card);
     ttl->setAlignment(Qt::AlignCenter);
+    ttl->setWordWrap(true);
     ttl->setStyleSheet(
-        "font-size: 20px; font-weight: 700; color: #FFFFFF; background: transparent;"
+        "font-family: 'Press Start 2P';"
+        "font-size: 11px;"
+        "color: #FFFFFF;"
+        "background: transparent;"
+        "letter-spacing: 1px;"
     );
 
+    // Description in smaller regular font
     QLabel *dsc = new QLabel(desc, card);
     dsc->setWordWrap(true);
     dsc->setAlignment(Qt::AlignCenter);
     dsc->setStyleSheet(
-        "font-size: 13px; color: #8FA3B8; background: transparent;"
+        "font-size: 11px; color: #8FA3B8; background: transparent; line-height: 150%;"
     );
 
-    // Card illustration — loaded from resources/images/
+    // Card illustration
     QLabel *imgLabel = new QLabel(card);
     imgLabel->setAlignment(Qt::AlignCenter);
     imgLabel->setStyleSheet("background: transparent;");
-    imgLabel->setFixedSize(120, 120);
+    imgLabel->setFixedSize(110, 110);
     if (!imagePath.isEmpty()) {
         const QString fullPath = findAsset(imagePath);
         if (!fullPath.isEmpty()) {
             QPixmap px(fullPath);
             if (!px.isNull())
                 imgLabel->setPixmap(
-                    px.scaled(120, 120, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+                    px.scaled(110, 110, Qt::KeepAspectRatio,
+                              Qt::FastTransformation));  // pixelated, no smoothing
         }
     }
 
     QPushButton *btn = new QPushButton(btnText, card);
     btn->setStyleSheet(btnStyle);
-    btn->setMinimumHeight(42);
+    btn->setMinimumHeight(44);
     *outBtn = btn;
 
-    l->addWidget(ico);
-    l->addSpacing(4);
+    l->addWidget(accentBar);
+    l->addSpacing(8);
     l->addWidget(ttl);
+    l->addSpacing(6);
     l->addWidget(dsc);
     l->addStretch();
     l->addWidget(imgLabel, 0, Qt::AlignCenter);
-    l->addSpacing(12);
+    l->addSpacing(10);
     l->addWidget(btn);
 
     return card;
@@ -106,44 +154,38 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     root->setContentsMargins(0, 0, 0, 0);
     root->setSpacing(0);
 
-    // ── Top accent bar ────────────────────────────────────────────────────
+    // ── Top pixel stripe ──────────────────────────────────────────────────
     QWidget *topBar = new QWidget(this);
-    topBar->setFixedHeight(5);
+    topBar->setFixedHeight(6);
     topBar->setStyleSheet("background-color: #C8102E;");
 
     // ── Content body ──────────────────────────────────────────────────────
     QWidget *body = new QWidget(this);
     QVBoxLayout *bl = new QVBoxLayout(body);
-    bl->setContentsMargins(60, 50, 60, 40);
+    bl->setContentsMargins(60, 44, 60, 36);
     bl->setSpacing(0);
 
-    QLabel *heading = new QLabel("Choose Your Path", body);
+    // Pixel-font heading
+    QLabel *heading = new QLabel("CHOOSE YOUR PATH", body);
     heading->setAlignment(Qt::AlignCenter);
-    heading->setStyleSheet("font-size: 34px; font-weight: 700; color: #FFFFFF;");
+    heading->setStyleSheet(
+        "font-family: 'Press Start 2P';"
+        "font-size: 16px;"
+        "color: #D4A843;"
+        "letter-spacing: 2px;"
+    );
 
     QLabel *sub = new QLabel("How do you want to experience the World Cup?", body);
     sub->setAlignment(Qt::AlignCenter);
-    sub->setStyleSheet("font-size: 15px; color: #8FA3B8;");
+    sub->setStyleSheet("font-size: 12px; color: #8FA3B8;");
 
-    // ── Button styles ─────────────────────────────────────────────────────
-    const QString redBtn =
-        "QPushButton { background-color: #C8102E; color: #FFFFFF; border: none;"
-        "  border-radius: 8px; font-size: 14px; font-weight: 700; }"
-        "QPushButton:hover   { background-color: #A50D26; }"
-        "QPushButton:pressed { background-color: #8A0A1F; }";
-
-    const QString goldBtn =
-        "QPushButton { background-color: #D4A843; color: #0B1829; border: none;"
-        "  border-radius: 8px; font-size: 14px; font-weight: 700; }"
-        "QPushButton:hover   { background-color: #B8922E; color: #FFFFFF; }"
-        "QPushButton:pressed { background-color: #9A7A24; }";
-
-    const QString greenBtn =
-        "QPushButton { background-color: #1A4A2A; color: #FFFFFF;"
-        "  border: 1px solid #27AE60; border-radius: 8px;"
-        "  font-size: 14px; font-weight: 700; }"
-        "QPushButton:hover   { background-color: #27AE60; }"
-        "QPushButton:pressed { background-color: #1E8449; }";
+    // ── Pixel button styles ───────────────────────────────────────────────
+    // Red: #C8102E  hi=#E83A58  sh=#7A0018
+    const QString redBtn  = pixelBtn("#C8102E", "#E83A58", "#7A0018", "#FFFFFF");
+    // Gold: #D4A843  hi=#F0C860  sh=#7A6020
+    const QString goldBtn = pixelBtn("#D4A843", "#F0C860", "#7A6020", "#0B1829");
+    // Green: #1A5A2A  hi=#27AE60  sh=#0A2010
+    const QString greenBtn= pixelBtn("#1A5A2A", "#27AE60", "#0A2010", "#FFFFFF");
 
     // ── Cards ─────────────────────────────────────────────────────────────
     QPushButton *fanBtn     = nullptr;
@@ -151,51 +193,51 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     QPushButton *bracketBtn = nullptr;
 
     QFrame *fanCard = makeCard(
-        "", "Fan Mode",
-        "Learn the rules, history, and key moments\n"
-        "of the World Cup so you can follow\n"
-        "every match with confidence.",
-        "Enter Fan Mode  \u2192", redBtn,
+        "FAN MODE",
+        "Learn the rules, history, and\n"
+        "key moments of the World Cup\n"
+        "so you can follow every match.",
+        "ENTER  \u2192", redBtn, "#C8102E",
         "resources/images/card_fan.png",
         body, &fanBtn);
 
     QFrame *playerCard = makeCard(
-        "", "Player Mode",
-        "Go through lessons on rules and strategy,\n"
-        "test your knowledge with quizzes,\n"
-        "and play the penalty kick game.",
-        "Enter Player Mode  \u2192", goldBtn,
+        "PLAYER MODE",
+        "Lessons, quizzes, and the\n"
+        "penalty kick game — become\n"
+        "a World Cup expert.",
+        "ENTER  \u2192", goldBtn, "#D4A843",
         "resources/images/card_player.png",
         body, &playerBtn);
 
     QFrame *bracketCard = makeCard(
-        "", "Bracket",
-        "View and explore the 2026 FIFA World Cup\n"
-        "tournament bracket.\n"
-        "(Coming soon)",
-        "View Bracket  \u2192", greenBtn,
+        "BRACKET",
+        "View and explore the 2026\n"
+        "FIFA World Cup tournament\n"
+        "bracket. (Coming soon)",
+        "VIEW  \u2192", greenBtn, "#27AE60",
         "resources/images/card_bracket.png",
         body, &bracketBtn);
 
     QHBoxLayout *cards = new QHBoxLayout;
-    cards->setSpacing(20);
+    cards->setSpacing(24);
     cards->addWidget(fanCard);
     cards->addWidget(playerCard);
     cards->addWidget(bracketCard);
 
     // ── Back button row ───────────────────────────────────────────────────
     QHBoxLayout *bottomRow = new QHBoxLayout;
-    QPushButton *backBtn = new QPushButton("\u2190 Back", body);
-    backBtn->setFixedWidth(110);
+    QPushButton *backBtn = new QPushButton("\u2190 BACK", body);
+    backBtn->setFixedWidth(130);
     bottomRow->addWidget(backBtn);
     bottomRow->addStretch();
 
     bl->addWidget(heading);
-    bl->addSpacing(8);
+    bl->addSpacing(10);
     bl->addWidget(sub);
-    bl->addSpacing(36);
+    bl->addSpacing(32);
     bl->addLayout(cards, 1);
-    bl->addSpacing(28);
+    bl->addSpacing(24);
     bl->addLayout(bottomRow);
 
     root->addWidget(topBar);

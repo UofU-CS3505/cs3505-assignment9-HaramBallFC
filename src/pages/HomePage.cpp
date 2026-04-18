@@ -76,17 +76,23 @@ HomePage::HomePage(QWidget *parent)
     QLabel *fifaLabel = new QLabel("FIFA WORLD CUP 2026", center);
     fifaLabel->setAlignment(Qt::AlignCenter);
     fifaLabel->setStyleSheet(
-        "font-size: 28px; font-weight: 700; letter-spacing: 5px; color: #D4A843;"
+        "font-family: 'Press Start 2P';"
+        "font-size: 15px;"
+        "letter-spacing: 3px;"
+        "color: #D4A843;"
     );
 
     QFrame *div = new QFrame(center);
-    div->setFixedSize(80, 3);
+    div->setFixedSize(80, 4);
     div->setStyleSheet("background-color: #D4A843; border: none;");
 
     QLabel *title = new QLabel("HaramBall FC", center);
     title->setAlignment(Qt::AlignCenter);
     title->setStyleSheet(
-        "font-size: 22px; font-weight: 600; color: #8FA3B8; letter-spacing: 1px;"
+        "font-family: 'Press Start 2P';"
+        "font-size: 9px;"
+        "color: #8FA3B8;"
+        "letter-spacing: 2px;"
     );
 
     QLabel *subtitle = new QLabel(
@@ -95,18 +101,31 @@ HomePage::HomePage(QWidget *parent)
         center);
     subtitle->setAlignment(Qt::AlignCenter);
     subtitle->setWordWrap(true);
-    subtitle->setStyleSheet("font-size: 15px; color: #5A7090;");
+    subtitle->setStyleSheet(
+        "font-family: 'Press Start 2P'; font-size: 8px; color: #5A7090; line-height: 220%;");
 
-    QPushButton *startBtn = new QPushButton("Start Your Journey  \u2192", center);
-    startBtn->setFixedSize(260, 50);
+    QPushButton *startBtn = new QPushButton("PRESS START  \u2192", center);
+    startBtn->setFixedSize(220, 44);
     startBtn->setStyleSheet(
         "QPushButton {"
-        "  background-color: #C8102E; color: #FFFFFF;"
-        "  border: none; border-radius: 25px;"
-        "  font-size: 15px; font-weight: 700; letter-spacing: 0.5px;"
+        "  background-color: #C8102E;"
+        "  color: #FFFFFF;"
+        "  border-radius: 0px;"
+        "  border-top:    4px solid #E83A58;"
+        "  border-left:   4px solid #E83A58;"
+        "  border-bottom: 4px solid #7A0018;"
+        "  border-right:  4px solid #7A0018;"
+        "  font-family: 'Press Start 2P';"
+        "  font-size: 7px;"
+        "  letter-spacing: 2px;"
         "}"
-        "QPushButton:hover    { background-color: #A50D26; }"
-        "QPushButton:pressed  { background-color: #8A0A1F; }"
+        "QPushButton:hover { background-color: #E83A58; }"
+        "QPushButton:pressed {"
+        "  border-top:    4px solid #7A0018;"
+        "  border-left:   4px solid #7A0018;"
+        "  border-bottom: 4px solid #E83A58;"
+        "  border-right:  4px solid #E83A58;"
+        "}"
     );
 
     QLabel *team = new QLabel(
@@ -115,7 +134,8 @@ HomePage::HomePage(QWidget *parent)
         center);
     team->setAlignment(Qt::AlignCenter);
     team->setWordWrap(true);
-    team->setStyleSheet("font-size: 11px; color: #3A5070;");
+    team->setStyleSheet(
+        "font-family: 'Press Start 2P'; font-size: 7px; color: #3A5070; line-height: 220%;");
 
     auto centered = [](QWidget *w) -> QHBoxLayout* {
         QHBoxLayout *h = new QHBoxLayout;

@@ -34,12 +34,12 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     // ── Lesson title ──
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setStyleSheet(
-        "font-size: 26px; font-weight: 700; color: #FFFFFF;");
+        "font-family: 'Press Start 2P'; font-size: 13px; color: #FFFFFF;");
 
     // ── Slide section title ──
     m_slideTitle->setAlignment(Qt::AlignCenter);
     m_slideTitle->setStyleSheet(
-        "font-size: 16px; font-weight: 600; color: #D4A843;");
+        "font-family: 'Press Start 2P'; font-size: 9px; color: #D4A843; line-height: 200%;");
 
     // ── Image area ──
     m_imageLabel->setAlignment(Qt::AlignCenter);
@@ -57,22 +57,25 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     m_slideText->setWordWrap(true);
     m_slideText->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     m_slideText->setStyleSheet(
-        "font-size: 15px; color: #B0C4D8; padding: 14px;");
+        "font-size: 15px; color: #B0C4D8; padding: 30px 36px; line-height: 200%;");
 
     QScrollArea *scrollArea = new QScrollArea(this);
     scrollArea->setWidget(m_slideText);
     scrollArea->setWidgetResizable(true);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     scrollArea->setStyleSheet(
         "QScrollArea {"
         "  background-color: #0F1E35;"
-        "  border: 1px solid #1E3A5F;"
-        "  border-radius: 8px;"
+        "  border-top: 3px solid #060D1A; border-left: 3px solid #060D1A;"
+        "  border-bottom: 3px solid #1E3A5F; border-right: 3px solid #1E3A5F;"
+        "  border-radius: 0px;"
         "}");
 
     // ── Slide navigation ──
     QHBoxLayout *slideNav = new QHBoxLayout();
     m_slideCounter->setAlignment(Qt::AlignCenter);
-    m_slideCounter->setStyleSheet("font-size: 13px; color: #5A7090;");
+    m_slideCounter->setStyleSheet(
+        "font-family: 'Press Start 2P'; font-size: 7px; color: #5A7090;");
 
     slideNav->addWidget(m_prevButton);
     slideNav->addStretch();
@@ -184,7 +187,11 @@ void LessonViewerPage::showSlide(int index)
 
     m_currentSlide = index;
     m_slideTitle->setText(m_slideTitles.at(index));
-    m_slideText->setText(m_slideTexts.at(index));
+
+    // Add a blank line between every content line for pixel-font readability
+    QString spaced = m_slideTexts.at(index);
+    spaced.replace("\n", "\n\n");
+    m_slideText->setText(spaced);
 
     m_slideCounter->setText(
         QString("Slide %1 of %2").arg(index + 1).arg(m_slideTitles.size()));

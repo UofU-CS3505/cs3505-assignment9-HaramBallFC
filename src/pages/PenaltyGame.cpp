@@ -303,6 +303,7 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
 
     //DRAW T/F BOXES
     p.setPen(Qt::black);
+    p.setFont(QFont("Press Start 2P", 14, QFont::Bold));
     p.drawText(leftSquare, Qt::AlignCenter, "TRUE");
     p.drawText(rightSquare, Qt::AlignCenter, "FALSE");
 
@@ -333,7 +334,7 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     // Logic to Print when Box was Hit
     if (scored) {
         p.setPen(Qt::red);
-        p.setFont(QFont("Arial", 24, QFont::Bold));
+        p.setFont(QFont("Press Start 2P", 18, QFont::Bold));
         if(answerTarget == "TRUE") {
             p.drawText(rect(), Qt::AlignHCenter, "TRUE DETECTED!");
         }

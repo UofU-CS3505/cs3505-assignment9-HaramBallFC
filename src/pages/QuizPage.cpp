@@ -61,12 +61,12 @@ QuizPage::QuizPage(QWidget *parent)
     QHBoxLayout *topRow = new QHBoxLayout();
     m_progressLabel = new QLabel(this);
     m_progressLabel->setStyleSheet(
-        QString("font-size: 14px; color: %1;").arg(kTextMuted));
+        QString("font-family: 'Press Start 2P'; font-size: 7px; color: %1;").arg(kTextMuted));
 
     m_scoreLabel = new QLabel(this);
     m_scoreLabel->setAlignment(Qt::AlignRight);
     m_scoreLabel->setStyleSheet(
-        QString("font-size: 14px; color: %1;").arg(kTextMuted));
+        QString("font-family: 'Press Start 2P'; font-size: 7px; color: %1;").arg(kTextMuted));
 
     topRow->addWidget(m_progressLabel);
     topRow->addStretch();
@@ -78,11 +78,13 @@ QuizPage::QuizPage(QWidget *parent)
     m_questionLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     m_questionLabel->setStyleSheet(
         "background-color: #112035;"
-        "border: 1px solid #1E3A5F;"
-        "border-radius: 10px;"
+        "border-top: 4px solid #1E3A5F; border-left: 4px solid #1E3A5F;"
+        "border-bottom: 4px solid #060D1A; border-right: 4px solid #060D1A;"
+        "border-radius: 0px;"
         "padding: 20px;"
-        "font-size: 17px;"
-        "font-weight: 600;"
+        "font-family: 'Press Start 2P';"
+        "font-size: 9px;"
+        "line-height: 200%;"
         "color: #FFFFFF;");
     m_questionLabel->setMinimumHeight(90);
 
@@ -110,7 +112,7 @@ QuizPage::QuizPage(QWidget *parent)
     m_feedbackLabel->setWordWrap(true);
     m_feedbackLabel->setAlignment(Qt::AlignCenter);
     m_feedbackLabel->setStyleSheet(
-        "font-size: 15px; font-weight: 600; padding: 8px;");
+        "font-family: 'Press Start 2P'; font-size: 8px; padding: 12px;");
     m_feedbackLabel->hide();
 
     // ── Next button (gold) ──
@@ -119,11 +121,16 @@ QuizPage::QuizPage(QWidget *parent)
     m_nextButton->setStyleSheet(
         "QPushButton {"
         "  background-color: #D4A843; color: #0B1829;"
-        "  border: none; border-radius: 8px;"
-        "  padding: 12px 28px; font-size: 15px; font-weight: 700;"
+        "  border-radius: 0px;"
+        "  border-top: 4px solid #F0C860; border-left: 4px solid #F0C860;"
+        "  border-bottom: 4px solid #7A6020; border-right: 4px solid #7A6020;"
+        "  font-family: 'Press Start 2P'; font-size: 7px; letter-spacing: 1px;"
+        "  padding: 12px 28px;"
         "}"
-        "QPushButton:hover   { background-color: #B8922E; color: #FFFFFF; }"
-        "QPushButton:pressed { background-color: #9A7A24; }");
+        "QPushButton:hover { background-color: #F0C860; }"
+        "QPushButton:pressed {"
+        "  border-top: 4px solid #7A6020; border-left: 4px solid #7A6020;"
+        "  border-bottom: 4px solid #F0C860; border-right: 4px solid #F0C860; }");
     m_nextButton->hide();
     connect(m_nextButton, &QPushButton::clicked, this, &QuizPage::onNextClicked);
 
@@ -162,40 +169,49 @@ QuizPage::QuizPage(QWidget *parent)
     m_resultsTitleLabel = new QLabel("Quiz Complete!", m_resultsWidget);
     m_resultsTitleLabel->setAlignment(Qt::AlignCenter);
     m_resultsTitleLabel->setStyleSheet(
-        "font-size: 32px; font-weight: 700; color: #FFFFFF;");
+        "font-family: 'Press Start 2P'; font-size: 18px; color: #FFFFFF;");
 
     m_resultsScoreLabel = new QLabel(m_resultsWidget);
     m_resultsScoreLabel->setAlignment(Qt::AlignCenter);
     m_resultsScoreLabel->setStyleSheet(
-        "font-size: 56px; font-weight: 700; color: #D4A843;");
+        "font-family: 'Press Start 2P'; font-size: 36px; color: #D4A843;");
 
     m_resultsMessageLabel = new QLabel(m_resultsWidget);
     m_resultsMessageLabel->setAlignment(Qt::AlignCenter);
     m_resultsMessageLabel->setWordWrap(true);
-    m_resultsMessageLabel->setStyleSheet("font-size: 16px; color: #8FA3B8;");
+    m_resultsMessageLabel->setStyleSheet(
+        "font-family: 'Press Start 2P'; font-size: 9px; color: #8FA3B8; line-height: 250%;");
 
-    m_resultsBackButton = new QPushButton("\u2190 Back to Lesson Menu", m_resultsWidget);
+    m_resultsBackButton = new QPushButton("\u2190 BACK", m_resultsWidget);
     m_resultsBackButton->setCursor(Qt::PointingHandCursor);
     m_resultsBackButton->setStyleSheet(
         "QPushButton {"
         "  background-color: transparent; color: #8FA3B8;"
-        "  border: 1px solid #1E3A5F; border-radius: 8px;"
-        "  padding: 12px 24px; font-size: 14px;"
+        "  border-radius: 0px;"
+        "  border-top: 2px solid #2E4E7A; border-left: 2px solid #2E4E7A;"
+        "  border-bottom: 2px solid #060D1A; border-right: 2px solid #060D1A;"
+        "  font-family: 'Press Start 2P'; font-size: 6px; letter-spacing: 1px;"
+        "  padding: 12px 24px;"
         "}"
-        "QPushButton:hover { color: #FFFFFF; border-color: #D4A843; }");
+        "QPushButton:hover { color: #D4A843; border-color: #D4A843; }");
     connect(m_resultsBackButton, &QPushButton::clicked,
             this, &QuizPage::backRequested);
 
-    m_resultsHomeButton = new QPushButton("Home", m_resultsWidget);
+    m_resultsHomeButton = new QPushButton("HOME", m_resultsWidget);
     m_resultsHomeButton->setCursor(Qt::PointingHandCursor);
     m_resultsHomeButton->setStyleSheet(
         "QPushButton {"
         "  background-color: #D4A843; color: #0B1829;"
-        "  border: none; border-radius: 8px;"
-        "  padding: 12px 24px; font-size: 14px; font-weight: 700;"
+        "  border-radius: 0px;"
+        "  border-top: 4px solid #F0C860; border-left: 4px solid #F0C860;"
+        "  border-bottom: 4px solid #7A6020; border-right: 4px solid #7A6020;"
+        "  font-family: 'Press Start 2P'; font-size: 7px; letter-spacing: 1px;"
+        "  padding: 12px 24px;"
         "}"
-        "QPushButton:hover   { background-color: #B8922E; color: #FFFFFF; }"
-        "QPushButton:pressed { background-color: #9A7A24; }");
+        "QPushButton:hover { background-color: #F0C860; }"
+        "QPushButton:pressed {"
+        "  border-top: 4px solid #7A6020; border-left: 4px solid #7A6020;"
+        "  border-bottom: 4px solid #F0C860; border-right: 4px solid #F0C860; }");
     connect(m_resultsHomeButton, &QPushButton::clicked,
             this, &QuizPage::homeRequested);
 
@@ -278,13 +294,13 @@ void QuizPage::onAnswerSelected(int choiceIndex)
     if (correct) {
         ++m_score;
         m_feedbackLabel->setStyleSheet(
-            QString("font-size: 15px; font-weight: 600; color: %1; padding: 8px;").arg(kGreen));
+            QString("font-family: 'Press Start 2P'; font-size: 8px; color: %1; padding: 12px;").arg(kGreen));
         m_feedbackLabel->setText("✓  Correct!");
         m_answerButtons[choiceIndex]->setStyleSheet(
             answerBtnStyle(kGreen, kGreen));
     } else {
         m_feedbackLabel->setStyleSheet(
-            QString("font-size: 15px; font-weight: 600; color: %1; padding: 8px;").arg(kRed));
+            QString("font-family: 'Press Start 2P'; font-size: 8px; color: %1; padding: 12px; line-height: 200%;").arg(kRed));
         m_feedbackLabel->setText(
             QString("✗  Wrong!  The correct answer was:  %1")
                 .arg(q.choices.at(q.correctIndex)));

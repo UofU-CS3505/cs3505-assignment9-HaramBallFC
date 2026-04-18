@@ -20,21 +20,36 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
 
     // ── Top header bar ────────────────────────────────────────────────────
     QWidget *header = new QWidget(this);
-    header->setFixedHeight(64);
+    header->setFixedHeight(68);
     header->setStyleSheet(
         "background-color: #0F1E35;"
-        "border-bottom: 1px solid #1E3A5F;"
+        "border-bottom: 4px solid #C8102E;"
     );
     QHBoxLayout *hl = new QHBoxLayout(header);
     hl->setContentsMargins(24, 0, 24, 0);
 
     m_titleLabel->setParent(header);
     m_titleLabel->setStyleSheet(
-        "font-size: 20px; font-weight: 700; color: #FFFFFF; background: transparent;"
+        "font-family: 'Press Start 2P';"
+        "font-size: 12px; color: #FFFFFF; background: transparent;"
     );
 
-    QPushButton *homeButton = new QPushButton("Home", header);
-    homeButton->setFixedWidth(100);
+    QPushButton *homeButton = new QPushButton("HOME", header);
+    homeButton->setFixedWidth(110);
+    homeButton->setStyleSheet(
+        "QPushButton {"
+        "  background-color: #1A3050; color: #F0F4F8;"
+        "  border-radius: 0px;"
+        "  border-top: 3px solid #2E4E7A; border-left: 3px solid #2E4E7A;"
+        "  border-bottom: 3px solid #060D1A; border-right: 3px solid #060D1A;"
+        "  font-family: 'Press Start 2P'; font-size: 6px; letter-spacing: 1px;"
+        "  padding: 7px 12px;"
+        "}"
+        "QPushButton:hover { background-color: #1E3A5F; color: #D4A843; }"
+        "QPushButton:pressed {"
+        "  border-top: 3px solid #060D1A; border-left: 3px solid #060D1A;"
+        "  border-bottom: 3px solid #2E4E7A; border-right: 3px solid #2E4E7A; }"
+    );
 
     hl->addWidget(m_titleLabel);
     hl->addStretch();
@@ -51,7 +66,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     leftPanel->setFixedWidth(290);
     leftPanel->setStyleSheet(
         "background-color: #0F1E35;"
-        "border-right: 1px solid #1E3A5F;"
+        "border-right: 4px solid #1E3A5F;"
     );
     QVBoxLayout *ll = new QVBoxLayout(leftPanel);
     ll->setContentsMargins(16, 20, 16, 16);
@@ -59,11 +74,35 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
 
     QLabel *listHeader = new QLabel("LESSONS", leftPanel);
     listHeader->setStyleSheet(
-        "font-size: 10px; font-weight: 700; letter-spacing: 3px;"
+        "font-family: 'Press Start 2P';"
+        "font-size: 8px; letter-spacing: 3px;"
         "color: #D4A843; background: transparent;"
     );
 
+    // Pixel-style list widget
     m_lessonList->setParent(leftPanel);
+    m_lessonList->setStyleSheet(
+        "QListWidget {"
+        "  background-color: #0A1628;"
+        "  border-top: 3px solid #060D1A; border-left: 3px solid #060D1A;"
+        "  border-bottom: 3px solid #1E3A5F; border-right: 3px solid #1E3A5F;"
+        "  border-radius: 0px; padding: 4px; outline: none;"
+        "  font-family: 'Press Start 2P'; font-size: 7px;"
+        "}"
+        "QListWidget::item {"
+        "  padding: 12px 12px; border-radius: 0px;"
+        "  color: #8FA3B8; margin: 3px 0px;"
+        "  border-left: 3px solid transparent;"
+        "}"
+        "QListWidget::item:hover {"
+        "  background-color: #1E3A5F; color: #F0F4F8;"
+        "  border-left: 3px solid #D4A843;"
+        "}"
+        "QListWidget::item:selected {"
+        "  background-color: #C8102E; color: #FFFFFF;"
+        "  border-left: 3px solid #E83A58;"
+        "}"
+    );
 
     ll->addWidget(listHeader);
     ll->addWidget(m_lessonList, 1);
@@ -79,21 +118,28 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     m_previewLabel->setWordWrap(true);
     m_previewLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     m_previewLabel->setStyleSheet(
-        "font-size: 15px; color: #8FA3B8; background: transparent;"
+        "font-family: 'Press Start 2P';"
+        "font-size: 8px; color: #8FA3B8; background: transparent; line-height: 220%;"
     );
 
-    QPushButton *openButton = new QPushButton("Open Lesson  \u2192", rightPanel);
+    QPushButton *openButton = new QPushButton("OPEN LESSON  \u2192", rightPanel);
     openButton->setStyleSheet(
         "QPushButton {"
         "  background-color: #C8102E; color: #FFFFFF;"
-        "  border: none; border-radius: 8px;"
-        "  padding: 12px 32px; font-size: 14px; font-weight: 700;"
+        "  border-radius: 0px;"
+        "  border-top: 4px solid #E83A58; border-left: 4px solid #E83A58;"
+        "  border-bottom: 4px solid #7A0018; border-right: 4px solid #7A0018;"
+        "  font-family: 'Press Start 2P'; font-size: 7px; letter-spacing: 1px;"
+        "  padding: 12px 32px;"
         "}"
-        "QPushButton:hover   { background-color: #A50D26; }"
-        "QPushButton:pressed { background-color: #8A0A1F; }"
-        "QPushButton:disabled { background-color: #3A1520; color: #6A3040; }"
+        "QPushButton:hover   { background-color: #E83A58; }"
+        "QPushButton:pressed {"
+        "  border-top: 4px solid #7A0018; border-left: 4px solid #7A0018;"
+        "  border-bottom: 4px solid #E83A58; border-right: 4px solid #E83A58; }"
+        "QPushButton:disabled { background-color: #3A1520; color: #6A3040;"
+        "  border-color: #3A1520; }"
     );
-    openButton->setFixedHeight(46);
+    openButton->setFixedHeight(50);
 
     QHBoxLayout *openRow = new QHBoxLayout;
     openRow->addStretch();
@@ -107,16 +153,30 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
 
     // ── Footer bar ────────────────────────────────────────────────────────
     QWidget *footer = new QWidget(this);
-    footer->setFixedHeight(58);
+    footer->setFixedHeight(62);
     footer->setStyleSheet(
         "background-color: #0F1E35;"
-        "border-top: 1px solid #1E3A5F;"
+        "border-top: 4px solid #1E3A5F;"
     );
     QHBoxLayout *fl = new QHBoxLayout(footer);
     fl->setContentsMargins(20, 0, 20, 0);
 
-    QPushButton *backButton = new QPushButton("\u2190 Back", footer);
-    backButton->setFixedWidth(110);
+    QPushButton *backButton = new QPushButton("\u2190 BACK", footer);
+    backButton->setFixedWidth(120);
+    backButton->setStyleSheet(
+        "QPushButton {"
+        "  background-color: transparent; color: #8FA3B8;"
+        "  border-radius: 0px;"
+        "  border-top: 2px solid #2E4E7A; border-left: 2px solid #2E4E7A;"
+        "  border-bottom: 2px solid #060D1A; border-right: 2px solid #060D1A;"
+        "  font-family: 'Press Start 2P'; font-size: 6px; letter-spacing: 1px;"
+        "  padding: 8px 14px;"
+        "}"
+        "QPushButton:hover { color: #D4A843; border-color: #D4A843; }"
+        "QPushButton:pressed {"
+        "  border-top: 2px solid #060D1A; border-left: 2px solid #060D1A;"
+        "  border-bottom: 2px solid #2E4E7A; border-right: 2px solid #2E4E7A; }"
+    );
 
     fl->addWidget(backButton);
     fl->addStretch();
