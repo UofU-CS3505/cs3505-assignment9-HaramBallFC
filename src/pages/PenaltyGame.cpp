@@ -1,3 +1,5 @@
+
+//uise this
 // AI was used to assist with the Box2D physics simulation in this file.
 
 #include "pages/PenaltyGame.h"
@@ -42,28 +44,36 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     , dragging(false)
     , ballVisible(true)
     , resetButton(new QPushButton("Reset Shot", this))
-    , backButton(new QPushButton("Back to Player Mode", this))
+    , backButton(new QPushButton("Quit", this))
     , shootButton(new QPushButton("Shoot", this))
     , angleSlider(new QSlider(Qt::Horizontal, this))
     , powerSlider(new QSlider(Qt::Vertical, this))
+    , currentQuestionIndex(0)
+    , score(0)
+    , gameOver(false)
+    , resultText("")
+    , answerTarget("")
 
 {
     setMinimumSize(1000, 700);
     setMouseTracking(true);
 
-    backButton->setGeometry(20, 20, 180, 40);
+    backButton->setGeometry(20, 20, 140, 40);
     resetButton->setGeometry(820, 20, 140, 40);
     shootButton->setGeometry(650, 500, 100, 40);
+
+    //new code to change ths size
+    backButton->setStyleSheet("font-size: 12px; font-weight: bold; background-color: red; color: white;");
+    resetButton->setStyleSheet("font-size: 8px; font-weight: bold;");
+    shootButton->setStyleSheet("font-size: 8px; font-weight: bold;");
 
     angleSlider->setGeometry(width()/2-180, height() - 120, 360, 24);
     powerSlider->setGeometry(width()/2-290, height() - 290, 24, 170);
 
 
-
+    //mapping for the images
     QString fieldPath = findAsset("resources/images/newPitch.png");
     QString playerPath = findAsset("resources/images/messiSprite.png");
-
-
     fieldPixmap = QPixmap(fieldPath);
     playerPixmap = QPixmap(playerPath);
 
@@ -125,6 +135,18 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     powerSlider->setMaximum(30);
     powerSlider->setValue(12);
 
+    //new code: I added some random questions instead of putting it in array (for now)
+    questions << "The World Cup is held every 4 years."
+              << "A soccer team has 12 players on the field."
+              << "The 2026 World Cup will be hosted by 3 countries."
+              << "A red card means the player can stay in the game."
+              << "Argentina won the 2022 World Cup.";
+
+    correctAnswers << true
+                   << false
+                   << true
+                   << false
+                   << true;
     timer.start(10);
 }
 
@@ -138,8 +160,20 @@ int PenaltyGamePage::worldToScreenY(float y)
     return height() - static_cast<int>(y * 60.0f) - 100;
 }
 
+//logic for resetting the ball
 void PenaltyGamePage::resetBall()
 {
+    if (gameOver) {
+        currentQuestionIndex = 0;
+        score = 0;
+        gameOver = false;
+        resultText = "";
+        answerTarget = "";
+    } else {
+        resultText = "";
+        answerTarget = "";
+    }
+
     scored = false;
     dragging = false;
     ballVisible = true;
@@ -154,6 +188,8 @@ void PenaltyGamePage::resetBall()
     update();
 }
 
+
+//method for updating the world after each kick
 void PenaltyGamePage::updateWorld()
 {
     float timeStep = 1.0f / 60.0f;
@@ -178,7 +214,7 @@ void PenaltyGamePage::updateWorld()
         //Left Box True
         QRect leftSquare(goalX + squareMargin, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
 
-         //Right Box False
+        //Right Box False
         QRect rightSquare(goalX + goalWidth - squareMargin - boxWidth, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
 
         //Goal Box
@@ -190,14 +226,39 @@ void PenaltyGamePage::updateWorld()
             ballVisible = false;
             ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
             ball->SetAngularVelocity(0.0f);
-        }
 
+            bool selectedAnswer = true;
+            if (selectedAnswer == correctAnswers[currentQuestionIndex]) {
+                score++;
+                resultText = "CORRECT!";
+            } else {
+                resultText = "WRONG!";
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= 5) {
+                gameOver = true;
+            }
+        }
         else if (rightSquare.contains(ballX, ballY)) {
             scored = true;
             answerTarget = "FALSE";
             ballVisible = false;
             ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
             ball->SetAngularVelocity(0.0f);
+
+            bool selectedAnswer = false;
+            if (selectedAnswer == correctAnswers[currentQuestionIndex]) {
+                score++;
+                resultText = "CORRECT!";
+            } else {
+                resultText = "WRONG!";
+            }
+
+            currentQuestionIndex++;
+            if (currentQuestionIndex >= 5) {
+                gameOver = true;
+            }
         }
 
         // else if(goalRect.contains(ballX, ballY)) {
@@ -308,6 +369,42 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     p.drawText(rightSquare, Qt::AlignCenter, "FALSE");
 
 
+
+    //place holder for the question box
+    QRect questionBox(width() / 2 - 280, 95, 560, 70);
+
+    p.setPen(QPen(Qt::white, 3));
+    p.setBrush(QColor(255, 255, 255, 210));
+    p.drawRoundedRect(questionBox, 10, 10);
+
+    p.setPen(Qt::black);
+    p.setFont(QFont("Arial", 14, QFont::Bold));
+
+    if (!gameOver && currentQuestionIndex < questions.size()) {
+        p.drawText(questionBox, Qt::AlignCenter | Qt::TextWordWrap,
+                   questions[currentQuestionIndex]);
+    }
+
+    //Setup for the question box
+    QRect statsBox(20, 85, 190, 95);
+
+    QLinearGradient statsGradient(statsBox.topLeft(), statsBox.bottomLeft());
+    statsGradient.setColorAt(0, QColor(255, 255, 255, 180));
+    statsGradient.setColorAt(1, QColor(255, 255, 255, 180));
+
+    p.setPen(QPen(Qt::white, 3));
+    p.setBrush(statsGradient);
+    p.drawRoundedRect(statsBox, 8, 8);
+
+    p.setPen(Qt::black);
+    p.setFont(QFont("Press Start 2P", 10, QFont::Bold));
+    p.drawText(QRect(35, 105, 230, 25), Qt::AlignLeft | Qt::AlignVCenter,
+               QString("Score: %1 / 5").arg(score));
+
+    int shownQuestion = gameOver ? 5 : currentQuestionIndex + 1;
+    p.drawText(QRect(35, 135, 230, 25), Qt::AlignLeft | Qt::AlignVCenter,
+               QString("Question: %1 / 5").arg(shownQuestion));
+
     // Keep Messi fixed on the screen
     playerRect = QRect(width() / 2 - 120, height() - 270, 90, 140);
 
@@ -332,15 +429,22 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     }
 
     // Logic to Print when Box was Hit
-    if (scored) {
-        p.setPen(Qt::red);
-        p.setFont(QFont("Press Start 2P", 18, QFont::Bold));
-        if(answerTarget == "TRUE") {
-            p.drawText(rect(), Qt::AlignHCenter, "TRUE DETECTED!");
-        }
-        else if(answerTarget == "FALSE") {
+    //Logic similar to the True and False that tom had implemented
+    if (!resultText.isEmpty() && !gameOver) {
+        p.setPen(resultText == "CORRECT!" ? Qt::darkGreen : Qt::red);
+        p.setFont(QFont("Press Start 2P", 16, QFont::Bold));
+        p.drawText(QRect(0, 150, width(), 40), Qt::AlignCenter, resultText);
+    }
 
-            p.drawText(rect(), Qt::AlignHCenter, "FALSE DETECTED!");
+    if (gameOver) {
+        p.setPen(Qt::yellow);
+        p.setFont(QFont("Press Start 2P", 18, QFont::Bold));
+        p.drawText(QRect(0, 140, width(), 40), Qt::AlignCenter, "GAME OVER");
+
+        p.setPen(Qt::white);
+        p.setFont(QFont("Press Start 2P", 14, QFont::Bold));
+        p.drawText(QRect(0, 180, width(), 40), Qt::AlignCenter,
+                   QString("FINAL SCORE: %1 / 5").arg(score));
     }
 }
 
@@ -415,4 +519,5 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
 
 //     update();
 // }
-}
+
+

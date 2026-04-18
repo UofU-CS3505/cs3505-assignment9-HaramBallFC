@@ -1,3 +1,4 @@
+///
 #pragma once
 
 #include <QWidget>
@@ -10,6 +11,10 @@
 #include <QPixmap>
 #include <QRect>
 #include <QSlider>
+#include <QStringList>
+#include <QVector>
+#include <QString>
+
 #include "Box2D/Box2D.h"
 
 class PenaltyGamePage : public QWidget
@@ -58,6 +63,16 @@ private:
     QPixmap fieldPixmap;
     QPixmap playerPixmap;
     QRect playerRect;
+
+    //for penalty game
+    QStringList questions;
+    QVector<bool> correctAnswers;
+
+    int currentQuestionIndex;
+    int score;
+    bool gameOver;
+    QString resultText;
+
 
     int worldToScreenX(float x);
     int worldToScreenY(float y);
