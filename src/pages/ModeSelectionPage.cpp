@@ -40,7 +40,7 @@ static QString pixelBtn(const QString &bg, const QString &hi,
         "  border-bottom: 4px solid %3;"
         "  border-right:  4px solid %3;"
         "  font-family: 'Press Start 2P';"
-        "  font-size: 5px;"
+        "  font-size: 10px;"
         "  letter-spacing: 1px;"
         "  padding: 10px 16px;"
         "  min-height: 38px;"
@@ -74,13 +74,16 @@ static QFrame *makeCard(const QString &cardTitle,
     card->setStyleSheet(QString(
         "QFrame {"
         "  background-color: #0F1E35;"
-        "  border-top:    4px solid %1;"
-        "  border-left:   4px solid %1;"
-        "  border-bottom: 4px solid #060D1A;"
-        "  border-right:  4px solid #060D1A;"
+        // "  border-top:    4px solid %1;"
+        // "  border-left:   4px solid %1;"
+        // "  border-bottom: 4px solid %1;"
+        // "  border-right:  4px solid %1;"
+        "  border: none;"
         "  border-radius: 0px;"
         "}"
-    ).arg(accentColor));
+        ));
+
+
     card->setMinimumSize(240, 300);
 
     QVBoxLayout *l = new QVBoxLayout(card);
@@ -88,10 +91,12 @@ static QFrame *makeCard(const QString &cardTitle,
     l->setSpacing(10);
 
     // Pixel accent line at top
-    QFrame *accentBar = new QFrame(card);
-    accentBar->setFixedHeight(4);
-    accentBar->setStyleSheet(
-        QString("background-color: %1; border: none;").arg(accentColor));
+    //Not needed- Reman
+
+    // QFrame *accentBar = new QFrame(card);
+    // accentBar->setFixedHeight(4);
+    // accentBar->setStyleSheet(
+    //    QString("background-color: %1; border: none;").arg(accentColor));
 
     // Title in pixel font
     QLabel *ttl = new QLabel(cardTitle, card);
@@ -99,18 +104,24 @@ static QFrame *makeCard(const QString &cardTitle,
     ttl->setWordWrap(true);
     ttl->setStyleSheet(
         "font-family: 'Press Start 2P';"
-        "font-size: 11px;"
+        "font-size: 16px;"
         "color: #FFFFFF;"
         "background: transparent;"
         "letter-spacing: 1px;"
     );
+
+    //code for accent bar- Reman
+    QFrame *titleDivider = new QFrame(card);
+    titleDivider->setFixedHeight(3);
+    titleDivider->setStyleSheet(
+        QString("background-color: %1; border: none;").arg(accentColor));
 
     // Description in smaller regular font
     QLabel *dsc = new QLabel(desc, card);
     dsc->setWordWrap(true);
     dsc->setAlignment(Qt::AlignCenter);
     dsc->setStyleSheet(
-        "font-size: 11px; color: #8FA3B8; background: transparent; line-height: 150%;"
+        "font-size: 16px; color: #8FA3B8; background: transparent; line-height: 150%;"
     );
 
     // Card illustration
@@ -134,10 +145,12 @@ static QFrame *makeCard(const QString &cardTitle,
     btn->setMinimumHeight(44);
     *outBtn = btn;
 
-    l->addWidget(accentBar);
+    //l->addWidget(accentBar);
     l->addSpacing(8);
     l->addWidget(ttl);
     l->addSpacing(6);
+    l->addWidget(titleDivider);
+    l->addSpacing(10);
     l->addWidget(dsc);
     l->addStretch();
     l->addWidget(imgLabel, 0, Qt::AlignCenter);
@@ -177,7 +190,7 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
 
     QLabel *sub = new QLabel("How do you want to experience the World Cup?", body);
     sub->setAlignment(Qt::AlignCenter);
-    sub->setStyleSheet("font-size: 12px; color: #8FA3B8;");
+    sub->setStyleSheet("font-size: 12px; color: #8FA3B8;" "font-family: 'Press Start 2P';");
 
     // ── Pixel button styles ───────────────────────────────────────────────
     // Red: #C8102E  hi=#E83A58  sh=#7A0018

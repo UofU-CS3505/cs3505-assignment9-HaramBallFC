@@ -90,7 +90,7 @@ HomePage::HomePage(QWidget *parent)
     title->setAlignment(Qt::AlignCenter);
     title->setStyleSheet(
         "font-family: 'Press Start 2P';"
-        "font-size: 9px;"
+        "font-size: 15px;"
         "color: #8FA3B8;"
         "letter-spacing: 2px;"
     );
@@ -102,9 +102,9 @@ HomePage::HomePage(QWidget *parent)
     subtitle->setAlignment(Qt::AlignCenter);
     subtitle->setWordWrap(true);
     subtitle->setStyleSheet(
-        "font-family: 'Press Start 2P'; font-size: 8px; color: #5A7090; line-height: 220%;");
+        "font-family: 'Press Start 2P'; font-size: 10px; color: #5A7090; line-height: 220%;");
 
-    QPushButton *startBtn = new QPushButton("PRESS START  \u2192", center);
+    QPushButton *startBtn = new QPushButton("START  \u2192", center);
     startBtn->setFixedSize(220, 44);
     startBtn->setStyleSheet(
         "QPushButton {"
@@ -116,7 +116,7 @@ HomePage::HomePage(QWidget *parent)
         "  border-bottom: 4px solid #7A0018;"
         "  border-right:  4px solid #7A0018;"
         "  font-family: 'Press Start 2P';"
-        "  font-size: 7px;"
+        "  font-size: 13px;"
         "  letter-spacing: 2px;"
         "}"
         "QPushButton:hover { background-color: #E83A58; }"
@@ -135,7 +135,7 @@ HomePage::HomePage(QWidget *parent)
     team->setAlignment(Qt::AlignCenter);
     team->setWordWrap(true);
     team->setStyleSheet(
-        "font-family: 'Press Start 2P'; font-size: 7px; color: #3A5070; line-height: 220%;");
+        "font-family: 'Press Start 2P'; font-size: 10px; color: #FFFFFF; line-height: 220%;");
 
     auto centered = [](QWidget *w) -> QHBoxLayout* {
         QHBoxLayout *h = new QHBoxLayout;

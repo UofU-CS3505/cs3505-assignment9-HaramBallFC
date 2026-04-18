@@ -43,7 +43,7 @@ FanModePage::FanModePage(QWidget *parent)
     infoLabel->setAlignment(Qt::AlignCenter);
     infoLabel->setWordWrap(true);
     infoLabel->setStyleSheet(
-        "font-family: 'Press Start 2P'; font-size: 8px; color: #8FA3B8; line-height: 250%;");
+        "font-family: 'Press Start 2P'; font-size: 16px; color: #8FA3B8; line-height: 250%;");
 
     // Gold divider
     QFrame *div = new QFrame(body);
@@ -59,7 +59,7 @@ FanModePage::FanModePage(QWidget *parent)
         "  border-radius: 0px;"
         "  border-top: 4px solid #E83A58; border-left: 4px solid #E83A58;"
         "  border-bottom: 4px solid #7A0018; border-right: 4px solid #7A0018;"
-        "  font-family: 'Press Start 2P'; font-size: 7px; letter-spacing: 1px;"
+        "  font-family: 'Press Start 2P'; font-size: 10px; letter-spacing: 1px;"
         "  padding: 10px 24px;"
         "}"
         "QPushButton:hover { background-color: #E83A58; }"
@@ -75,7 +75,7 @@ FanModePage::FanModePage(QWidget *parent)
         "  border-radius: 0px;"
         "  border-top: 2px solid #2E4E7A; border-left: 2px solid #2E4E7A;"
         "  border-bottom: 2px solid #060D1A; border-right: 2px solid #060D1A;"
-        "  font-family: 'Press Start 2P'; font-size: 6px; letter-spacing: 1px;"
+        "  font-family: 'Press Start 2P'; font-size: 10px; letter-spacing: 1px;"
         "  padding: 9px 22px;"
         "}"
         "QPushButton:hover { color: #D4A843; border-color: #D4A843; }"
