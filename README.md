@@ -1,6 +1,6 @@
 # HaramBall FC
 
-An educational Qt Widgets app about the 2026 FIFA World Cup. Learn the rules, history, and key moments of the tournament through lessons, quizzes, and games — all in a pixel art theme.
+An educational Qt Widgets app about the 2026 FIFA World Cup. Learn the rules, history, and key moments of the tournament through lessons, quizzes, and games all in a pixel art theme.
 
 ## Features
 
