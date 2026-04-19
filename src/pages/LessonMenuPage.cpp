@@ -63,7 +63,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
 
     // ── Left panel: lesson list ───────────────────────────────────────────
     QWidget *leftPanel = new QWidget(body);
-    leftPanel->setFixedWidth(400);
+    leftPanel->setFixedWidth(480);
     leftPanel->setStyleSheet(
         "background-color: #0F1E35;"
         "border-right: 4px solid #1E3A5F;"
