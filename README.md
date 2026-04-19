@@ -19,11 +19,3 @@ An educational Qt Widgets app about the 2026 FIFA World Cup. Learn the rules, hi
 
 ## Team
 Ebrahim Himayoun · Tom Rasmussen · Diego Galavan · Henish Patel · Reman Adhikari · Ethan Cobler
-
-## Build
-
-```bash
-mkdir -p build
-cd build
-cmake ..
-cmake --build .
