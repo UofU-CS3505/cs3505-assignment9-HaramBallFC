@@ -84,7 +84,7 @@ static QFrame *makeCard(const QString &cardTitle,
         ));
 
 
-    card->setMinimumSize(240, 300);
+    card->setFixedSize(300, 460);
 
     QVBoxLayout *l = new QVBoxLayout(card);
     l->setContentsMargins(24, 26, 24, 24);
@@ -234,9 +234,11 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
 
     QHBoxLayout *cards = new QHBoxLayout;
     cards->setSpacing(24);
+    cards->addStretch();
     cards->addWidget(fanCard);
     cards->addWidget(playerCard);
     cards->addWidget(bracketCard);
+    cards->addStretch();
 
     // ── Back button row ───────────────────────────────────────────────────
     QHBoxLayout *bottomRow = new QHBoxLayout;
@@ -249,7 +251,9 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     bl->addSpacing(10);
     bl->addWidget(sub);
     bl->addSpacing(32);
-    bl->addLayout(cards, 1);
+    bl->addStretch();
+    bl->addLayout(cards);
+    bl->addStretch();
     bl->addSpacing(24);
     bl->addLayout(bottomRow);
 

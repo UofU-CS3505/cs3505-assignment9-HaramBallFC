@@ -42,7 +42,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
         "  border-radius: 0px;"
         "  border-top: 3px solid #2E4E7A; border-left: 3px solid #2E4E7A;"
         "  border-bottom: 3px solid #060D1A; border-right: 3px solid #060D1A;"
-        "  font-family: 'Press Start 2P'; font-size: 6px; letter-spacing: 1px;"
+        "  font-family: 'Press Start 2P'; font-size: 9px; letter-spacing: 1px;"
         "  padding: 7px 12px;"
         "}"
         "QPushButton:hover { background-color: #1E3A5F; color: #D4A843; }"
@@ -63,7 +63,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
 
     // ── Left panel: lesson list ───────────────────────────────────────────
     QWidget *leftPanel = new QWidget(body);
-    leftPanel->setFixedWidth(290);
+    leftPanel->setFixedWidth(400);
     leftPanel->setStyleSheet(
         "background-color: #0F1E35;"
         "border-right: 4px solid #1E3A5F;"
@@ -87,7 +87,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
         "  border-top: 3px solid #060D1A; border-left: 3px solid #060D1A;"
         "  border-bottom: 3px solid #1E3A5F; border-right: 3px solid #1E3A5F;"
         "  border-radius: 0px; padding: 4px; outline: none;"
-        "  font-family: 'Press Start 2P'; font-size: 7px;"
+        "  font-family: 'Press Start 2P'; font-size: 10px;"
         "}"
         "QListWidget::item {"
         "  padding: 12px 12px; border-radius: 0px;"
@@ -119,7 +119,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     m_previewLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
     m_previewLabel->setStyleSheet(
         "font-family: 'Press Start 2P';"
-        "font-size: 8px; color: #8FA3B8; background: transparent; line-height: 220%;"
+        "font-size: 11px; color: #8FA3B8; background: transparent; line-height: 220%;"
     );
 
     QPushButton *openButton = new QPushButton("OPEN LESSON  \u2192", rightPanel);
@@ -169,7 +169,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
         "  border-radius: 0px;"
         "  border-top: 2px solid #2E4E7A; border-left: 2px solid #2E4E7A;"
         "  border-bottom: 2px solid #060D1A; border-right: 2px solid #060D1A;"
-        "  font-family: 'Press Start 2P'; font-size: 6px; letter-spacing: 1px;"
+        "  font-family: 'Press Start 2P'; font-size: 9px; letter-spacing: 1px;"
         "  padding: 8px 14px;"
         "}"
         "QPushButton:hover { color: #D4A843; border-color: #D4A843; }"

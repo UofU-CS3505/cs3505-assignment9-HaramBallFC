@@ -61,12 +61,12 @@ QuizPage::QuizPage(QWidget *parent)
     QHBoxLayout *topRow = new QHBoxLayout();
     m_progressLabel = new QLabel(this);
     m_progressLabel->setStyleSheet(
-        QString("font-family: 'Press Start 2P'; font-size: 7px; color: %1;").arg(kTextMuted));
+        QString("font-family: 'Press Start 2P'; font-size: 10px; color: %1;").arg(kTextMuted));
 
     m_scoreLabel = new QLabel(this);
     m_scoreLabel->setAlignment(Qt::AlignRight);
     m_scoreLabel->setStyleSheet(
-        QString("font-family: 'Press Start 2P'; font-size: 7px; color: %1;").arg(kTextMuted));
+        QString("font-family: 'Press Start 2P'; font-size: 10px; color: %1;").arg(kTextMuted));
 
     topRow->addWidget(m_progressLabel);
     topRow->addStretch();

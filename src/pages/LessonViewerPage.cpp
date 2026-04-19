@@ -75,7 +75,15 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     QHBoxLayout *slideNav = new QHBoxLayout();
     m_slideCounter->setAlignment(Qt::AlignCenter);
     m_slideCounter->setStyleSheet(
-        "font-family: 'Press Start 2P'; font-size: 7px; color: #5A7090;");
+        "font-family: 'Press Start 2P'; font-size: 10px; color: #5A7090;");
+
+    const QString navBtnStyle =
+        "QPushButton {"
+        "  font-family: 'Press Start 2P'; font-size: 11px;"
+        "  padding: 10px 22px;"
+        "}";
+    m_prevButton->setStyleSheet(navBtnStyle);
+    m_nextButton->setStyleSheet(navBtnStyle);
 
     slideNav->addWidget(m_prevButton);
     slideNav->addStretch();
