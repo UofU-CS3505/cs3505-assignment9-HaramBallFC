@@ -111,6 +111,8 @@ qt_add_executable(HaramBallFC
 
     include/pages/JugglingGame.h
     src/pages/JugglingGame.cpp
+    include/pages/JugglingGameCanvas.h
+    src/pages/JugglingGameCanvas.cpp
 )
 
 target_include_directories(HaramBallFC

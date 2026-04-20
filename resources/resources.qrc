@@ -6,4 +6,5 @@
         <file alias="messiSprite.png">images/messiSprite.png</file>
         <file alias="field.png">images/newPitch.png</file>
     </qresource>
+    <qresource prefix="/fonts"/>
 </RCC>

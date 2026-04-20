@@ -127,7 +127,18 @@ void MainWindow::buildPageStack()
     m_lessonMenuPage = new LessonMenuPage(m_pageStack);
     m_lessonViewerPage = new LessonViewerPage(m_pageStack);
     m_bracketPage = new BracketPage(m_pageStack);
-    m_jugglingGame = new JugglingGame(m_pageStack);
+
+    QVector<Lesson> fanLessons = m_lessonRepository.lessonsForMode(LessonMode::Fan);
+    QVector<QString> facts;
+
+    // Pulls short description of lessons from lessons and loads them directly into Juggling Game through the constructor
+    // I am doing this so we don't have to look for the facts later within the juggling game, we can just pass them in
+    for (const Lesson& lesson : fanLessons)
+    {
+        facts.push_back(lesson.description);
+    }
+
+    m_jugglingGame = new JugglingGame(facts, m_pageStack);
 
     m_pageStack->addWidget(m_homePage);          // 0 = Home
     m_pageStack->addWidget(m_modeSelectionPage); // 1 = ModeSelection
@@ -143,6 +154,8 @@ void MainWindow::buildPageStack()
 
     m_quizPage = new QuizPage(m_pageStack);
     m_pageStack->addWidget(m_quizPage);          // 8 = Quiz
+
+
 
     layout->addWidget(m_pageStack);
     layout->setContentsMargins(0, 0, 0, 0);

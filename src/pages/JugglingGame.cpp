@@ -1,4 +1,5 @@
 #include "pages/JugglingGame.h"
+#include "pages/JugglingGameCanvas.h"
 
 #include <QFrame>
 #include <QHBoxLayout>
@@ -6,8 +7,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-JugglingGame::JugglingGame(QWidget *parent)
-    : QWidget(parent)
+JugglingGame::JugglingGame(QVector<QString> facts, QWidget *parent)
+    : QWidget(parent), world(nullptr), ball(nullptr), timer(new QTimer(this)), jugglesCount(0), facts(facts)
 {
     QVBoxLayout *root = new QVBoxLayout(this);
     root->setContentsMargins(0, 0, 0, 0);
@@ -33,23 +34,6 @@ JugglingGame::JugglingGame(QWidget *parent)
     title->setAlignment(Qt::AlignCenter);
     title->setStyleSheet("font-size: 42px; font-weight: 700; color: #FFFFFF;");
 
-    QLabel *comingSoon = new QLabel("Coming Soon", body);
-    comingSoon->setAlignment(Qt::AlignCenter);
-    comingSoon->setStyleSheet(
-        "font-size: 13px; font-weight: 700; letter-spacing: 2px;"
-        "color: #D4A843; background-color: #1A2A42;"
-        "border: 1px solid #D4A843; border-radius: 12px;"
-        "padding: 4px 16px;"
-    );
-
-    QLabel *desc = new QLabel(
-        "Keep the ball in the air using Box2D physics while reviewing\n"
-        "key ideas from the Fan Mode lessons.",
-        body);
-    desc->setAlignment(Qt::AlignCenter);
-    desc->setWordWrap(true);
-    desc->setStyleSheet("font-size: 15px; color: #8FA3B8;");
-
     // Gold divider
     QFrame *div = new QFrame(body);
     div->setFixedSize(50, 3);
@@ -74,22 +58,31 @@ JugglingGame::JugglingGame(QWidget *parent)
         return h;
     };
 
-    bl->addStretch(2);
+    JugglingGameCanvas* canvas = new JugglingGameCanvas(body);
+    canvas -> setMinimumHeight(400);
+    canvas -> setFocus();
+
+    bl->addSpacing(0);
     bl->addWidget(eyebrow);
-    bl->addSpacing(8);
+    bl->addSpacing(4);
     bl->addWidget(title);
     bl->addSpacing(14);
-    bl->addLayout(centered(comingSoon));
-    bl->addSpacing(20);
-    bl->addWidget(desc);
-    bl->addSpacing(28);
-    bl->addLayout(centered(div));
-    bl->addSpacing(28);
+    bl->addWidget(canvas, 1);
+    bl->addSpacing(16);
     bl->addLayout(centered(backButton));
-    bl->addStretch(2);
+    bl->addSpacing(16);
+
 
     root->addWidget(topBar);
     root->addWidget(body, 1);
 
     connect(backButton, &QPushButton::clicked, this, &JugglingGame::backRequested);
 }
+
+// FUNCTION IMPLEMENTATIONS
+
+void JugglingGame::paintEvent(QPaintEvent*){}
+
+void JugglingGame::keyPressEvent(QKeyEvent*){}
+
+void JugglingGame::tick(){}
