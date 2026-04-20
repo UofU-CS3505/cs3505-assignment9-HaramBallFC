@@ -1,5 +1,10 @@
-///
 #pragma once
+
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// PenaltyGamePage = Box2D-based kick + UI + quiz-ish scoring.
 
 #include <QWidget>
 #include <QTimer>

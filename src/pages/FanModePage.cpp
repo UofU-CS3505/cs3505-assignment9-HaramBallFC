@@ -1,4 +1,10 @@
 // AI was used to assist with this file.
+//
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// FanModePage = hub page for Fan mode (go to lessons, back nav).
 #include "pages/FanModePage.h"
 
 #include <QFrame>

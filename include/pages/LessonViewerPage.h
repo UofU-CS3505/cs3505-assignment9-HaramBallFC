@@ -1,5 +1,11 @@
 #pragma once
 
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// LessonViewerPage turns `Lesson.content` into slides and lets user navigate.
+
 #include "models/Lesson.h"
 
 #include <QWidget>

@@ -1,5 +1,11 @@
 #pragma once
 
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// HomePage = first page user sees. Emits `startClicked()` to move forward.
+
 #include <QLabel>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>

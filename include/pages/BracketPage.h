@@ -1,5 +1,11 @@
 #pragma once
 
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// BracketPage lets user predict group ranks then play through knockouts.
+
 #include <QMap>
 #include <QSet>
 #include <QStringList>

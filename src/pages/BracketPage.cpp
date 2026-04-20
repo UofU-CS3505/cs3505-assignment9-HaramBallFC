@@ -1,4 +1,10 @@
 // AI was used to help with the designing in this file and keeping in line with the rest of the app
+//
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// BracketPage = group stage ranking → pick 8 third-place teams → knockout bracket.
 #include "pages/BracketPage.h"
 
 #include <QFrame>
