@@ -1,3 +1,9 @@
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// JugglingGameCanvas = actual juggling mini-game physics + drawing.
+
 #include "pages/JugglingGameCanvas.h"
 
 #include <QPainter>

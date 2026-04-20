@@ -1,4 +1,10 @@
 // AI was used to assist with this file.
+//
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// LessonViewerPage shows one lesson as slides (title + text + optional image).
 #include "pages/LessonViewerPage.h"
 
 #include <QHBoxLayout>

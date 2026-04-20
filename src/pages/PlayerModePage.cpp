@@ -1,4 +1,10 @@
 // AI was used to assist with this file.
+//
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// PlayerModePage = hub page for Player mode (lessons + penalty game).
 #include "pages/PlayerModePage.h"
 
 #include <QFrame>

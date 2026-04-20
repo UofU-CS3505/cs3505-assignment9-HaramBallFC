@@ -1,5 +1,11 @@
 #pragma once
 
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// JugglingGameCanvas is the widget that draws + runs the juggling physics.
+
 #include <QWidget>
 #include <QTimer>
 #include <QKeyEvent>
@@ -8,6 +14,7 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
+#include <QPixmap>
 
 class JugglingGameCanvas : public QWidget
 {
@@ -21,6 +28,9 @@ class JugglingGameCanvas : public QWidget
 
     QWidget* m_overlay;
     QLabel* m_scoreLabel;
+    QLabel* m_reasonLabel;   // shows "THE BALL FELL" or "HIT THE WALL!"
+
+    QPixmap m_bgPixmap;      // newPitch.png background
 
     int jugglesCount;
 
@@ -28,11 +38,13 @@ class JugglingGameCanvas : public QWidget
     int highScore;
 
     void resetGame();
+    void repositionGround();   // keeps Box2D ground flush with canvas bottom
 
 protected:
     void paintEvent(QPaintEvent*) override;
     void keyPressEvent(QKeyEvent*) override;
     void resizeEvent(QResizeEvent*) override;
+    void showEvent(QShowEvent*) override;
 
 private slots:
     void tick();

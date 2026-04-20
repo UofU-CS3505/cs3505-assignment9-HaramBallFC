@@ -1,3 +1,9 @@
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// QuizRepository = holds quiz questions in memory (hard-coded for assignment).
+
 #include "models/QuizRepository.h"
 
 QuizRepository::QuizRepository()

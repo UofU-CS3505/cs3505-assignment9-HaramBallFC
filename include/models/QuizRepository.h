@@ -1,5 +1,11 @@
 #pragma once
 
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// QuizRepository provides quiz questions by lesson id.
+
 #include "models/QuizQuestion.h"
 
 #include <QVector>

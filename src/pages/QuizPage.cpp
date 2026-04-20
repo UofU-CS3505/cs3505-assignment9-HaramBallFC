@@ -1,4 +1,10 @@
 // AI was used to assist with this file.
+//
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// QuizPage = runs a multiple-choice quiz and shows results screen.
 #include "pages/QuizPage.h"
 
 #include <QGridLayout>

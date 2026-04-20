@@ -1,5 +1,11 @@
 #pragma once
 
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// QuizPage displays questions from `QuizRepository` and tracks score.
+
 #include "models/QuizRepository.h"
 
 #include <QWidget>

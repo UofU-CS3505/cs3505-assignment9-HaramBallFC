@@ -1,6 +1,12 @@
 #include "pages/JugglingGame.h"
 #include "pages/JugglingGameCanvas.h"
 
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// JugglingGame = wrapper page that hosts `JugglingGameCanvas` plus a back button.
+
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QLabel>
