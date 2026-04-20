@@ -83,7 +83,7 @@ QuizPage::QuizPage(QWidget *parent)
         "border-radius: 0px;"
         "padding: 20px;"
         "font-family: 'Press Start 2P';"
-        "font-size: 9px;"
+        "font-size: 11px;"
         "line-height: 200%;"
         "color: #FFFFFF;");
     m_questionLabel->setMinimumHeight(90);
@@ -112,7 +112,7 @@ QuizPage::QuizPage(QWidget *parent)
     m_feedbackLabel->setWordWrap(true);
     m_feedbackLabel->setAlignment(Qt::AlignCenter);
     m_feedbackLabel->setStyleSheet(
-        "font-family: 'Press Start 2P'; font-size: 8px; padding: 12px;");
+        "font-family: 'Press Start 2P'; font-size: 11px; padding: 12px;");
     m_feedbackLabel->hide();
 
     // ── Next button (gold) ──
@@ -121,11 +121,8 @@ QuizPage::QuizPage(QWidget *parent)
     m_nextButton->setStyleSheet(
         "QPushButton {"
         "  background-color: #D4A843; color: #0B1829;"
-        "  border-radius: 0px;"
-        "  border-top: 4px solid #F0C860; border-left: 4px solid #F0C860;"
-        "  border-bottom: 4px solid #7A6020; border-right: 4px solid #7A6020;"
-        "  font-family: 'Press Start 2P'; font-size: 7px; letter-spacing: 1px;"
-        "  padding: 12px 28px;"
+        "  border: none; border-radius: 8px;"
+        "  padding: 9px 22px; font-size: 14px; font-weight: 700;"
         "}"
         "QPushButton:hover { background-color: #F0C860; }"
         "QPushButton:pressed {"
@@ -295,13 +292,13 @@ void QuizPage::onAnswerSelected(int choiceIndex)
     if (correct) {
         ++m_score;
         m_feedbackLabel->setStyleSheet(
-            QString("font-family: 'Press Start 2P'; font-size: 8px; color: %1; padding: 12px;").arg(kGreen));
+            QString("font-family: 'Press Start 2P'; font-size: 14px; color: %1; padding: 12px;").arg(kGreen));
         m_feedbackLabel->setText("✓  Correct!");
         m_answerButtons[choiceIndex]->setStyleSheet(
             answerBtnStyle(kGreen, kGreen));
     } else {
         m_feedbackLabel->setStyleSheet(
-            QString("font-family: 'Press Start 2P'; font-size: 8px; color: %1; padding: 12px; line-height: 200%;").arg(kRed));
+            QString("font-family: 'Press Start 2P'; font-size: 14px; color: %1; padding: 12px; line-height: 200%;").arg(kRed));
         m_feedbackLabel->setText(
             QString("✗  Wrong!  The correct answer was:  %1")
                 .arg(q.choices.at(q.correctIndex)));

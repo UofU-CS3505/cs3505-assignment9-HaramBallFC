@@ -129,7 +129,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
         "  border-radius: 0px;"
         "  border-top: 4px solid #E83A58; border-left: 4px solid #E83A58;"
         "  border-bottom: 4px solid #7A0018; border-right: 4px solid #7A0018;"
-        "  font-family: 'Press Start 2P'; font-size: 7px; letter-spacing: 1px;"
+        "  font-family: 'Press Start 2P'; font-size: 10px; letter-spacing: 1px;"
         "  padding: 12px 32px;"
         "}"
         "QPushButton:hover   { background-color: #E83A58; }"

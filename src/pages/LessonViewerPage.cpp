@@ -34,12 +34,12 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     // ── Lesson title ──
     m_titleLabel->setAlignment(Qt::AlignCenter);
     m_titleLabel->setStyleSheet(
-        "font-family: 'Press Start 2P'; font-size: 13px; color: #FFFFFF;");
+        "font-family: 'Press Start 2P'; font-size: 16px; color: #FFFFFF;");
 
     // ── Slide section title ──
     m_slideTitle->setAlignment(Qt::AlignCenter);
     m_slideTitle->setStyleSheet(
-        "font-family: 'Press Start 2P'; font-size: 9px; color: #D4A843; line-height: 200%;");
+        "font-family: 'Press Start 2P'; font-size: 12px; color: #D4A843; line-height: 200%;");
 
     // ── Image area ──
     m_imageLabel->setAlignment(Qt::AlignCenter);
