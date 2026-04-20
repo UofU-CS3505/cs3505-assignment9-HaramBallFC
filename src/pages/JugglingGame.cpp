@@ -62,7 +62,7 @@ JugglingGame::JugglingGame(QVector<QString> facts, QWidget *parent)
     canvas -> setMinimumHeight(400);
     canvas -> setFocus();
 
-    bl->addSpacing(0);
+    bl->addSpacing(2);
     bl->addWidget(eyebrow);
     bl->addSpacing(4);
     bl->addWidget(title);

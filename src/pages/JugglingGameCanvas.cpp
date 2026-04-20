@@ -33,6 +33,11 @@ JugglingGameCanvas::JugglingGameCanvas(QWidget* parent) : QWidget(parent)
     if (!bgPath.isEmpty())
         m_bgPixmap = QPixmap(bgPath);
 
+    // Yamal player
+    const QString playerPath = findJuggleAsset("resources/images/LaminePixel.png");
+    if (!playerPath.isEmpty())
+        m_playerPixmap = QPixmap(playerPath);
+
     // Reduced gravity so the ball moves slowly enough for the player to react
     b2Vec2 gravity(0.0f, 4.0f);
     world = new b2World(gravity);
@@ -122,6 +127,16 @@ void JugglingGameCanvas::paintEvent(QPaintEvent*)
     else
         painter.fillRect(rect(), QColor("#008000"));
 
+    // draw player
+    if (!m_playerPixmap.isNull())
+    {
+        int playerW = 120;
+        int playerH = 230;
+        int playerX = width() / 2 - playerW / 2;
+        int playerY = height() - playerH;
+        painter.drawPixmap(playerX, playerY, playerW, playerH, m_playerPixmap);
+    }
+
     b2Vec2 pos = ball -> GetPosition();
 
     float screenX = pos.x * scale;
@@ -131,6 +146,13 @@ void JugglingGameCanvas::paintEvent(QPaintEvent*)
     painter.setBrush(QColor("#D4A843"));
     painter.setPen(Qt::NoPen);
     painter.drawEllipse(QPointF(screenX, screenY), radius, radius);
+
+    painter.setPen(Qt::black);
+    painter.setFont(QFont("Press Start 2P", 14));
+    painter.drawText(QRect(10, 10, 200, 30), Qt::AlignLeft, "JUGGLES: " + QString::number(jugglesCount)); //live score
+    painter.drawText(QRect(width() - 210, 10, 200, 30), Qt::AlignRight, "BEST: " + QString::number(highScore)); // high score
+
+
 }
 
 void JugglingGameCanvas::keyPressEvent(QKeyEvent* event)
@@ -154,15 +176,8 @@ void JugglingGameCanvas::showEvent(QShowEvent* event)
 {
     QWidget::showEvent(event);
     repositionGround();
-    // Full reset so every visit to the page starts fresh
-    jugglesCount = 0;
-    gameOver = false;
+    resetGame();
     m_overlay->hide();
-    const float scale = 50.0f;
-    float centerX  = (width()  > 0) ? width()  * 0.2f / scale : 2.0f;
-    float startY   = (height() > 0) ? height() * 0.35f / scale  : 3.0f;
-    ball->SetTransform(b2Vec2(centerX, startY), 0.0f);
-    ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 }
 
 // Moves the Box2D ground body so its top surface sits exactly at the canvas bottom.
@@ -170,6 +185,7 @@ void JugglingGameCanvas::repositionGround()
 {
     if (!ground || height() <= 0)
         return;
+
     const float scale = 50.0f;
     // Ground box half-height is 0.5, so place body 0.5 units below canvas bottom
     // so its top surface == height() pixels.

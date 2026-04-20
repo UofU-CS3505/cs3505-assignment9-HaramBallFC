@@ -21,6 +21,10 @@ class JugglingGameCanvas : public QWidget
 
     QWidget* m_overlay;
     QLabel* m_scoreLabel;
+    QLabel* m_reasonLabel;
+
+    QPixmap m_bgPixmap;
+    QPixmap m_playerPixmap;
 
     int jugglesCount;
 
@@ -29,10 +33,13 @@ class JugglingGameCanvas : public QWidget
 
     void resetGame();
 
+    void repositionGround();
+
 protected:
     void paintEvent(QPaintEvent*) override;
     void keyPressEvent(QKeyEvent*) override;
     void resizeEvent(QResizeEvent*) override;
+    void showEvent(QShowEvent*) override;
 
 private slots:
     void tick();
