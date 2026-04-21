@@ -25,6 +25,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <numeric>
+#include <QLabel>
 
 
 //used a method similar to harry's to import the picture.
@@ -71,7 +72,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     , scored(false)
     , dragging(false)
     , ballVisible(true)
-    , resetButton(new QPushButton("Reset Shot", this))
+    , resetButton(new QPushButton("Restart", this))
     , backButton(new QPushButton("Quit", this))
     , shootButton(new QPushButton("Shoot", this))
     , angleSlider(new QSlider(Qt::Horizontal, this))
@@ -104,6 +105,16 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     QString playerPath = findAsset("resources/images/messiSprite.png");
     fieldPixmap = QPixmap(fieldPath);
     playerPixmap = QPixmap(playerPath);
+
+
+    //LABELS FOR SLIDERS
+    QLabel *powerLabel = new QLabel("POWER", this);
+    powerLabel->setGeometry(width()/2 - 320, height() - 310, 70, 20);
+    powerLabel->setStyleSheet("color: black; font-size: 18px;");
+
+    QLabel *aimLabel = new QLabel("AIM", this);
+    aimLabel->setGeometry(width()/2 - 20, height() - 98, 40, 20);
+    aimLabel->setStyleSheet("color: black; font-size: 18px;");
 
 
 
@@ -253,10 +264,13 @@ void PenaltyGamePage::updateWorld()
         int squareMargin = 30;
 
         //Left Box True
-        QRect leftSquare(goalX + squareMargin, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
+        //QRect leftSquare(goalX + squareMargin, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
+        QRect leftSquare(goalX, goalY, goalWidth/2, goalHeight);
 
         //Right Box False
-        QRect rightSquare(goalX + goalWidth - squareMargin - boxWidth, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
+        //QRect rightSquare(goalX + goalWidth - squareMargin - boxWidth, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
+        QRect rightSquare(goalX + goalWidth/2, goalY, goalWidth/2, goalHeight);
+
 
         //Goal Box
         QRect goalRect(goalX, goalY, goalWidth, goalHeight);
@@ -386,8 +400,11 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     int boxHeight = 60;
     int squareMargin = 30;
 
-    QRect leftSquare(gx + squareMargin, gy + (h - boxHeight) / 2, boxWidth, boxHeight);
-    QRect rightSquare(gx + w - squareMargin - boxWidth, gy + (h - boxHeight) / 2, boxWidth, boxHeight);
+    //QRect leftSquare(gx + squareMargin, gy + (h - boxHeight) / 2, boxWidth, boxHeight);
+    QRect leftSquare(gx, gy, w/2, h);
+
+    //QRect rightSquare(gx + w - squareMargin - boxWidth, gy + (h - boxHeight) / 2, boxWidth, boxHeight);
+    QRect rightSquare(gx + w/2, gy, w/2, h);
 
 
     // Fill boxess with a gradient background
