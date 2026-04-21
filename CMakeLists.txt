@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 
 project(HaramBallFC LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Network Multimedia)
 
 qt_standard_project_setup()
 
@@ -79,6 +79,7 @@ qt_add_executable(HaramBallFC
     src/models/QuizRepository.cpp
 
     include/pages/HomePage.h
+    src/SoundManager.cpp
     src/pages/HomePage.cpp
 
     include/pages/ModeSelectionPage.h
@@ -126,6 +127,7 @@ target_link_libraries(HaramBallFC
         Qt::Core
         Qt::Widgets
         Qt::Network
+        Qt::Multimedia
 )
 
 include(GNUInstallDirs)

@@ -6,5 +6,16 @@
         <file alias="messiSprite.png">images/messiSprite.png</file>
         <file alias="field.png">images/newPitch.png</file>
     </qresource>
+    <qresource prefix="/sounds">
+        <file alias="click.wav">sounds/click.wav</file>
+        <file alias="correct.wav">sounds/correct.wav</file>
+        <file alias="wrong.wav">sounds/wrong.wav</file>
+        <file alias="pass.wav">sounds/pass.wav</file>
+        <file alias="fail.wav">sounds/fail.wav</file>
+        <file alias="juggle.wav">sounds/juggle.wav</file>
+        <file alias="thud.wav">sounds/thud.wav</file>
+        <file alias="ceiling.wav">sounds/ceiling.wav</file>
+        <file alias="background.mp3">sounds/background.mp3</file>
+    </qresource>
     <qresource prefix="/fonts"/>
 </RCC>

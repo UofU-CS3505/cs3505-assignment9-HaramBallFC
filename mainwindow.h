@@ -3,7 +3,9 @@
 #include "models/Lesson.h"
 #include "models/LessonRepository.h"
 
+#include <QLabel>
 #include <QMainWindow>
+#include <QSlider>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -55,12 +57,14 @@ private:
         Bracket
     };
 
-
-
     void buildPageStack();
     void connectNavigation();
     void setCurrentPage(PageId pageId);
     void loadLessonsForMode(LessonMode mode);
+    void repositionVolumeWidget();
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 
     Ui::MainWindow *ui;
 
@@ -75,6 +79,10 @@ private:
     BracketPage *m_bracketPage;
     QuizPage *m_quizPage;
     JugglingGame *m_jugglingGame;
+
+    QWidget *m_volumeWidget;
+    QLabel  *m_volIcon;
+    QSlider *m_volumeSlider;
 
     LessonRepository m_lessonRepository;
     LessonMode m_currentMode;
