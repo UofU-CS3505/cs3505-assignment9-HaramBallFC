@@ -14,7 +14,8 @@
 #include <QFont>
 #include <QBrush>
 #include <QPushButton>
-
+#include <QRandomGenerator>
+#include <algorithm>
 // Standard library includes
 #include <cmath>
 #include <algorithm>
@@ -23,6 +24,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <numeric>
 
 
 //used a method similar to harry's to import the picture.
@@ -38,6 +40,28 @@ static QString findAsset(const QString &relativePath)
     }
     return {};
 }
+
+static void chooseRandomFive(const QStringList &allQuestions,
+                             const QVector<bool> &allAnswers,
+                             QStringList &pickedQuestions,
+                             QVector<bool> &pickedAnswers)
+{
+    QVector<int> indices(allQuestions.size());
+    std::iota(indices.begin(), indices.end(), 0);
+
+    std::shuffle(indices.begin(), indices.end(), *QRandomGenerator::global());
+
+    pickedQuestions.clear();
+    pickedAnswers.clear();
+
+    int count = std::min(5, static_cast<int>(indices.size()));
+    for (int i = 0; i < count; ++i) {
+        int idx = indices[i];
+        pickedQuestions << allQuestions[idx];
+        pickedAnswers << allAnswers[idx];
+    }
+}
+
 
 PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     : QWidget(parent)
@@ -144,13 +168,24 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
               << "A soccer team has 12 players on the field."
               << "The 2026 World Cup will be hosted by 3 countries."
               << "A red card means the player can stay in the game."
-              << "Argentina won the 2022 World Cup.";
+              << "Argentina won the 2022 World Cup."
+              << "A CONMEBOL team that finishes 7th goes to the inter-confederation playoff."
+              << "CONCACAF had only 3 direct qualifying slots because the 3 host nations got automatic spots."
+              << "The 2026 World Cup will have 16 nations";
+
 
     correctAnswers << true
                    << false
                    << true
                    << false
-                   << true;
+                   << true
+                   << true
+                   << true
+                   <<false;
+
+
+    chooseRandomFive(questions, correctAnswers, activeQuestions, activeAnswers);
+
     timer.start(10);
 }
 
@@ -173,6 +208,8 @@ void PenaltyGamePage::resetBall()
         gameOver = false;
         resultText = "";
         answerTarget = "";
+        chooseRandomFive(questions, correctAnswers, activeQuestions, activeAnswers);
+
     } else {
         resultText = "";
         answerTarget = "";
@@ -224,44 +261,48 @@ void PenaltyGamePage::updateWorld()
         //Goal Box
         QRect goalRect(goalX, goalY, goalWidth, goalHeight);
 
-        if (leftSquare.contains(ballX, ballY)) {
-            scored = true;
-            answerTarget = "TRUE";
-            ballVisible = false;
-            ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-            ball->SetAngularVelocity(0.0f);
+        //add guard
+        if(gameOver ==  false){
 
-            bool selectedAnswer = true;
-            if (selectedAnswer == correctAnswers[currentQuestionIndex]) {
-                score++;
-                resultText = "CORRECT!";
-            } else {
-                resultText = "WRONG!";
+            if (leftSquare.contains(ballX, ballY)) {
+                scored = true;
+                answerTarget = "TRUE";
+                ballVisible = false;
+                ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+                ball->SetAngularVelocity(0.0f);
+
+                bool selectedAnswer = true;
+                if (selectedAnswer == activeAnswers[currentQuestionIndex]) {
+                    score++;
+                    resultText = "CORRECT!";
+                } else {
+                    resultText = "WRONG!";
+                }
+
+                currentQuestionIndex++;
+                if (currentQuestionIndex >= 5) {
+                    gameOver = true;
+                }
             }
+            else if (rightSquare.contains(ballX, ballY)) {
+                scored = true;
+                answerTarget = "FALSE";
+                ballVisible = false;
+                ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
+                ball->SetAngularVelocity(0.0f);
 
-            currentQuestionIndex++;
-            if (currentQuestionIndex >= 5) {
-                gameOver = true;
-            }
-        }
-        else if (rightSquare.contains(ballX, ballY)) {
-            scored = true;
-            answerTarget = "FALSE";
-            ballVisible = false;
-            ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-            ball->SetAngularVelocity(0.0f);
+                bool selectedAnswer = false;
+                if (selectedAnswer == activeAnswers[currentQuestionIndex]) {
+                    score++;
+                    resultText = "CORRECT!";
+                } else {
+                    resultText = "WRONG!";
+                }
 
-            bool selectedAnswer = false;
-            if (selectedAnswer == correctAnswers[currentQuestionIndex]) {
-                score++;
-                resultText = "CORRECT!";
-            } else {
-                resultText = "WRONG!";
-            }
-
-            currentQuestionIndex++;
-            if (currentQuestionIndex >= 5) {
-                gameOver = true;
+                currentQuestionIndex++;
+                if (currentQuestionIndex >= 5) {
+                    gameOver = true;
+                }
             }
         }
 
@@ -386,7 +427,7 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
 
     if (!gameOver && currentQuestionIndex < questions.size()) {
         p.drawText(questionBox, Qt::AlignCenter | Qt::TextWordWrap,
-                   questions[currentQuestionIndex]);
+                   activeQuestions[currentQuestionIndex]);
     }
 
     //Setup for the question box
@@ -441,13 +482,13 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     }
 
     if (gameOver) {
-        p.setPen(Qt::yellow);
+        p.setPen(Qt::red);
         p.setFont(QFont("Press Start 2P", 18, QFont::Bold));
-        p.drawText(QRect(0, 140, width(), 40), Qt::AlignCenter, "GAME OVER");
+        p.drawText(QRect(0, 100, width(), 40), Qt::AlignCenter, "GAME OVER");
 
-        p.setPen(Qt::white);
+        p.setPen(Qt::blue);
         p.setFont(QFont("Press Start 2P", 14, QFont::Bold));
-        p.drawText(QRect(0, 180, width(), 40), Qt::AlignCenter,
+        p.drawText(QRect(0, 125, width(), 40), Qt::AlignCenter,
                    QString("FINAL SCORE: %1 / 5").arg(score));
     }
 }
@@ -523,5 +564,6 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
 
 //     update();
 // }
+
 
 

@@ -72,6 +72,9 @@ private:
     //for penalty game
     QStringList questions;
     QVector<bool> correctAnswers;
+    QStringList activeQuestions;
+    QVector<bool> activeAnswers;
+
 
     int currentQuestionIndex;
     int score;
@@ -79,6 +82,9 @@ private:
     QString resultText;
 
 
+
     int worldToScreenX(float x);
     int worldToScreenY(float y);
 };
+
+
