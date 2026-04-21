@@ -6,6 +6,7 @@
 //
 // LessonMenuPage = list of lessons on left, preview on right.
 #include "pages/LessonMenuPage.h"
+#include "SoundManager.h"
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -195,13 +196,16 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     connect(m_lessonList, &QListWidget::currentItemChanged,
             this, &LessonMenuPage::updateLessonPreview);
 
+    connect(openButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(openButton, &QPushButton::clicked, this, [this]() {
         int row = m_lessonList->currentRow();
         if (row >= 0 && row < m_lessons.size())
             emit lessonSelected(m_lessons.at(row).id);
     });
 
+    connect(backButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(backButton, &QPushButton::clicked, this, &LessonMenuPage::backRequested);
+    connect(homeButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(homeButton, &QPushButton::clicked, this, &LessonMenuPage::homeRequested);
 }
 

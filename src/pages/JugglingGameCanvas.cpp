@@ -5,6 +5,7 @@
 // JugglingGameCanvas = actual juggling mini-game physics + drawing.
 
 #include "pages/JugglingGameCanvas.h"
+#include "SoundManager.h"
 
 #include <QPainter>
 #include <QFontDatabase>
@@ -230,6 +231,7 @@ void JugglingGameCanvas::keyPressEvent(QKeyEvent* event)
         {
             b2Vec2 impulse(0.0f, -5.2f);
             ball->ApplyLinearImpulse(impulse, ball->GetWorldCenter(), true);
+            SoundManager::instance().playJuggle();
             jugglesCount++;
 
             // Change fact every 4 juggles
@@ -297,6 +299,8 @@ void JugglingGameCanvas::tick()
     if (hitGround || hitCeiling)
     {
         gameOver = true;
+        if (hitCeiling) SoundManager::instance().playCeiling();
+        else            SoundManager::instance().playThud();
 
         // Update high score
         if (jugglesCount > highScore)

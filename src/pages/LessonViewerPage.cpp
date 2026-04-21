@@ -6,6 +6,7 @@
 //
 // LessonViewerPage shows one lesson as slides (title + text + optional image).
 #include "pages/LessonViewerPage.h"
+#include "SoundManager.h"
 
 #include <QHBoxLayout>
 #include <QLabel>
@@ -135,9 +136,13 @@ LessonViewerPage::LessonViewerPage(QWidget *parent)
     mainLayout->addLayout(buttonRow);
 
     // ── Connections ──
+    connect(m_prevButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(m_prevButton, &QPushButton::clicked, this, &LessonViewerPage::prevSlide);
+    connect(m_nextButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(m_nextButton, &QPushButton::clicked, this, &LessonViewerPage::nextSlide);
+    connect(backButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(backButton, &QPushButton::clicked, this, &LessonViewerPage::backRequested);
+    connect(homeButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(homeButton, &QPushButton::clicked, this, &LessonViewerPage::homeRequested);
     connect(m_quizButton, &QPushButton::clicked, this, [this]() {
         emit quizRequested(m_currentLessonId);

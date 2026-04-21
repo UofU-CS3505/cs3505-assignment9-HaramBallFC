@@ -6,6 +6,7 @@
 //
 // QuizPage = runs a multiple-choice quiz and shows results screen.
 #include "pages/QuizPage.h"
+#include "SoundManager.h"
 
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -109,6 +110,7 @@ QuizPage::QuizPage(QWidget *parent)
         grid->addWidget(m_answerButtons[i], i / 2, i % 2);
 
         connect(m_answerButtons[i], &QPushButton::clicked, this, [this, i]() {
+            SoundManager::instance().playClick();
             onAnswerSelected(i);
         });
     }
@@ -135,6 +137,7 @@ QuizPage::QuizPage(QWidget *parent)
         "  border-top: 4px solid #7A6020; border-left: 4px solid #7A6020;"
         "  border-bottom: 4px solid #F0C860; border-right: 4px solid #F0C860; }");
     m_nextButton->hide();
+    connect(m_nextButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(m_nextButton, &QPushButton::clicked, this, &QuizPage::onNextClicked);
 
     // ── Back button (ghost) ──
@@ -147,6 +150,7 @@ QuizPage::QuizPage(QWidget *parent)
         "  padding: 10px 18px; font-size: 13px;"
         "}"
         "QPushButton:hover { color: #FFFFFF; border-color: #D4A843; }");
+    connect(backButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(backButton, &QPushButton::clicked, this, &QuizPage::backRequested);
 
     QHBoxLayout *bottomRow = new QHBoxLayout();
@@ -297,12 +301,14 @@ void QuizPage::onAnswerSelected(int choiceIndex)
 
     if (correct) {
         ++m_score;
+        SoundManager::instance().playCorrect();
         m_feedbackLabel->setStyleSheet(
             QString("font-family: 'Press Start 2P'; font-size: 14px; color: %1; padding: 12px;").arg(kGreen));
         m_feedbackLabel->setText("✓  Correct!");
         m_answerButtons[choiceIndex]->setStyleSheet(
             answerBtnStyle(kGreen, kGreen));
     } else {
+        SoundManager::instance().playWrong();
         m_feedbackLabel->setStyleSheet(
             QString("font-family: 'Press Start 2P'; font-size: 14px; color: %1; padding: 12px; line-height: 200%;").arg(kRed));
         m_feedbackLabel->setText(
@@ -345,6 +351,11 @@ void QuizPage::showResults()
 
     QString msg;
     double pct = total > 0 ? (double)m_score / total : 0.0;
+    if (pct >= 0.5)
+        SoundManager::instance().playPass();
+    else
+        SoundManager::instance().playFail();
+
     if (pct == 1.0)
         msg = "Perfect score! You nailed every question.";
     else if (pct >= 0.75)

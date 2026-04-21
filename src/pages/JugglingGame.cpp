@@ -1,5 +1,6 @@
 #include "pages/JugglingGame.h"
 #include "pages/JugglingGameCanvas.h"
+#include "SoundManager.h"
 
 // HaramBall FC (CS3505 Assignment 9)
 // Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
@@ -82,5 +83,6 @@ JugglingGame::JugglingGame(const QStringList &facts, QWidget *parent)
     root->addWidget(topBar);
     root->addWidget(body, 1);
 
+    connect(backButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(backButton, &QPushButton::clicked, this, &JugglingGame::backRequested);
 }
