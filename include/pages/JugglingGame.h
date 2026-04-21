@@ -14,28 +14,6 @@
 class JugglingGame : public QWidget
 {
     Q_OBJECT
-    
-    b2World* world;
-    b2Body* ball;
-    
-    QTimer* timer;
-    
-    QString currentFact;
-    
-    int jugglesCount;
-    
-    QVector<QString> facts;
-    
-    void keyPressEvent(QKeyEvent*) override;
-    
-    explicit Jugl
-    
-protected:
-    void paintEvent(QPaintEvent*) override;
-    
-private slots:
-    void update();
-    
 
     b2World* world;
     b2Body* ball;

@@ -28,16 +28,10 @@ class JugglingGameCanvas : public QWidget
 
     QWidget* m_overlay;
     QLabel* m_scoreLabel;
-<<<<<<< HEAD
-    QLabel* m_reasonLabel;
+    QLabel* m_reasonLabel;   // shows why the run ended
 
-    QPixmap m_bgPixmap;
-    QPixmap m_playerPixmap;
-=======
-    QLabel* m_reasonLabel;   // shows "THE BALL FELL" or "HIT THE WALL!"
-
-    QPixmap m_bgPixmap;      // newPitch.png background
->>>>>>> e8cb1d6d6b9cbba83895e781206c62f8c25b1382
+    QPixmap m_bgPixmap;      // pitch background
+    QPixmap m_playerPixmap;  // player sprite
 
     int jugglesCount;
 
