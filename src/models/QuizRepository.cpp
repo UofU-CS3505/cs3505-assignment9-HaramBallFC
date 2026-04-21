@@ -653,8 +653,8 @@ void QuizRepository::loadQuestions()
             "Reman's favorite fact: Brazil in the only country to have played in every World Cup.",
             "Tom's favorite fact: A World Cup final can be decided by penalties after 120 minutes.",
             "Harry's favorite fact: Zidane was never caught offside in his entire career.",
-            "Diego's favorite fact: The World Cup is one of the most watched sporting events in the world.",
-            "Ethan's favorite fact: Brazil has won more World Cups than any other country."
+            "Diego's favorite fact: Mexico holds the record for the most losses in world cup history. 28 losses in 60 matches",
+            "Ethan's favorite fact: The fastest World Cup goal was in 11 seconds. Scored by Hakan Şükür of Turkey."
         };
     }
 

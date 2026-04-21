@@ -17,6 +17,14 @@
 #include <QPixmap>
 #include <QStringList>
 
+/**
+ * @brief JugglingGameCanvas is a QWidget subclass that runs the juggling mini-game.
+ *        It owns the Box2D physics world, the game loop timer, and all rendering logic.
+ *        Facts are injected at construction and cycled every 4 juggles. The player
+ *        kicks the ball by pressing spacebar when the ball is within the player's hit box.
+ *        Game over is triggered when the ball hits the ground or ceiling, and the high
+ *        score is persisted between sessions using QSettings.
+ */
 class JugglingGameCanvas : public QWidget
 {
     Q_OBJECT

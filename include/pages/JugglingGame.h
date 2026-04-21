@@ -9,6 +9,13 @@
 #include <QWidget>
 #include <QStringList>
 
+/**
+ * @brief JugglingGame is a QWidget page wrapper that hosts the JugglingGameCanvas
+ *        alongside the page title and a back button. It is responsible only for
+ *        layout and navigation, all physics and game logic live in JugglingGameCanvas.
+ *        Facts are received from QuizRepository and passed directly into the canvas
+ *        at construction time via dependency injection.
+ */
 class JugglingGame : public QWidget
 {
     Q_OBJECT

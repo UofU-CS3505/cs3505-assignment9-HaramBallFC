@@ -10,25 +10,16 @@
 #include <QPainter>
 #include <QFontDatabase>
 #include <QShowEvent>
-#include <QCoreApplication>
-#include <QDir>
-#include <QFileInfo>
-
-// Walk up from the executable directory until we find the asset file.
-static QString findJuggleAsset(const QString &relativePath)
-{
-    QDir dir(QCoreApplication::applicationDirPath());
-    for (int i = 0; i < 10; ++i) {
-        const QString candidate = dir.absoluteFilePath(relativePath);
-        if (QFileInfo::exists(candidate))
-            return candidate;
-        if (!dir.cdUp())
-            break;
-    }
-    return {};
-}
 
 
+/**
+ * @brief Initializes the juggling game canvas. Sets up the Box2D world with gravity,
+ *        creates the static ground body and dynamic ball body with physics properties,
+ *        loads background and player sprite assets, sets up the game over overlay widget,
+ *        initializes the fact label, and starts the 60fps game loop timer.
+ * @param facts - list of fact strings injected from the lesson repository
+ * @param parent - parent widget passed to QWidget
+ */
 JugglingGameCanvas::JugglingGameCanvas(const QStringList &facts, QWidget* parent)
     : QWidget(parent)
     , world(nullptr)
@@ -49,14 +40,10 @@ JugglingGameCanvas::JugglingGameCanvas(const QStringList &facts, QWidget* parent
     QFontDatabase::addApplicationFont(":/fonts/PressStart2p.ttf");
 
     // Load pitch background (same image used by the PK game)
-    const QString bgPath = findJuggleAsset("resources/images/newPitch.png");
-    if (!bgPath.isEmpty())
-        m_bgPixmap = QPixmap(bgPath);
+    m_bgPixmap = QPixmap(":/images/newPitch.png");
 
     // Yamal player
-    const QString playerPath = findJuggleAsset("resources/images/LaminePixel.png");
-    if (!playerPath.isEmpty())
-        m_playerPixmap = QPixmap(playerPath);
+    m_playerPixmap = QPixmap(":/images/LaminePixel.png");
 
     // Reduced gravity so the ball moves slowly enough for the player to react
     b2Vec2 gravity(0.0f, 6.0f);
@@ -156,6 +143,12 @@ JugglingGameCanvas::JugglingGameCanvas(const QStringList &facts, QWidget* parent
 
 // FUNCTION IMPLEMENTATION
 
+/**
+ * @brief Draws the current game state each frame. Renders the background image,
+ *        the player sprite, the Box2D ball scaled to screen coordinates,
+ *        and the live juggle count and high score HUD text.
+ * @param event - the paint event provided by Qt (unused directly)
+ */
 void JugglingGameCanvas::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
@@ -197,6 +190,12 @@ void JugglingGameCanvas::paintEvent(QPaintEvent*)
 
 }
 
+/**
+ * @brief Handles spacebar input. Checks if the ball is within the player's hit box.
+ *        If so, applies an upward impulse, increments the juggle counter,
+ *        plays a sound, and updates the displayed fact every 4 juggles.
+ * @param event - the key event provided by Qt
+ */
 void JugglingGameCanvas::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
@@ -243,6 +242,12 @@ void JugglingGameCanvas::keyPressEvent(QKeyEvent* event)
     }
 }
 
+/**
+ * @brief Called whenever the canvas is resized. Updates the overlay geometry,
+ *        repositions the Box2D ground to match the new canvas height,
+ *        and repositions the fact label to stay in the top right corner.
+ * @param event - the resize event provided by Qt
+ */
 void JugglingGameCanvas::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
@@ -258,6 +263,12 @@ void JugglingGameCanvas::resizeEvent(QResizeEvent* event)
     }
 }
 
+/**
+ * @brief Called each time the juggling game page becomes visible.
+ *        Repositions the ground, resets the game state, and hides
+ *        the overlay so every visit starts fresh.
+ * @param event - the show event provided by Qt
+ */
 void JugglingGameCanvas::showEvent(QShowEvent* event)
 {
     QWidget::showEvent(event);
@@ -266,7 +277,11 @@ void JugglingGameCanvas::showEvent(QShowEvent* event)
     m_overlay->hide();
 }
 
-// Moves the Box2D ground body so its top surface sits exactly at the canvas bottom.
+/**
+ * @brief Moves the Box2D ground body so its top surface aligns exactly
+ *        with the bottom of the canvas in pixels, keeping the physics
+ *        world in sync with the widget size.
+ */
 void JugglingGameCanvas::repositionGround()
 {
     if (!ground || height() <= 0)
@@ -279,6 +294,12 @@ void JugglingGameCanvas::repositionGround()
     ground->SetTransform(b2Vec2(ground->GetPosition().x, groundWorldY), 0.0f);
 }
 
+/**
+ * @brief Called every 16ms by the QTimer game loop. Steps the Box2D physics
+ *        simulation forward one frame, checks if the ball has hit the ground
+ *        or ceiling, and if so triggers game over — updating the high score,
+ *        showing the overlay, and playing the appropriate sound.
+ */
 void JugglingGameCanvas::tick()
 {
     if (gameOver)
@@ -319,10 +340,19 @@ void JugglingGameCanvas::tick()
     update();
 }
 
+/**
+ * @brief Returns the current juggle count.
+ * @return int - number of successful juggles in the current session
+ */
 int JugglingGameCanvas::getJugglesCount() const {
     return jugglesCount;
 }
 
+/**
+ * @brief Resets the game to its initial state. Zeroes the juggle counter,
+ *        clears the game over flag, resets the fact display to the first fact,
+ *        and repositions the ball to its starting position with zero velocity.
+ */
 void JugglingGameCanvas::resetGame()
 {
     jugglesCount = 0;

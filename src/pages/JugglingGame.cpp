@@ -14,6 +14,15 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
+/**
+ * @brief Constructs the JugglingGame wrapper page. Builds the full page layout
+ *        including the gold top accent stripe, title labels, and the JugglingGameCanvas
+ *        which owns all physics and game logic. Facts are passed directly into the
+ *        canvas at construction. The back button emits backRequested() to signal
+ *        the main window to return to the lesson menu.
+ * @param facts - list of fact strings injected from the lesson repository
+ * @param parent - parent widget passed to QWidget
+ */
 JugglingGame::JugglingGame(const QStringList &facts, QWidget *parent)
     : QWidget(parent)
 {
@@ -26,27 +35,22 @@ JugglingGame::JugglingGame(const QStringList &facts, QWidget *parent)
     topBar->setFixedHeight(5);
     topBar->setStyleSheet("background-color: #D4A843;");
 
-    QWidget *body = new QWidget(this);
-    QVBoxLayout *bl = new QVBoxLayout(body);
-    bl->setContentsMargins(80, 0, 80, 0);
-    bl->setSpacing(0);
-
-    QLabel *eyebrow = new QLabel("JUGGLING GAME", body);
+    QLabel *eyebrow = new QLabel("JUGGLING GAME", this);
     eyebrow->setAlignment(Qt::AlignCenter);
     eyebrow->setStyleSheet(
         "font-size: 11px; font-weight: 700; letter-spacing: 4px; color: #D4A843;"
     );
 
-    QLabel *title = new QLabel("Juggling Game", body);
+    QLabel *title = new QLabel("Juggling Game", this);
     title->setAlignment(Qt::AlignCenter);
     title->setStyleSheet("font-size: 42px; font-weight: 700; color: #FFFFFF;");
 
     // Gold divider
-    QFrame *div = new QFrame(body);
+    QFrame *div = new QFrame(this);
     div->setFixedSize(50, 3);
     div->setStyleSheet("background-color: #D4A843; border: none;");
 
-    QPushButton *backButton = new QPushButton("\u2190 Back to Lessons", body);
+    QPushButton *backButton = new QPushButton("\u2190 Back to Lessons", this);
     backButton->setStyleSheet(
         "QPushButton {"
         "  background-color: transparent; color: #8FA3B8;"
@@ -65,23 +69,20 @@ JugglingGame::JugglingGame(const QStringList &facts, QWidget *parent)
         return h;
     };
 
-    JugglingGameCanvas* canvas = new JugglingGameCanvas(facts, body);
+    JugglingGameCanvas* canvas = new JugglingGameCanvas(facts, this);
     canvas -> setMinimumHeight(400);
     canvas -> setFocus();
 
-    bl->addSpacing(2);
-    bl->addWidget(eyebrow);
-    bl->addSpacing(4);
-    bl->addWidget(title);
-    bl->addSpacing(14);
-    bl->addWidget(canvas, 1);
-    bl->addSpacing(16);
-    bl->addLayout(centered(backButton));
-    bl->addSpacing(16);
-
-
     root->addWidget(topBar);
-    root->addWidget(body, 1);
+    root->addSpacing(2);
+    root->addWidget(eyebrow);
+    root->addSpacing(4);
+    root->addWidget(title);
+    root->addSpacing(14);
+    root->addWidget(canvas, 1);
+    root->addSpacing(16);
+    root->addLayout(centered(backButton));
+    root->addSpacing(16);
 
     connect(backButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(backButton, &QPushButton::clicked, this, &JugglingGame::backRequested);
