@@ -648,7 +648,7 @@ QWidget *BracketPage::makeRoundColumn(int round, const QString &roundName)
     hdr->setAlignment(Qt::AlignCenter);
     hdr->setFixedHeight(22);
     hdr->setStyleSheet(
-        "font-family:'Press Start 2P'; font-size:6px; color:#27AE60; letter-spacing:1px;");
+        "font-family:'Press Start 2P'; font-size:8px; color:#27AE60; letter-spacing:1px;");
     vl->addWidget(hdr);
 
     QFrame *hdrLine = new QFrame(col);
@@ -677,8 +677,8 @@ QWidget *BracketPage::makeRoundColumn(int round, const QString &roundName)
         champName->setWordWrap(true);
         champName->setStyleSheet(
             s.decided
-                ? "font-family:'Press Start 2P'; font-size:7px; color:#D4A843; background:transparent;"
-                : "font-family:'Press Start 2P'; font-size:7px; color:#3A5070; background:transparent;");
+                ? "font-family:'Press Start 2P'; font-size:8px; color:#D4A843; background:transparent;"
+                : "font-family:'Press Start 2P'; font-size:8px; color:#3A5070; background:transparent;");
         cl->addWidget(trophy);
         cl->addWidget(champName);
 
@@ -717,7 +717,7 @@ QWidget *BracketPage::makeMatchWidget(int round, int matchIdx)
     // Small match label above the card
     QLabel *matchLbl = new QLabel(QString("M%1").arg(matchIdx + 1), w);
     matchLbl->setStyleSheet(
-        "font-family:'Press Start 2P'; font-size:4px; color:#2A4060; padding:1px 2px;");
+        "font-family:'Press Start 2P'; font-size:6px; color:#2A4060; padding:1px 2px;");
     vl->addWidget(matchLbl);
 
     // Build one slot row, where user can click
@@ -745,7 +745,7 @@ QWidget *BracketPage::makeMatchWidget(int round, int matchIdx)
             "QPushButton { background:#0F1E35; color:" +
             QString(slot.decided ? "#FFFFFF" : "#2A4060") + ";"
                                                             "  border:1px solid #1E3A5F; border-radius:0px;"
-                                                            "  font-family:'Press Start 2P'; font-size:6px;"
+                                                            "  font-family:'Press Start 2P'; font-size:8px;"
                                                             "  text-align:left; padding:1px 4px; }"
                                                             "QPushButton:hover { background:#1A5A2A; color:#FFFFFF; border-color:#27AE60; }"
                                                             "QPushButton:disabled { background:#0A1420; color:#1E2E40; border-color:#0F1E35; }");
