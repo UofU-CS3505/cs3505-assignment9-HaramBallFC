@@ -9,6 +9,7 @@
 #include "models/QuizQuestion.h"
 
 #include <QVector>
+#include <QStringList>
 
 class QuizRepository
 {
@@ -17,9 +18,12 @@ public:
 
     QVector<QuizQuestion> questionsForLesson(int lessonId) const;
     QVector<QuizQuestion> allQuestions() const;
+    QStringList jugglingFacts() const;
 
 private:
     void loadQuestions();
+    void loadFacts();
 
     QVector<QuizQuestion> m_questions;
+    QStringList m_facts;
 };

@@ -15,6 +15,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QPixmap>
+#include <QStringList>
 
 class JugglingGameCanvas : public QWidget
 {
@@ -29,9 +30,13 @@ class JugglingGameCanvas : public QWidget
     QWidget* m_overlay;
     QLabel* m_scoreLabel;
     QLabel* m_reasonLabel;   // shows why the run ended
+    QLabel* m_factLabel;     // shows rotating facts while juggling
 
     QPixmap m_bgPixmap;      // pitch background
     QPixmap m_playerPixmap;  // player sprite
+
+    QStringList m_facts;
+    int m_currentFactIndex;
 
     int jugglesCount;
 
@@ -51,7 +56,7 @@ private slots:
     void tick();
 
 public:
-    explicit JugglingGameCanvas(QWidget* parent = nullptr);
+    explicit JugglingGameCanvas(const QStringList &facts, QWidget* parent = nullptr);
     int getJugglesCount() const;
 
 signals:

@@ -13,8 +13,8 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-JugglingGame::JugglingGame(QVector<QString> facts, QWidget *parent)
-    : QWidget(parent), world(nullptr), ball(nullptr), timer(new QTimer(this)), jugglesCount(0), facts(facts)
+JugglingGame::JugglingGame(const QStringList &facts, QWidget *parent)
+    : QWidget(parent)
 {
     QVBoxLayout *root = new QVBoxLayout(this);
     root->setContentsMargins(0, 0, 0, 0);
@@ -64,7 +64,7 @@ JugglingGame::JugglingGame(QVector<QString> facts, QWidget *parent)
         return h;
     };
 
-    JugglingGameCanvas* canvas = new JugglingGameCanvas(body);
+    JugglingGameCanvas* canvas = new JugglingGameCanvas(facts, body);
     canvas -> setMinimumHeight(400);
     canvas -> setFocus();
 
@@ -84,11 +84,3 @@ JugglingGame::JugglingGame(QVector<QString> facts, QWidget *parent)
 
     connect(backButton, &QPushButton::clicked, this, &JugglingGame::backRequested);
 }
-
-// FUNCTION IMPLEMENTATIONS
-
-void JugglingGame::paintEvent(QPaintEvent*){}
-
-void JugglingGame::keyPressEvent(QKeyEvent*){}
-
-void JugglingGame::tick(){}

@@ -1,4 +1,4 @@
-// AI was used to assist with this file.
+// AI was used to assist with the designing in this file.
 //
 // HaramBall FC (CS3505 Assignment 9)
 // Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,

@@ -403,7 +403,7 @@ void LessonRepository::loadSampleLessons()
          "History", LessonMode::General},
 
         {5, "Lesson 5: Quiz to Review the Lessons",
-         "Review all Fan Mode lessons with a short quiz.",
+         "Review the Fan Mode lessons with a short cumulative quiz.",
          "Section 1: Fan Mode Review Quiz\n"
          "This is a placeholder for the Fan Mode review quiz.\n\n"
          "Users will be able to test what they learned from the first four lessons here.",
@@ -411,7 +411,7 @@ void LessonRepository::loadSampleLessons()
          "Review Quiz", LessonMode::Fan},
 
         {6, "Lesson 6: Juggling Game Review",
-         "A short interactive juggling game to review Fan Mode content.",
+         "A short interactive juggling game to review Fan Mode content (and fun facts!). Hit the space bar to keep the ball up and get a high score!",
          "Section 1: Juggling Game Review\n"
          "This is a placeholder for the Fan Mode juggling game.\n\n"
          "Later, this page can launch a mini-game where the user keeps the ball in the air while reviewing key ideas from the lessons.",

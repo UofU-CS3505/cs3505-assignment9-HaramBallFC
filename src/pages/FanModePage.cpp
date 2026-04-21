@@ -1,5 +1,3 @@
-// AI was used to assist with this file.
-//
 // HaramBall FC (CS3505 Assignment 9)
 // Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
 //       Henish Patel, Reman Adhikari, Ethan Cobler
@@ -43,8 +41,8 @@ FanModePage::FanModePage(QWidget *parent)
         "font-family: 'Press Start 2P'; font-size: 22px; color: #FFFFFF;");
 
     QLabel *infoLabel = new QLabel(
-        "Explore lessons on soccer rules, World Cup history, and tournament\n"
-        "formats so you can understand and enjoy every match.",
+        "Explore lessons on the World cup qualifications, countries represented, rules, \n"
+        " and history so you can understand and enjoy every match.",
         body);
     infoLabel->setAlignment(Qt::AlignCenter);
     infoLabel->setWordWrap(true);

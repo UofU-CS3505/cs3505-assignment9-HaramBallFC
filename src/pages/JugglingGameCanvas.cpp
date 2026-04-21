@@ -28,8 +28,21 @@ static QString findJuggleAsset(const QString &relativePath)
 }
 
 
-JugglingGameCanvas::JugglingGameCanvas(QWidget* parent) : QWidget(parent)
-    , world(nullptr), ball(nullptr), ground(nullptr), timer(nullptr), jugglesCount(0), gameOver(false), highScore(0)
+JugglingGameCanvas::JugglingGameCanvas(const QStringList &facts, QWidget* parent)
+    : QWidget(parent)
+    , world(nullptr)
+    , ball(nullptr)
+    , ground(nullptr)
+    , timer(nullptr)
+    , m_overlay(nullptr)
+    , m_scoreLabel(nullptr)
+    , m_reasonLabel(nullptr)
+    , m_factLabel(nullptr)
+    , m_facts(facts)
+    , m_currentFactIndex(0)
+    , jugglesCount(0)
+    , gameOver(false)
+    , highScore(0)
 {
 
     QFontDatabase::addApplicationFont(":/fonts/PressStart2p.ttf");
@@ -45,7 +58,7 @@ JugglingGameCanvas::JugglingGameCanvas(QWidget* parent) : QWidget(parent)
         m_playerPixmap = QPixmap(playerPath);
 
     // Reduced gravity so the ball moves slowly enough for the player to react
-    b2Vec2 gravity(0.0f, 4.0f);
+    b2Vec2 gravity(0.0f, 6.0f);
     world = new b2World(gravity);
 
     b2BodyDef groundDef;
@@ -95,6 +108,28 @@ JugglingGameCanvas::JugglingGameCanvas(QWidget* parent) : QWidget(parent)
     m_scoreLabel->setAlignment(Qt::AlignCenter);
     m_scoreLabel->setStyleSheet("font-family: 'Press Start 2P'; font-size: 12px; color: #D4A843; background: transparent;");
 
+    // Fact label shown during gameplay
+    m_factLabel = new QLabel(this);
+    m_factLabel->setAlignment(Qt::AlignCenter);
+    m_factLabel->setWordWrap(true);
+    m_factLabel->setStyleSheet(
+        "font-family: 'Press Start 2P';"
+        "font-size: 9px;"
+        "color: #FFFFFF;"
+        "background-color: rgba(11, 24, 41, 200);"
+        "border: 2px solid #D4A843;"
+        "padding: 12px;");
+    m_factLabel->setFixedWidth(520);
+
+    if (!m_facts.isEmpty()) {
+        m_factLabel->setText(m_facts[0]);
+    } else {
+        m_factLabel->setText("Fun facts will appear here.");
+    }
+
+    m_factLabel->show();
+    m_factLabel->raise();
+
     QPushButton* tryAgainBtn = new QPushButton("TRY AGAIN", m_overlay);
     tryAgainBtn->setStyleSheet(
         "QPushButton { font-family: 'Press Start 2P'; font-size: 12px; color: #000000;"
@@ -138,7 +173,7 @@ void JugglingGameCanvas::paintEvent(QPaintEvent*)
     {
         int playerW = 120;
         int playerH = 230;
-        int playerX = width() / 2 - playerW / 2;
+        int playerX = width() / 4 - playerW / 2;   // player on the left
         int playerY = height() - playerH;
         painter.drawPixmap(playerX, playerY, playerW, playerH, m_playerPixmap);
     }
@@ -163,11 +198,46 @@ void JugglingGameCanvas::paintEvent(QPaintEvent*)
 
 void JugglingGameCanvas::keyPressEvent(QKeyEvent* event)
 {
-    if (event->key() == Qt::Key_Space && !event -> isAutoRepeat())
+    if (event->key() == Qt::Key_Space && !event->isAutoRepeat())
     {
-        b2Vec2 impulse(0.0f, -4.0f);
-        ball -> ApplyLinearImpulse(impulse, ball->GetWorldCenter(), true);
-        jugglesCount++;
+        const float scale = 50.0f;
+
+        // Ball screen position
+        b2Vec2 pos = ball->GetPosition();
+        float ballX = pos.x * scale;
+        float ballY = pos.y * scale;
+        float radius = 0.5f * scale;
+
+        // Player draw position (same values used in paintEvent)
+        int playerW = 120;
+        int playerH = 230;
+        int playerX = width() / 4 - playerW / 2;
+        int playerY = height() - playerH;
+
+        // Simple hit box around the upper body / head area
+        int hitLeft   = playerX - 10;
+        int hitRight  = playerX + playerW + 10;
+        int hitTop    = playerY - 40;
+        int hitBottom = playerY + 110;
+
+        bool ballInHitBox =
+            (ballX + radius >= hitLeft) &&
+            (ballX - radius <= hitRight) &&
+            (ballY + radius >= hitTop) &&
+            (ballY - radius <= hitBottom);
+
+        if (ballInHitBox)
+        {
+            b2Vec2 impulse(0.0f, -5.2f);
+            ball->ApplyLinearImpulse(impulse, ball->GetWorldCenter(), true);
+            jugglesCount++;
+
+            // Change fact every 4 juggles
+            if (!m_facts.isEmpty() && jugglesCount % 4 == 0) {
+                m_currentFactIndex = (m_currentFactIndex + 1) % m_facts.size();
+                m_factLabel->setText(m_facts[m_currentFactIndex]);
+            }
+        }
     }
 }
 
@@ -176,6 +246,14 @@ void JugglingGameCanvas::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
     m_overlay->setGeometry(rect());
     repositionGround();
+
+    // fact box on the right of the canvas
+    if (m_factLabel != nullptr) {
+        int labelX = width() - m_factLabel->width() - 20;
+        int labelY = 70;
+        m_factLabel->move(labelX, labelY);
+        m_factLabel->raise();
+    }
 }
 
 void JugglingGameCanvas::showEvent(QShowEvent* event)
@@ -246,10 +324,21 @@ void JugglingGameCanvas::resetGame()
     jugglesCount = 0;
     gameOver = false;
 
+    // Reset displayed fact
+    m_currentFactIndex = 0;
+    if (m_factLabel != nullptr) {
+        if (!m_facts.isEmpty()) {
+            m_factLabel->setText(m_facts[0]);
+        } else {
+            m_factLabel->setText("Fun facts will appear here.");
+        }
+        m_factLabel->raise();
+    }
+
     // Re-center ball horizontally, start 35% down the canvas
     const float scale = 50.0f;
-    float centerX = (width()  > 0) ? width()  / (2.0f * scale) : 5.0f;
-    float startY  = (height() > 0) ? height() * 0.35f / scale  : 3.0f;
+    float centerX = (width() > 0) ? width() / (3.5f * scale) : 3.0f;
+    float startY  = (height() > 0) ? height() * 0.35f / scale : 3.0f;
     ball->SetTransform(b2Vec2(centerX, startY), 0.0f);
     ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
 }

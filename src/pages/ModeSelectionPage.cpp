@@ -213,17 +213,17 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
 
     QFrame *fanCard = makeCard(
         "FAN MODE",
-        "Learn the rules, history, and\n"
-        "key moments of the World Cup.\n"
-        "Finish with a 10-question quiz.",
+        "Go over the lessons on\n"
+        "Qualifications, Teams, Rules and History\n"
+        "of the WC at your own pace.",
         "ENTER  \u2192", redBtn, "#C8102E",
         "resources/images/card_fan.png",
         body, &fanBtn);
 
     QFrame *playerCard = makeCard(
         "PLAYER MODE",
-        "Lessons, quizzes, and the\n"
-        "penalty kick game — become\n"
+        "Put your ball knowledge to the test,\n"
+        "play the penalty game and become\n"
         "a World Cup expert.",
         "ENTER  \u2192", goldBtn, "#D4A843",
         "resources/images/card_player.png",
@@ -231,7 +231,7 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
 
     QFrame *bracketCard = makeCard(
         "BRACKET",
-        "View the official 2026 FIFA\n"
+        "Predict your own 2026 FIFA\n"
         "World Cup group stage and\n"
         "full knockout bracket.",
         "VIEW  \u2192", greenBtn, "#27AE60",

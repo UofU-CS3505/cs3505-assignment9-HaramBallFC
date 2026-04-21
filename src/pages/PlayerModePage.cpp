@@ -1,5 +1,3 @@
-// AI was used to assist with this file.
-//
 // HaramBall FC (CS3505 Assignment 9)
 // Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
 //       Henish Patel, Reman Adhikari, Ethan Cobler
@@ -43,7 +41,7 @@ PlayerModePage::PlayerModePage(QWidget *parent)
         "font-family: 'Press Start 2P'; font-size: 22px; color: #FFFFFF;");
 
     QLabel *infoLabel = new QLabel(
-        "Go through lessons on rules and strategy, test your knowledge\n"
+        "Go through lessons, increase and test your ball knowledge\n"
         "with quizzes, and play the penalty kick game.",
         body);
     infoLabel->setAlignment(Qt::AlignCenter);
