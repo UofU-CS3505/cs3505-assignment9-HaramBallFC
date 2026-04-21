@@ -72,7 +72,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     , scored(false)
     , dragging(false)
     , ballVisible(true)
-    , resetButton(new QPushButton("Restart", this))
+    , resetButton(new QPushButton("Reset Shot", this))
     , backButton(new QPushButton("Quit", this))
     , shootButton(new QPushButton("Shoot", this))
     , angleSlider(new QSlider(Qt::Horizontal, this))
@@ -82,6 +82,9 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     , gameOver(false)
     , resultText("")
     , answerTarget("")
+    , powerLabel(new QLabel("POWER", this))
+    , aimLabel(new QLabel("AIM", this))
+
 
 {
     setMinimumSize(1000, 700);
@@ -108,13 +111,13 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
 
 
     //LABELS FOR SLIDERS
-    QLabel *powerLabel = new QLabel("POWER", this);
-    powerLabel->setGeometry(width()/2 - 320, height() - 310, 70, 20);
-    powerLabel->setStyleSheet("color: black; font-size: 18px;");
+    //QLabel *powerLabel = new QLabel("POWER", this);
+    powerLabel->setGeometry(width()/2 - 320, height() - 310, 100, 20);
+    powerLabel->setStyleSheet("color: black; font-size: 18px; font-family: 'Press Start 2P';");
 
-    QLabel *aimLabel = new QLabel("AIM", this);
-    aimLabel->setGeometry(width()/2 - 20, height() - 98, 40, 20);
-    aimLabel->setStyleSheet("color: black; font-size: 18px;");
+    //QLabel *aimLabel = new QLabel("AIM", this);
+    aimLabel->setGeometry(width()/2 - 20, height() - 80, 100, 20);
+    aimLabel->setStyleSheet("color: black; font-size: 18px; font-family: 'Press Start 2P';");
 
 
 
@@ -210,6 +213,24 @@ int PenaltyGamePage::worldToScreenY(float y)
     return height() - static_cast<int>(y * 60.0f) - 100;
 }
 
+void PenaltyGamePage::resizeEvent(QResizeEvent *event){
+
+    QWidget::resizeEvent(event);
+
+    backButton->setGeometry(20, 20, 140, 40);
+    resetButton->setGeometry(width()-160, 20, 140, 40);
+    shootButton->setGeometry(width() * 0.65, height()*0.71, 100, 40); //SHould e fix
+
+    angleSlider->setGeometry(width()/2-180, height() - 120, 360, 24);
+    powerSlider->setGeometry(width()/2-290, height() - 290, 24, 170);
+
+
+    powerLabel->setGeometry(width()/2 - 320, height() - 310, 100, 20);
+    aimLabel->setGeometry(width()/2 - 20, height() - 80, 100, 20);
+
+
+}
+
 //logic for resetting the ball
 void PenaltyGamePage::resetBall()
 {
@@ -254,10 +275,15 @@ void PenaltyGamePage::updateWorld()
         int ballY = worldToScreenY(pos.y);
 
         //GOAL DIMENSIONS
-        int goalWidth = 750;
-        int goalHeight = 90;
+        // int goalWidth = 750;
+        // int goalHeight = 90;
+        // int goalX = width()/2 - goalWidth/2;
+        // int goalY = 195;
+
+        int goalWidth = width() * 0.75;
+        int goalHeight = height() * 0.13;
         int goalX = width()/2 - goalWidth/2;
-        int goalY = 195;
+        int goalY = height() * 0.28;
 
         int boxWidth = 150;
         int boxHeight = 60;
@@ -328,9 +354,9 @@ void PenaltyGamePage::updateWorld()
         // }
     }
 
-    backButton->setGeometry(20, 20, 180, 40);
-    resetButton->setGeometry(width() - 160, 20, 140, 40);
-    shootButton->setGeometry(650, 500, 100, 40);
+    //backButton->setGeometry(20, 20, 180, 40);
+    //resetButton->setGeometry(width() - 160, 20, 140, 40);
+    //shootButton->setGeometry(650, 500, 100, 40);
 
 
     update();
@@ -381,10 +407,15 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     }
 
     // Goal
-    int w = 750;
-    int h = 90;
+    // int w = 750;
+    // int h = 90;
+    // int gx = width()/2 - w/2;
+    // int gy = 195;
+
+    int w = width() * 0.75;
+    int h = height() * 0.13;
     int gx = width()/2 - w/2;
-    int gy = 195;
+    int gy = height() * 0.28;
 
     QPen pen(Qt::white);
     pen.setWidth(8);
@@ -509,78 +540,3 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
                    QString("FINAL SCORE: %1 / 5").arg(score));
     }
 }
-
-
-
-// void PenaltyGamePage::mousePressEvent(QMouseEvent *event)
-// {
-//     if (ball == nullptr || !ballVisible) return;
-
-//     int ballX = worldToScreenX(ball->GetPosition().x);
-//     int ballY = worldToScreenY(ball->GetPosition().y);
-
-//     int dx = event->pos().x() - ballX;
-//     int dy = event->pos().y() - ballY;
-
-//     if (dx * dx + dy * dy <= 30 * 30) {
-//         dragging = true;
-//         dragStart = event->pos();
-//         dragCurrent = event->pos();
-//     }
-// }
-
-// void PenaltyGamePage::mouseMoveEvent(QMouseEvent *event)
-// {
-//     if (!dragging) return;
-
-//     dragCurrent = event->pos();
-//     update();
-// }
-
-// void PenaltyGamePage::mouseReleaseEvent(QMouseEvent *event)
-// {
-//     if (!dragging || ball == nullptr || !ballVisible) return;
-
-//     dragging = false;
-//     dragCurrent = event->pos();
-//     scored = false;
-
-//     float centerX = (width() / 2.0f - 100.0f) / 60.0f;
-//     ball->SetTransform(b2Vec2(centerX, 1.1f), 0.0f);
-//     ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-//     ball->SetAngularVelocity(0.0f);
-
-//     int dx = dragCurrent.x() - dragStart.x();
-//     int dy = dragCurrent.y() - dragStart.y();
-
-//     float length = std::sqrt(static_cast<float>(dx * dx + dy * dy));
-
-//     if (length < 1.0f) {
-//         update();
-//         return;
-//     }
-
-//     float dirX = dx / length;
-//     float dirY = dy / length;
-//     dirY = -dirY;
-
-//     float power = length / 4.0f;
-
-//     float vx = -dirX * power;
-//     float vy = dirY * power;
-
-//     if (std::abs(dx) < 4) {
-//         vx = 0.0f;
-//     }
-
-//     if (vy < 4.0f) {
-//         vy = 4.0f;
-//     }
-
-//     ball->SetLinearVelocity(b2Vec2(vx, vy));
-
-//     update();
-// }
-
-
-

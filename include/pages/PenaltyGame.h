@@ -19,6 +19,7 @@
 #include <QStringList>
 #include <QVector>
 #include <QString>
+#include <QLabel>
 
 #include "Box2D/Box2D.h"
 
@@ -62,6 +63,8 @@ private:
     QPushButton *shootButton;
     QSlider *angleSlider;
     QSlider *powerSlider;
+    QLabel *powerLabel;
+    QLabel *aimLabel;
 
 
 
@@ -85,6 +88,7 @@ private:
 
     int worldToScreenX(float x);
     int worldToScreenY(float y);
+    void resizeEvent(QResizeEvent * event) override;
 };
 
 
