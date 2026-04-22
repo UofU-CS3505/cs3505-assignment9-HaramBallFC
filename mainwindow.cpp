@@ -1,7 +1,7 @@
 // HaramBall FC (CS3505 Assignment 9)
 // Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
 //       Henish Patel, Reman Adhikari, Ethan Cobler
-//
+// AI was used to make the file
 // MainWindow = controls page navigation, lesson flow,
 // mini-games, quiz access, and shared UI like volume.
 
