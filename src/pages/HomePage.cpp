@@ -44,12 +44,12 @@ HomePage::HomePage(QWidget *parent)
     root->setContentsMargins(0, 0, 0, 0);
     root->setSpacing(0);
 
-    // ── Top accent stripe ─────────────────────────────────────────────────
+    // Top accent stripe 
     QWidget *topBar = new QWidget(this);
     topBar->setFixedHeight(5);
     topBar->setStyleSheet("background-color: #C8102E;");
 
-    // ── Main content ──────────────────────────────────────────────────────
+    // Main content
     QWidget *content = new QWidget(this);
     QHBoxLayout *outerH = new QHBoxLayout(content);
     outerH->setContentsMargins(0, 0, 0, 0);
@@ -60,7 +60,7 @@ HomePage::HomePage(QWidget *parent)
     cl->setContentsMargins(0, 0, 0, 0);
     cl->setSpacing(0);
 
-    // ── Emblem — centered ─────────────────────────────────────────────────
+    //  Emblem — centered
     m_emblemLabel->setAlignment(Qt::AlignCenter);
     m_emblemLabel->setStyleSheet("background: transparent;");
     m_emblemLabel->setFixedSize(160, 247);
@@ -78,7 +78,7 @@ HomePage::HomePage(QWidget *parent)
     m_mapLabel->setStyleSheet("background: transparent;");
     m_mapLabel->setFixedSize(260, 0);   // hidden until map loads
 
-    // ── Text ──────────────────────────────────────────────────────────────
+    // Text 
     QLabel *fifaLabel = new QLabel("FIFA WORLD CUP 2026", center);
     fifaLabel->setAlignment(Qt::AlignCenter);
     fifaLabel->setStyleSheet(
@@ -170,7 +170,7 @@ HomePage::HomePage(QWidget *parent)
     outerH->addWidget(center);
     outerH->addStretch();
 
-    // ── Bottom accent stripe ──────────────────────────────────────────────
+    //  Bottom accent stripe
     QWidget *bottomBar = new QWidget(this);
     bottomBar->setFixedHeight(5);
     bottomBar->setStyleSheet("background-color: #D4A843;");
@@ -179,7 +179,7 @@ HomePage::HomePage(QWidget *parent)
     root->addWidget(content, 1);
     root->addWidget(bottomBar);
 
-    // ── Network: fetch host-country map ───────────────────────────────────
+    // Network: fetch host-country map
     QNetworkRequest req(QUrl(
         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/"
         "2026_FIFA_World_Cup_host_cities.svg/400px-2026_FIFA_World_Cup_host_cities.svg.png"));
