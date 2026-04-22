@@ -25,7 +25,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     root->setContentsMargins(0, 0, 0, 0);
     root->setSpacing(0);
 
-    // ── Top header bar ────────────────────────────────────────────────────
+    // Top header bar
     QWidget *header = new QWidget(this);
     header->setFixedHeight(68);
     header->setStyleSheet(
@@ -62,13 +62,13 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     hl->addStretch();
     hl->addWidget(homeButton);
 
-    // ── Body: left panel + right panel ───────────────────────────────────
+    // Body: left panel + right panel
     QWidget *body = new QWidget(this);
     QHBoxLayout *bodyLayout = new QHBoxLayout(body);
     bodyLayout->setContentsMargins(0, 0, 0, 0);
     bodyLayout->setSpacing(0);
 
-    // ── Left panel: lesson list ───────────────────────────────────────────
+    // Left panel: lesson list 
     QWidget *leftPanel = new QWidget(body);
     leftPanel->setFixedWidth(480);
     leftPanel->setStyleSheet(
@@ -114,7 +114,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     ll->addWidget(listHeader);
     ll->addWidget(m_lessonList, 1);
 
-    // ── Right panel: preview + open button ───────────────────────────────
+    // Right panel: preview + open button 
     QWidget *rightPanel = new QWidget(body);
     rightPanel->setStyleSheet("background-color: #0B1829;");
     QVBoxLayout *rl = new QVBoxLayout(rightPanel);
@@ -158,7 +158,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     bodyLayout->addWidget(leftPanel);
     bodyLayout->addWidget(rightPanel, 1);
 
-    // ── Footer bar ────────────────────────────────────────────────────────
+    //Footer bar 
     QWidget *footer = new QWidget(this);
     footer->setFixedHeight(62);
     footer->setStyleSheet(
@@ -192,7 +192,7 @@ LessonMenuPage::LessonMenuPage(QWidget *parent)
     root->addWidget(body, 1);
     root->addWidget(footer);
 
-    // ── Connections ───────────────────────────────────────────────────────
+    //Connections 
     connect(m_lessonList, &QListWidget::currentItemChanged,
             this, &LessonMenuPage::updateLessonPreview);
 
