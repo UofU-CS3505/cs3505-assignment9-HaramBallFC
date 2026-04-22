@@ -38,27 +38,27 @@ private:
     void lockAnswerButtons(bool locked);
     void resetAnswerButtons();
 
-    // ── Widgets ──
-    QLabel      *m_progressLabel;
-    QLabel      *m_scoreLabel;
-    QLabel      *m_questionLabel;
+    // Widgets 
+    QLabel *m_progressLabel;
+    QLabel *m_scoreLabel;
+    QLabel *m_questionLabel;
     QPushButton *m_answerButtons[4];
-    QLabel      *m_feedbackLabel;
+    QLabel *m_feedbackLabel;
     QPushButton *m_nextButton;
 
     // Results screen widgets
-    QWidget     *m_quizWidget;
-    QWidget     *m_resultsWidget;
-    QLabel      *m_resultsTitleLabel;
-    QLabel      *m_resultsScoreLabel;
-    QLabel      *m_resultsMessageLabel;
+    QWidget *m_quizWidget;
+    QWidget *m_resultsWidget;
+    QLabel *m_resultsTitleLabel;
+    QLabel *m_resultsScoreLabel;
+    QLabel *m_resultsMessageLabel;
     QPushButton *m_resultsBackButton;
     QPushButton *m_resultsHomeButton;
 
-    // ── State ──
-    QuizRepository      m_repo;
+    // State 
+    QuizRepository m_repo;
     QVector<QuizQuestion> m_questions;
     int m_currentIndex = 0;
-    int m_score        = 0;
-    int m_lessonId     = -1;
+    int m_score = 0;
+    int m_lessonId = -1;
 };
