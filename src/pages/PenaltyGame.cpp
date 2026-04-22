@@ -1,4 +1,4 @@
-// AI was used to assist with the Box2D physics simulation in this file.
+// AI was used to assist with the file
 //
 // HaramBall FC (CS3505 Assignment 9)
 // Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
