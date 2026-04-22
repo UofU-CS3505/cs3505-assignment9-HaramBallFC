@@ -13,30 +13,33 @@
 #include <QMap>
 #include <QPixmap>
 
-class QLabel;                  // Forward declaration for label widgets.
-class QTextEdit;               // Forward declaration for text edit widget (if needed by implementation).
-class QPushButton;             // Forward declaration for button widgets.
-class QNetworkAccessManager;   // Forward declaration for image download manager.
-class QNetworkReply;           // Forward declaration for async network replies.
+class QLabel;                 
+class QTextEdit;               
+class QPushButton;            
+class QNetworkAccessManager;   
+class QNetworkReply;          
 
 class LessonViewerPage : public QWidget
 {
-    Q_OBJECT  // Enables Qt meta-object features (signals/slots).
+    Q_OBJECT  
 
 public:
-    explicit LessonViewerPage(QWidget *parent = nullptr);  // Constructs the lesson viewer page.
+    explicit LessonViewerPage(QWidget *parent = nullptr);  
 
-    void setLesson(const Lesson &lesson, LessonMode mode);  // Loads lesson data and initializes slides.
+    // Loads lesson data and initializes slides.
+    void setLesson(const Lesson &lesson, LessonMode mode);  
 
+//emits when the user click a certain button
 signals:
-    void backRequested();               // Emitted when user wants to go back.
-    void homeRequested();               // Emitted when user wants to return home.
-    void quizRequested(int lessonId);   // Emitted when user wants to start the quiz for a lesson.
+    void backRequested();               
+    void homeRequested();               
+    void quizRequested(int lessonId);   
 
+//slots for the lesson viewing logic (slides)
 private slots:
-    void nextSlide();                              // Moves to the next slide.
-    void prevSlide();                              // Moves to the previous slide.
-    void onImageDownloaded(QNetworkReply *reply);  // Handles downloaded slide image replies.
+    void nextSlide();                              
+    void prevSlide();                              
+    void onImageDownloaded(QNetworkReply *reply);  
 
 private:
     void parseSlides(const QString &content);     // Parses raw lesson content into slide title/text data.
@@ -44,8 +47,8 @@ private:
     void downloadImage(int slideIndex);           // Starts downloading image for the given slide.
     QStringList imageUrlsForLesson(int lessonId); // Returns image URLs associated with a lesson ID.
 
-    // Header
-    QLabel *m_titleLabel;  // Displays the lesson/page title at the top.
+    // Displays the lesson/page title at the top.
+    QLabel *m_titleLabel;  
 
     // Slide content
     QLabel *m_slideTitle;  // Displays the current slide title.
@@ -58,8 +61,9 @@ private:
     QLabel *m_slideCounter;      // Shows "current slide / total slides".
     QPushButton *m_quizButton;   // Starts quiz for the current lesson.
 
-    // Network
-    QNetworkAccessManager *m_networkManager;  // Manages async HTTP requests for slide images.
+
+    // Manages async HTTP requests for slide images.
+    QNetworkAccessManager *m_networkManager;  
 
     // Slide data
     QStringList m_slideTitles;      // Stores parsed slide titles.
