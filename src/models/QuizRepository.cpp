@@ -6,24 +6,28 @@
 
 #include "models/QuizRepository.h"
 
+// Constructs the quiz repository and loads both questions and juggling facts.
 QuizRepository::QuizRepository()
 {
     loadQuestions();
     loadFacts();
 }
 
+// Returns quiz questions for a specific lesson (lesson 5 returns a combined review of lessons 1–4).
 QVector<QuizQuestion> QuizRepository::questionsForLesson(int lessonId) const
 {
     QVector<QuizQuestion> result;
 
     for (const QuizQuestion &q : m_questions) {
-        if (lessonId == 5) { //this is for Fan mode as it is "lesson" #4, it makes the quiz review a COMBINED OVERALL one
+        // Lesson 5 is the Fan mode overall review, so include questions from lessons 1 through 4.
+        if (lessonId == 5) {
             if (q.lessonId >= 1 && q.lessonId <= 4) {
                 result.append(q);
             }
         } else {
+            // For non-review lessons, include only questions matching that lesson ID.
             if (q.lessonId == lessonId) {
-                result.append(q); // for the rest, logic remains the same
+                result.append(q);
             }
         }
     }
@@ -31,16 +35,19 @@ QVector<QuizQuestion> QuizRepository::questionsForLesson(int lessonId) const
     return result;
 }
 
+// Returns every quiz question currently stored.
 QVector<QuizQuestion> QuizRepository::allQuestions() const
 {
     return m_questions;
 }
 
+// Returns all fact strings used by the juggling/game review feature.
 QStringList QuizRepository::jugglingFacts() const
 {
     return m_facts;
 }
 
+// Loads all hard-coded quiz questions into memory.
 void QuizRepository::loadQuestions()
 {
     m_questions = {
@@ -629,32 +636,32 @@ void QuizRepository::loadQuestions()
     };
 }
 
-    void QuizRepository::loadFacts()
-    {
-        m_facts = {
-            "The 2026 FIFA World Cup will be the first World Cup with 48 teams.",
-            "Canada, Mexico, and the United States are co-hosting the 2026 World Cup.",
-            "Brazil is the only nation to have appeared in every World Cup.",
-            "The first FIFA World Cup was held in Uruguay in 1930.",
-            "The 2026 World Cup will feature 104 matches.",
-            "VAR was first used in a men's World Cup in 2018.",
-            "Semi-Automated Offside Technology was introduced at the 2022 World Cup.",
-            "A standard football match lasts 90 minutes plus stoppage time.",
-            "Penalty shootouts are used if a knockout match stays tied after extra time.",
-            "The offside rule exists to prevent goal-hanging.",
-            "Argentina won the 2022 FIFA World Cup.",
-            "The Estadio Azteca will become the first stadium to host matches in three World Cups.",
-            "Oceania received a guaranteed World Cup spot for the first time in 2026.",
-            "Curaçao is one of the smallest nations ever to qualify for a World Cup.",
-            "Cape Verde qualified for its first World Cup in 2026.",
-            "New Zealand went undefeated in the 2010 World Cup group stage but still did not advance.",
-            "Kylian Mbappe scored a hat trick in the 2022 World Cup final.",
-            "Ebrahim's favorite fact: I love Toni Kroos :) (Greatest Midfielder ever).",
-            "Reman's favorite fact: Brazil in the only country to have played in every World Cup.",
-            "Tom's favorite fact: A World Cup final can be decided by penalties after 120 minutes.",
-            "Harry's favorite fact: Zidane was never caught offside in his entire career.",
-            "Diego's favorite fact: Mexico holds the record for the most losses in world cup history. 28 losses in 60 matches",
-            "Ethan's favorite fact: The fastest World Cup goal was in 11 seconds. Scored by Hakan Şükür of Turkey."
-        };
-    }
-
+// Loads hard-coded soccer/world-cup facts used for the juggling review/game mode.
+void QuizRepository::loadFacts()
+{
+    m_facts = {
+        "The 2026 FIFA World Cup will be the first World Cup with 48 teams.",
+        "Canada, Mexico, and the United States are co-hosting the 2026 World Cup.",
+        "Brazil is the only nation to have appeared in every World Cup.",
+        "The first FIFA World Cup was held in Uruguay in 1930.",
+        "The 2026 World Cup will feature 104 matches.",
+        "VAR was first used in a men's World Cup in 2018.",
+        "Semi-Automated Offside Technology was introduced at the 2022 World Cup.",
+        "A standard football match lasts 90 minutes plus stoppage time.",
+        "Penalty shootouts are used if a knockout match stays tied after extra time.",
+        "The offside rule exists to prevent goal-hanging.",
+        "Argentina won the 2022 FIFA World Cup.",
+        "The Estadio Azteca will become the first stadium to host matches in three World Cups.",
+        "Oceania received a guaranteed World Cup spot for the first time in 2026.",
+        "Curaçao is one of the smallest nations ever to qualify for a World Cup.",
+        "Cape Verde qualified for its first World Cup in 2026.",
+        "New Zealand went undefeated in the 2010 World Cup group stage but still did not advance.",
+        "Kylian Mbappe scored a hat trick in the 2022 World Cup final.",
+        "Ebrahim's favorite fact: I love Toni Kroos :) (Greatest Midfielder ever).",
+        "Reman's favorite fact: Brazil in the only country to have played in every World Cup.",
+        "Tom's favorite fact: A World Cup final can be decided by penalties after 120 minutes.",
+        "Harry's favorite fact: Zidane was never caught offside in his entire career.",
+        "Diego's favorite fact: Mexico holds the record for the most losses in world cup history. 28 losses in 60 matches",
+        "Ethan's favorite fact: The fastest World Cup goal was in 11 seconds. Scored by Hakan Şükür of Turkey."
+    };
+}
