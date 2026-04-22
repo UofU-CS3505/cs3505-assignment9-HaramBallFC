@@ -52,7 +52,7 @@ void QuizRepository::loadQuestions()
 {
     m_questions = {
 
-        // -- Lesson 1: Qualifications --
+        // Lesson 1: Qualifications
         {1,
          "A CONMEBOL team finishes 7th in the final league table. What happens to them?",
          {"They're eliminated",
@@ -213,7 +213,7 @@ void QuizRepository::loadQuestions()
           "14"},
         2},
 
-        // -- Lesson 2: Countries Represented --
+        // Lesson 2: Countries Represented
         {2,
          "Which country has qualified for every World Cup since 1930?",
          {"Germany",
@@ -374,7 +374,7 @@ void QuizRepository::loadQuestions()
           "Algeria"},
         1},
 
-        // ── Lesson 3: Rules and Regulations ──
+        // Lesson 3: Rules and Regulations
 
         {3,
          "At which World Cup did the Video Assistant Referee (VAR) make its debut?",
@@ -504,7 +504,7 @@ void QuizRepository::loadQuestions()
           "2026 USA"},
          2},
 
-        // ── Lesson 4: History of the World Cup ──
+        // Lesson 4: History of the World Cup
 
         {4,
          "Jules Rimet served as president of FIFA from 1921 until which year?",
