@@ -41,12 +41,13 @@ private slots:
     void showFanLessons();
     void showPlayerLessons();
     void showBracketPage();
-    void openLessonById(int lessonId);
-    void returnToLessonMenu();
-    void showQuizPage(int lessonId);
+    void openLessonById(int lessonId); // Open a lesson by ID.
+    void returnToLessonMenu(); // Go back to the lesson menu.
+    void showQuizPage(int lessonId); // Open the quiz for a lesson.
 
 private:
     PenaltyGamePage *m_penaltyGamePage;
+
     enum class PageId {
         Home = 0,
         ModeSelection,
@@ -55,19 +56,18 @@ private:
         LessonMenu,
         LessonViewer,
         Bracket
-    };
+    }; // Used for stacked widget page navigation.
 
     void buildPageStack();
     void connectNavigation();
-    void setCurrentPage(PageId pageId);
-    void loadLessonsForMode(LessonMode mode);
-    void repositionVolumeWidget();
+    void setCurrentPage(PageId pageId); // Switch visible page.
+    void loadLessonsForMode(LessonMode mode); // Load lessons for selected mode.
+    void repositionVolumeWidget(); // Keep volume widget aligned.
 
 protected:
-    void resizeEvent(QResizeEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override; // Update layout on resize.
 
     Ui::MainWindow *ui;
-
     QStackedWidget *m_pageStack;
 
     HomePage *m_homePage;
@@ -84,7 +84,7 @@ protected:
     QLabel  *m_volIcon;
     QSlider *m_volumeSlider;
 
-    LessonRepository m_lessonRepository;
+    LessonRepository m_lessonRepository; // Stores and provides lesson data.
     LessonMode m_currentMode;
     int m_currentLessonId;
 };
