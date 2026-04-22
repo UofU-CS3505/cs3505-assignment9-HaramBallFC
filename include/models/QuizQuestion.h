@@ -9,6 +9,7 @@
 #include <QString>
 #include <QVector>
 
+// Represents a single mutiple choice quiz question tied to a lesson
 struct QuizQuestion
 {
     int lessonId = -1;
