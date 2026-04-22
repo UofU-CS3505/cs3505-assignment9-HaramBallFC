@@ -1,14 +1,15 @@
 #include "SoundManager.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-#include <QCoreApplication>
 #include <QSaveFile>
 #include <QUrl>
 
-// Ensures a sound file exists as a local file path by copying from qrc when possible,
-// with a fallback search in resources/sounds relative to the app directory.
+// Tries to make sure the sound exists as a local file.
+// First it copies from the Qt resource file, and if that fails,
+// it looks for the file in resources/sounds.
 static QString ensureLocalWavFromResource(const QString& resourcePath, const QString& fileName)
 {
     const QString tempDir = QDir::tempPath();
@@ -16,7 +17,6 @@ static QString ensureLocalWavFromResource(const QString& resourcePath, const QSt
 
     QFile in(resourcePath);
     if (!in.open(QIODevice::ReadOnly)) {
-        // If qrc open fails, try locating a real file in resources/sounds up the directory tree.
         QDir dir(QCoreApplication::applicationDirPath());
         for (int i = 0; i < 10; ++i) {
             const QString candidate = dir.absoluteFilePath(QString("resources/sounds/%1").arg(fileName));
@@ -28,7 +28,7 @@ static QString ensureLocalWavFromResource(const QString& resourcePath, const QSt
         return {};
     }
 
-    // Copy qrc contents to a temp file so APIs requiring local files can load it reliably.
+    // Copy the resource into a temp file so it can be loaded as a normal local file.
     QSaveFile out(outPath);
     if (!out.open(QIODevice::WriteOnly))
         return {};
@@ -40,7 +40,7 @@ static QString ensureLocalWavFromResource(const QString& resourcePath, const QSt
     return outPath;
 }
 
-// Initializes a QSoundEffect source from local temp/fallback path, else directly from qrc URL.
+// Sets up a sound effect from either a local file or the Qt resource path.
 static void initEffect(QSoundEffect& effect, const QString& resourcePath, const QString& fileName)
 {
     const QString localPath = ensureLocalWavFromResource(resourcePath, fileName);
@@ -48,17 +48,16 @@ static void initEffect(QSoundEffect& effect, const QString& resourcePath, const 
         effect.setSource(QUrl::fromLocalFile(localPath));
     else
         effect.setSource(QUrl(QString("qrc%1").arg(resourcePath)));
+
     effect.setVolume(0.8f);
 }
 
-// Returns the singleton SoundManager instance.
 SoundManager& SoundManager::instance()
 {
     static SoundManager s_instance;
     return s_instance;
 }
 
-// Constructs SoundManager and initializes all SFX + looping background music.
 SoundManager::SoundManager()
     : m_bgmPlayer(new QMediaPlayer)
     , m_bgmAudio(new QAudioOutput)
@@ -73,44 +72,31 @@ SoundManager::SoundManager()
     initEffect(m_ceiling, ":/sounds/ceiling.wav", "ceiling.wav");
 
     const QString bgmPath = ensureLocalWavFromResource(":/sounds/background.mp3", "background.mp3");
+
     m_bgmPlayer->setAudioOutput(m_bgmAudio);
     m_bgmAudio->setVolume(0.35f);
     m_bgmPlayer->setLoops(QMediaPlayer::Infinite);
+
     if (!bgmPath.isEmpty())
         m_bgmPlayer->setSource(QUrl::fromLocalFile(bgmPath));
     else
         m_bgmPlayer->setSource(QUrl("qrc:/sounds/background.mp3"));
 }
 
-// Plays UI click sound effect.
-void SoundManager::playClick()          { m_click.play(); }
+// Simple wrappers for each sound effect.
+void SoundManager::playClick()   { m_click.play(); }
+void SoundManager::playCorrect() { m_correct.play(); }
+void SoundManager::playWrong()   { m_wrong.play(); }
+void SoundManager::playPass()    { m_pass.play(); }
+void SoundManager::playFail()    { m_fail.play(); }
+void SoundManager::playJuggle()  { m_juggle.play(); }
+void SoundManager::playThud()    { m_thud.play(); }
+void SoundManager::playCeiling() { m_ceiling.play(); }
 
-// Plays correct-answer sound effect.
-void SoundManager::playCorrect()        { m_correct.play(); }
+void SoundManager::startBgm() { m_bgmPlayer->play(); }
+void SoundManager::stopBgm()  { m_bgmPlayer->stop(); }
 
-// Plays wrong-answer sound effect.
-void SoundManager::playWrong()          { m_wrong.play(); }
-
-// Plays pass/advance sound effect.
-void SoundManager::playPass()           { m_pass.play(); }
-
-// Plays fail/lose sound effect.
-void SoundManager::playFail()           { m_fail.play(); }
-
-// Plays juggling hit sound effect.
-void SoundManager::playJuggle()         { m_juggle.play(); }
-
-// Plays ground/impact thud sound effect.
-void SoundManager::playThud()           { m_thud.play(); }
-
-// Plays ceiling collision sound effect.
-void SoundManager::playCeiling()        { m_ceiling.play(); }
-
-// Starts looping background music playback.
-void SoundManager::startBgm()           { m_bgmPlayer->play(); }
-
-// Stops background music playback.
-void SoundManager::stopBgm()            { m_bgmPlayer->stop(); }
-
-// Sets background music volume (typically expected range is 0.0 to 1.0).
-void SoundManager::setBgmVolume(float v){ m_bgmAudio->setVolume(v); }
+void SoundManager::setBgmVolume(float v)
+{
+    m_bgmAudio->setVolume(v);
+}
