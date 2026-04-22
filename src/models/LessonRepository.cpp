@@ -6,33 +6,40 @@
 
 #include "models/LessonRepository.h"
 
+// Constructs the repository and loads built-in sample lesson data.
 LessonRepository::LessonRepository()
 {
     loadSampleLessons();
 }
 
+// Returns all lessons currently stored in the repository.
 QVector<Lesson> LessonRepository::allLessons() const
 {
     return m_lessons;
 }
 
+// Returns lessons filtered by mode (General/Fan/Player visibility rules).
 QVector<Lesson> LessonRepository::lessonsForMode(LessonMode mode) const
 {
     QVector<Lesson> filteredLessons;
 
     for (const Lesson &lesson : m_lessons) {
+        // Fan mode includes General lessons and Fan-specific lessons.
         bool matchesFan =
             (mode == LessonMode::Fan) &&
             (lesson.mode == LessonMode::General || lesson.mode == LessonMode::Fan);
 
+        // Player mode includes General lessons and Player-specific lessons.
         bool matchesPlayer =
             (mode == LessonMode::Player) &&
             (lesson.mode == LessonMode::General || lesson.mode == LessonMode::Player);
 
+        // General mode includes only General lessons.
         bool matchesGeneral =
             (mode == LessonMode::General) &&
             (lesson.mode == LessonMode::General);
 
+        // Keep the lesson only if it matches at least one valid mode rule.
         if (matchesFan || matchesPlayer || matchesGeneral) {
             filteredLessons.push_back(lesson);
         }
@@ -41,6 +48,7 @@ QVector<Lesson> LessonRepository::lessonsForMode(LessonMode mode) const
     return filteredLessons;
 }
 
+// Finds and returns a lesson by ID; returns a fallback "not found" lesson if missing.
 Lesson LessonRepository::lessonById(int lessonId) const
 {
     for (const Lesson &lesson : m_lessons) {
@@ -49,6 +57,7 @@ Lesson LessonRepository::lessonById(int lessonId) const
         }
     }
 
+    // Build a safe fallback lesson object for invalid IDs.
     Lesson missingLesson;
     missingLesson.title = "Lesson Not Found";
     missingLesson.description = "The selected lesson could not be loaded.";
@@ -57,6 +66,7 @@ Lesson LessonRepository::lessonById(int lessonId) const
     return missingLesson;
 }
 
+// Loads hardcoded sample lessons into repository memory.
 void LessonRepository::loadSampleLessons()
 {
     m_lessons = {
@@ -402,6 +412,7 @@ void LessonRepository::loadSampleLessons()
 
          "History", LessonMode::General},
 
+        // Review lesson for fan mode quiz content.
         {5, "Lesson 5: Quiz to Review the Lessons",
          "Review the Fan Mode lessons with a short cumulative quiz.",
          "Section 1: Fan Mode Review Quiz\n"
@@ -410,6 +421,7 @@ void LessonRepository::loadSampleLessons()
 
          "Review Quiz", LessonMode::Fan},
 
+        // Review lesson for fan mode interactive mini-game content.
         {6, "Lesson 6: Juggling Game Review",
          "A short interactive juggling game to review Fan Mode content (and fun facts!). Hit the space bar to keep the ball up and get a high score!",
          "Section 1: Juggling Game Review\n"
