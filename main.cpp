@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    // ── Load pixel font ────────────────────────────────────────────────────
+    //  Load pixel font 
     {
         QDir dir(QCoreApplication::applicationDirPath());
         for (int i = 0; i < 10; ++i) {
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    // ── Global Pixel / World Cup Theme ────────────────────────────────────
+    //  Global Pixel / World Cup Theme 
     app.setStyleSheet(R"(
 
         /* ── Base ── */
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
         QStackedWidget { background-color: #0B1829; }
 
     )");
-    // ──────────────────────────────────────────────────────────────────────
+    
 
     MainWindow window;
     window.show();
