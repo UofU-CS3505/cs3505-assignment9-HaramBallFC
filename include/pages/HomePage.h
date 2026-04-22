@@ -21,11 +21,12 @@ public:
 signals:
     void startClicked();
 
+//slot for image loading
 private slots:
     void onImageLoaded(QNetworkReply *reply);
 
 private:
-    QLabel                *m_emblemLabel;
-    QLabel                *m_mapLabel;
+    QLabel *m_emblemLabel;
+    QLabel *m_mapLabel;
     QNetworkAccessManager *m_net;
 };
