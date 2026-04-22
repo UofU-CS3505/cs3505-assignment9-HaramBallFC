@@ -18,12 +18,12 @@ FanModePage::FanModePage(QWidget *parent)
     root->setContentsMargins(0, 0, 0, 0);
     root->setSpacing(0);
 
-    // ── Top accent stripe ─────────────────────────────────────────────────
+    //Top accent stripe
     QWidget *topBar = new QWidget(this);
     topBar->setFixedHeight(5);
     topBar->setStyleSheet("background-color: #C8102E;");
 
-    // ── Content ───────────────────────────────────────────────────────────
+    //Content 
     QWidget *body = new QWidget(this);
     QVBoxLayout *bl = new QVBoxLayout(body);
     bl->setContentsMargins(80, 0, 80, 0);
