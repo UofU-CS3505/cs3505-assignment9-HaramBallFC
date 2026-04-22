@@ -65,7 +65,7 @@ static QString pixelBtn(const QString &bg, const QString &hi,
     ).arg(bg, hi, sh, fg);
 }
 
-// ── Helper: build one mode card ───────────────────────────────────────────
+//Helper: build one mode card
 static QFrame *makeCard(const QString &cardTitle,
                          const QString &desc,
                          const QString &btnText,
@@ -80,10 +80,6 @@ static QFrame *makeCard(const QString &cardTitle,
     card->setStyleSheet(QString(
         "QFrame {"
         "  background-color: #0F1E35;"
-        // "  border-top:    4px solid %1;"
-        // "  border-left:   4px solid %1;"
-        // "  border-bottom: 4px solid %1;"
-        // "  border-right:  4px solid %1;"
         "  border: none;"
         "  border-radius: 0px;"
         "}"
@@ -95,14 +91,6 @@ static QFrame *makeCard(const QString &cardTitle,
     QVBoxLayout *l = new QVBoxLayout(card);
     l->setContentsMargins(24, 26, 24, 24);
     l->setSpacing(10);
-
-    // Pixel accent line at top
-    //Not needed- Reman
-
-    // QFrame *accentBar = new QFrame(card);
-    // accentBar->setFixedHeight(4);
-    // accentBar->setStyleSheet(
-    //    QString("background-color: %1; border: none;").arg(accentColor));
 
     // Title in pixel font
     QLabel *ttl = new QLabel(cardTitle, card);
@@ -173,12 +161,12 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     root->setContentsMargins(0, 0, 0, 0);
     root->setSpacing(0);
 
-    // ── Top pixel stripe ──────────────────────────────────────────────────
+    //  Top pixel stripe 
     QWidget *topBar = new QWidget(this);
     topBar->setFixedHeight(6);
     topBar->setStyleSheet("background-color: #C8102E;");
 
-    // ── Content body ──────────────────────────────────────────────────────
+    // Content body
     QWidget *body = new QWidget(this);
     QVBoxLayout *bl = new QVBoxLayout(body);
     bl->setContentsMargins(60, 44, 60, 36);
@@ -198,7 +186,7 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     sub->setAlignment(Qt::AlignCenter);
     sub->setStyleSheet("font-size: 12px; color: #8FA3B8;" "font-family: 'Press Start 2P';");
 
-    // ── Pixel button styles ───────────────────────────────────────────────
+    // Pixel button styles 
     // Red: #C8102E  hi=#E83A58  sh=#7A0018
     const QString redBtn  = pixelBtn("#C8102E", "#E83A58", "#7A0018", "#FFFFFF");
     // Gold: #D4A843  hi=#F0C860  sh=#7A6020
@@ -206,7 +194,7 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     // Green: #1A5A2A  hi=#27AE60  sh=#0A2010
     const QString greenBtn= pixelBtn("#1A5A2A", "#27AE60", "#0A2010", "#FFFFFF");
 
-    // ── Cards ─────────────────────────────────────────────────────────────
+    // Cards 
     QPushButton *fanBtn     = nullptr;
     QPushButton *playerBtn  = nullptr;
     QPushButton *bracketBtn = nullptr;
@@ -246,7 +234,7 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     cards->addWidget(bracketCard);
     cards->addStretch();
 
-    // ── Back button row ───────────────────────────────────────────────────
+    // Back button row 
     QHBoxLayout *bottomRow = new QHBoxLayout;
     QPushButton *backBtn = new QPushButton("\u2190 BACK", body);
     backBtn->setFixedWidth(130);
@@ -266,8 +254,8 @@ ModeSelectionPage::ModeSelectionPage(QWidget *parent)
     root->addWidget(topBar);
     root->addWidget(body, 1);
 
-    connect(fanBtn,     &QPushButton::clicked, this, &ModeSelectionPage::fanModeSelected);
-    connect(playerBtn,  &QPushButton::clicked, this, &ModeSelectionPage::playerModeSelected);
+    connect(fanBtn, &QPushButton::clicked, this, &ModeSelectionPage::fanModeSelected);
+    connect(playerBtn, &QPushButton::clicked, this, &ModeSelectionPage::playerModeSelected);
     connect(bracketBtn, &QPushButton::clicked, this, &ModeSelectionPage::bracketSelected);
-    connect(backBtn,    &QPushButton::clicked, this, &ModeSelectionPage::backRequested);
+    connect(backBtn, &QPushButton::clicked, this, &ModeSelectionPage::backRequested);
 }
