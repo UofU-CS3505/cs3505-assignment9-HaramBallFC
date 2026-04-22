@@ -30,7 +30,7 @@ JugglingGame::JugglingGame(const QStringList &facts, QWidget *parent)
     root->setContentsMargins(0, 0, 0, 0);
     root->setSpacing(0);
 
-    // ── Top accent stripe ─────────────────────────────────────────────────
+    // Top accent stripe 
     QWidget *topBar = new QWidget(this);
     topBar->setFixedHeight(5);
     topBar->setStyleSheet("background-color: #D4A843;");
