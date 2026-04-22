@@ -1,5 +1,11 @@
 #pragma once
 
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galvan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// Data types for lessons (content shown in Fan/Player modes).
+
 #include <QSoundEffect>
 #include <QMediaPlayer>
 #include <QAudioOutput>
