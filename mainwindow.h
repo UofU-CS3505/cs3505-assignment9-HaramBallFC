@@ -2,7 +2,8 @@
 // Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
 //       Henish Patel, Reman Adhikari, Ethan Cobler
 //
-// MainWindow = handles page navigation and shared app UI.
+// MainWindow handles page navigation, lesson flow,
+// and shared UI elements like volume controls.
 
 #pragma once
 
@@ -44,16 +45,26 @@ private slots:
     void showModeSelectionPage();
     void showFanModePage();
     void showPlayerModePage();
-    void showFanLessons(); // Show fan lessons.
-    void showPlayerLessons(); // Show player lessons.
+
+    // Load lessons for each mode and show the lesson menu.
+    void showFanLessons();
+    void showPlayerLessons();
+
     void showBracketPage();
-    void openLessonById(int lessonId); // Open selected lesson.
-    void returnToLessonMenu(); // Return to lesson menu.
-    void showQuizPage(int lessonId); // Open lesson quiz.
+
+    // Open a lesson, quiz, or special activity.
+    void openLessonById(int lessonId);
+
+    // Return from lesson content back to the lesson menu.
+    void returnToLessonMenu();
+
+    // Open the quiz page for the selected lesson.
+    void showQuizPage(int lessonId);
 
 private:
     PenaltyGamePage *m_penaltyGamePage;
 
+    // Identifies each page in the stacked widget.
     enum class PageId {
         Home = 0,
         ModeSelection,
@@ -62,16 +73,26 @@ private:
         LessonMenu,
         LessonViewer,
         Bracket
-    }; // Page IDs for stacked widget.
+    };
 
+    // Builds the page stack and shared widgets.
     void buildPageStack();
+
+    // Connects page signals to navigation actions.
     void connectNavigation();
-    void setCurrentPage(PageId pageId); // Switch current page.
-    void loadLessonsForMode(LessonMode mode); // Load lessons by mode.
-    void repositionVolumeWidget(); // Keep volume widget in place.
+
+    // Switches to the requested page.
+    void setCurrentPage(PageId pageId);
+
+    // Loads lessons for the current mode.
+    void loadLessonsForMode(LessonMode mode);
+
+    // Keeps the floating volume widget in position.
+    void repositionVolumeWidget();
 
 protected:
-    void resizeEvent(QResizeEvent *event) override; // Update layout on resize.
+    // Updates floating widget placement on resize.
+    void resizeEvent(QResizeEvent *event) override;
 
     Ui::MainWindow *ui;
     QStackedWidget *m_pageStack;
@@ -86,11 +107,13 @@ protected:
     QuizPage *m_quizPage;
     JugglingGame *m_jugglingGame;
 
+    // Floating volume controls.
     QWidget *m_volumeWidget;
     QLabel  *m_volIcon;
     QSlider *m_volumeSlider;
 
-    LessonRepository m_lessonRepository; // Lesson data source.
+    // Lesson data and current lesson state.
+    LessonRepository m_lessonRepository;
     LessonMode m_currentMode;
     int m_currentLessonId;
 };
