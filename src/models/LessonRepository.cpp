@@ -70,7 +70,7 @@ Lesson LessonRepository::lessonById(int lessonId) const
 void LessonRepository::loadSampleLessons()
 {
     m_lessons = {
-        // ── Lesson 1: Qualifications ──
+        // Lesson 1: Qualifications
         {1, "Lesson 1: Qualifications",
          "How teams qualify for the FIFA World Cup through each regional confederation.",
 
@@ -172,7 +172,7 @@ void LessonRepository::loadSampleLessons()
          "2 spots and complete the historic field of 48 nations for the 2026 FIFA World Cup.\n\n",
          "Qualifications", LessonMode::General},
 
-        // ── Lesson 2: Countries Represented ──
+        // Lesson 2: Countries Represented
         {2, "Lesson 2: Countries Represented",
          "Which countries are competing in the 2026 World Cup, including first-timers and records.",
 
@@ -263,7 +263,7 @@ void LessonRepository::loadSampleLessons()
          "football development.",
          "Countries", LessonMode::General},
 
-        // ── Lesson 3: Rules and Regulations ──
+        // Lesson 3: Rules and Regulations
         {3, "Lesson 3: Rules and Regulations",
          "This lesson will cover the main rules of association football that are usually misinterpreted in the context of contemporary matches.",
 
@@ -340,7 +340,7 @@ void LessonRepository::loadSampleLessons()
 
          "Rules", LessonMode::General},
 
-        // ── Lesson 4: History of the World Cup ──
+        // Lesson 4: History of the World Cup
         {4, "Lesson 4: History of the World Cup",
          "How the World Cup began, evolved over time, and why it is the most important soccer tournament.",
 
