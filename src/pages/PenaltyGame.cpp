@@ -121,9 +121,8 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
 
 
 
-    // -------------------------------------------------------------------------
-    // STATIC GROUND BODY
-    // -------------------------------------------------------------------------
+    
+    // STATIC GROUND BODY   
     b2BodyDef groundBodyDef;
     groundBodyDef.position.Set(0.0f, -10.0f);
 
@@ -134,9 +133,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
 
     groundBody->CreateFixture(&groundBox, 0.0f);
 
-    // -------------------------------------------------------------------------
     // CREATE THE BALL
-    // -------------------------------------------------------------------------
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     float centerX = (width() / 2.0f - 100.0f) / 60.0f;
@@ -155,9 +152,8 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
 
     ball->CreateFixture(&fixtureDef);
 
-    // -------------------------------------------------------------------------
+    
     // TIMER + RESET BUTTON CONNECTIONS
-    // -------------------------------------------------------------------------
     connect(&timer, &QTimer::timeout, this, &PenaltyGamePage::updateWorld);
     connect(resetButton, &QPushButton::clicked, this, &PenaltyGamePage::resetBall);
     connect(backButton, &QPushButton::clicked, this, &PenaltyGamePage::backClicked);
@@ -274,11 +270,7 @@ void PenaltyGamePage::updateWorld()
         int ballX = worldToScreenX(pos.x);
         int ballY = worldToScreenY(pos.y);
 
-        //GOAL DIMENSIONS
-        // int goalWidth = 750;
-        // int goalHeight = 90;
-        // int goalX = width()/2 - goalWidth/2;
-        // int goalY = 195;
+
 
         int goalWidth = width() * 0.75;
         int goalHeight = height() * 0.13;
@@ -346,17 +338,9 @@ void PenaltyGamePage::updateWorld()
             }
         }
 
-        // else if(goalRect.contains(ballX, ballY)) {
-        //     scored = true;
-        //     ballVisible = false;
-        //     ball->SetLinearVelocity(b2Vec2(0.0f, 0.0f));
-        //     ball->SetAngularVelocity(0.0f);
-        // }
     }
 
-    //backButton->setGeometry(20, 20, 180, 40);
-    //resetButton->setGeometry(width() - 160, 20, 140, 40);
-    //shootButton->setGeometry(650, 500, 100, 40);
+   
 
 
     update();
