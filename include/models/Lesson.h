@@ -8,12 +8,14 @@
 
 #include <QString>
 
+// Determines which user mode a lesson is in
 enum class LessonMode {
     General,
     Fan,
     Player
 };
 
+// Represents a single educational lesson about the 2026 FIFA World Cup
 struct Lesson
 {
     int id = -1;
