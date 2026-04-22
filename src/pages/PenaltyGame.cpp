@@ -71,7 +71,6 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     , ball(nullptr)
     , timer(this)
     , scored(false)
-    , dragging(false)
     , ballVisible(true)
     , resetButton(new QPushButton("Reset Shot", this))
     , backButton(new QPushButton("Quit", this))
@@ -123,8 +122,8 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
 
 
 
-    
-    // STATIC GROUND BODY   
+
+    // STATIC GROUND BODY
     b2BodyDef groundBodyDef;
     groundBodyDef.position.Set(0.0f, -10.0f);
 
@@ -154,7 +153,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
 
     ball->CreateFixture(&fixtureDef);
 
-    
+
     // TIMER + RESET BUTTON CONNECTIONS
     connect(&timer, &QTimer::timeout, this, &PenaltyGamePage::updateWorld);
     connect(resetButton, &QPushButton::clicked, this, &PenaltyGamePage::resetBall);
@@ -220,7 +219,7 @@ void PenaltyGamePage::resizeEvent(QResizeEvent *event){
 
     backButton->setGeometry(20, 20, 140, 40);
     resetButton->setGeometry(width()-160, 20, 140, 40);
-    shootButton->setGeometry(width() * 0.65, height()*0.71, 100, 40); 
+    shootButton->setGeometry(width() * 0.65, height()*0.71, 100, 40);
 
     angleSlider->setGeometry(width()/2-180, height() - 120, 360, 24);
     powerSlider->setGeometry(width()/2-290, height() - 290, 24, 170);
@@ -249,7 +248,6 @@ void PenaltyGamePage::resetBall()
     }
 
     scored = false;
-    dragging = false;
     ballVisible = true;
 
     if (ball != nullptr) {
@@ -345,7 +343,7 @@ void PenaltyGamePage::updateWorld()
 
     }
 
-   
+
 
 
     update();
