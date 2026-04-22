@@ -2,6 +2,7 @@
 // Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
 //       Henish Patel, Reman Adhikari, Ethan Cobler
 //
+// AI was used to make this file
 // MainWindow handles page navigation, lesson flow,
 // and shared UI elements like volume controls.
 
