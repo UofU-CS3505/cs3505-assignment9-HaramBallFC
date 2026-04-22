@@ -28,7 +28,7 @@
 #include <QLabel>
 
 
-//used a method similar to harry's to import the picture.
+//a method to import the picutre so it stays in our project file
 static QString findAsset(const QString &relativePath)
 {
     QDir dir(QCoreApplication::applicationDirPath());
@@ -42,6 +42,7 @@ static QString findAsset(const QString &relativePath)
     return {};
 }
 
+//helper method to randomize five questions
 static void chooseRandomFive(const QStringList &allQuestions,
                              const QVector<bool> &allAnswers,
                              QStringList &pickedQuestions,
@@ -63,7 +64,7 @@ static void chooseRandomFive(const QStringList &allQuestions,
     }
 }
 
-
+//main widget layout of the app
 PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     : QWidget(parent)
     , world(b2Vec2(0.0f, 0.0f))
@@ -99,6 +100,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     resetButton->setStyleSheet("font-size: 8px; font-weight: bold;");
     shootButton->setStyleSheet("font-size: 8px; font-weight: bold;");
 
+    //Labels for the angle and power sliders
     angleSlider->setGeometry(width()/2-180, height() - 120, 360, 24);
     powerSlider->setGeometry(width()/2-290, height() - 290, 24, 170);
 
@@ -160,7 +162,6 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     connect(shootButton, &QPushButton::clicked, this, &PenaltyGamePage::shootBall);
 
 
-    //NEW
 
 
     // Angle slider
@@ -173,7 +174,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     powerSlider->setMaximum(30);
     powerSlider->setValue(12);
 
-    //new code: I added some random questions instead of putting it in array (for now)
+    //random questions extracted from some of the lessons
     questions << "The World Cup is held every 4 years."
               << "A soccer team has 12 players on the field."
               << "The 2026 World Cup will be hosted by 3 countries."
@@ -184,6 +185,7 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
               << "The 2026 World Cup will have 16 nations";
 
 
+    //set of answers mapped to the right questions
     correctAnswers << true
                    << false
                    << true
@@ -199,23 +201,26 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
     timer.start(10);
 }
 
+//set fixed screen
 int PenaltyGamePage::worldToScreenX(float x)
 {
     return static_cast<int>(x * 60.0f) + 100;
 }
 
+//set fixed screen
 int PenaltyGamePage::worldToScreenY(float y)
 {
     return height() - static_cast<int>(y * 60.0f) - 100;
 }
 
+//code for resizing the window
 void PenaltyGamePage::resizeEvent(QResizeEvent *event){
 
     QWidget::resizeEvent(event);
 
     backButton->setGeometry(20, 20, 140, 40);
     resetButton->setGeometry(width()-160, 20, 140, 40);
-    shootButton->setGeometry(width() * 0.65, height()*0.71, 100, 40); //SHould e fix
+    shootButton->setGeometry(width() * 0.65, height()*0.71, 100, 40); 
 
     angleSlider->setGeometry(width()/2-180, height() - 120, 360, 24);
     powerSlider->setGeometry(width()/2-290, height() - 290, 24, 170);
@@ -347,7 +352,7 @@ void PenaltyGamePage::updateWorld()
 }
 
 
-//NEW
+//method for shooting the game with its own logic
 void PenaltyGamePage::shootBall()
 {
     if (!ball) return;
@@ -374,6 +379,7 @@ void PenaltyGamePage::shootBall()
     update();
 }
 
+//painting the world event for the game
 void PenaltyGamePage::paintEvent(QPaintEvent *event)
 {
     QWidget::paintEvent(event);
@@ -390,11 +396,6 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
         p.drawRect(rect());
     }
 
-    // Goal
-    // int w = 750;
-    // int h = 90;
-    // int gx = width()/2 - w/2;
-    // int gy = 195;
 
     int w = width() * 0.75;
     int h = height() * 0.13;
@@ -427,7 +428,7 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     leftGradient.setColorAt(0, QColor(255, 255, 255, 180));
     leftGradient.setColorAt(1, QColor(255, 255, 255, 180));
 
-
+    //Fill boxes with the gradient background
     QLinearGradient rightGradient(rightSquare.topLeft(), rightSquare.bottomLeft());
     rightGradient.setColorAt(0, QColor(255, 255, 255, 180));
     rightGradient.setColorAt(1, QColor(255, 255, 255, 180));
@@ -505,8 +506,7 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
         p.drawEllipse(x-5, y-5, 10, 10);
     }
 
-    // Logic to Print when Box was Hit
-    //Logic similar to the True and False that tom had implemented
+    // Logic to Print when Box was Hit, true and false
     if (!resultText.isEmpty() && !gameOver) {
         p.setPen(resultText == "CORRECT!" ? Qt::darkGreen : Qt::red);
         p.setFont(QFont("Press Start 2P", 16, QFont::Bold));
