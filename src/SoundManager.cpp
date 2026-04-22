@@ -62,14 +62,30 @@ SoundManager::SoundManager()
     : m_bgmPlayer(new QMediaPlayer)
     , m_bgmAudio(new QAudioOutput)
 {
-    initEffect(m_click,   ":/sounds/click.wav",   "click.wav");
-    initEffect(m_correct, ":/sounds/correct.wav", "correct.wav");
-    initEffect(m_wrong,   ":/sounds/wrong.wav",   "wrong.wav");
-    initEffect(m_pass,    ":/sounds/pass.wav",    "pass.wav");
-    initEffect(m_fail,    ":/sounds/fail.wav",    "fail.wav");
-    initEffect(m_juggle,  ":/sounds/juggle.wav",  "juggle.wav");
-    initEffect(m_thud,    ":/sounds/thud.wav",    "thud.wav");
-    initEffect(m_ceiling, ":/sounds/ceiling.wav", "ceiling.wav");
+    initEffect(m_click,   
+        ":/sounds/click.wav",   
+        "click.wav");
+    initEffect(m_correct, 
+        ":/sounds/correct.wav", 
+        "correct.wav");
+    initEffect(m_wrong,   
+        ":/sounds/wrong.wav",   
+        "wrong.wav");
+    initEffect(m_pass,    
+        ":/sounds/pass.wav",    
+        "pass.wav");
+    initEffect(m_fail,    
+        ":/sounds/fail.wav",    
+        "fail.wav");
+    initEffect(m_juggle,  
+        ":/sounds/juggle.wav",  
+        "juggle.wav");
+    initEffect(m_thud,    
+        ":/sounds/thud.wav",    
+        "thud.wav");
+    initEffect(m_ceiling, 
+        ":/sounds/ceiling.wav", 
+        "ceiling.wav");
 
     const QString bgmPath = ensureLocalWavFromResource(":/sounds/background.mp3", "background.mp3");
 
