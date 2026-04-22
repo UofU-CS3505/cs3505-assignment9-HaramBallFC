@@ -10,7 +10,24 @@
 #include <QPainter>
 #include <QFontDatabase>
 #include <QShowEvent>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
 
+
+static QString findJuggleAsset(const QString &relativePath)
+{
+    QDir dir(QCoreApplication::applicationDirPath());
+    for (int i = 0; i < 10; ++i)
+    {
+        const QString candidate = dir.absoluteFilePath(relativePath);
+        if (QFileInfo::exists(candidate))
+            return candidate;
+        if (!dir.cdUp())
+            break;
+    }
+    return {};
+}
 
 /**
  * @brief Initializes the juggling game canvas. Sets up the Box2D world with gravity,
@@ -40,10 +57,14 @@ JugglingGameCanvas::JugglingGameCanvas(const QStringList &facts, QWidget* parent
     QFontDatabase::addApplicationFont(":/fonts/PressStart2p.ttf");
 
     // Load pitch background (same image used by the PK game)
-    m_bgPixmap = QPixmap(":/images/newPitch.png");
+    const QString bgPath = findJuggleAsset("resources/images/newPitch.png");
+    if (!bgPath.isEmpty())
+        m_bgPixmap = QPixmap(bgPath);
 
     // Yamal player
-    m_playerPixmap = QPixmap(":/images/LaminePixel.png");
+    const QString playerPath = findJuggleAsset("resources/images/LaminePixel.png");
+    if (!bgPath.isEmpty())
+        m_playerPixmap = QPixmap(playerPath);
 
     // Reduced gravity so the ball moves slowly enough for the player to react
     b2Vec2 gravity(0.0f, 6.0f);
