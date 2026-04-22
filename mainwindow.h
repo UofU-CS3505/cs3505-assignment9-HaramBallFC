@@ -1,3 +1,9 @@
+// HaramBall FC (CS3505 Assignment 9)
+// Team: Ebrahim Himayoun, Tom Rasmussen, Diego Galavan,
+//       Henish Patel, Reman Adhikari, Ethan Cobler
+//
+// MainWindow = handles page navigation and shared app UI.
+
 #pragma once
 
 #include "models/Lesson.h"
@@ -38,12 +44,12 @@ private slots:
     void showModeSelectionPage();
     void showFanModePage();
     void showPlayerModePage();
-    void showFanLessons();
-    void showPlayerLessons();
+    void showFanLessons(); // Show fan lessons.
+    void showPlayerLessons(); // Show player lessons.
     void showBracketPage();
-    void openLessonById(int lessonId); // Open a lesson by ID.
-    void returnToLessonMenu(); // Go back to the lesson menu.
-    void showQuizPage(int lessonId); // Open the quiz for a lesson.
+    void openLessonById(int lessonId); // Open selected lesson.
+    void returnToLessonMenu(); // Return to lesson menu.
+    void showQuizPage(int lessonId); // Open lesson quiz.
 
 private:
     PenaltyGamePage *m_penaltyGamePage;
@@ -56,13 +62,13 @@ private:
         LessonMenu,
         LessonViewer,
         Bracket
-    }; // Used for stacked widget page navigation.
+    }; // Page IDs for stacked widget.
 
     void buildPageStack();
     void connectNavigation();
-    void setCurrentPage(PageId pageId); // Switch visible page.
-    void loadLessonsForMode(LessonMode mode); // Load lessons for selected mode.
-    void repositionVolumeWidget(); // Keep volume widget aligned.
+    void setCurrentPage(PageId pageId); // Switch current page.
+    void loadLessonsForMode(LessonMode mode); // Load lessons by mode.
+    void repositionVolumeWidget(); // Keep volume widget in place.
 
 protected:
     void resizeEvent(QResizeEvent *event) override; // Update layout on resize.
@@ -84,7 +90,7 @@ protected:
     QLabel  *m_volIcon;
     QSlider *m_volumeSlider;
 
-    LessonRepository m_lessonRepository; // Stores and provides lesson data.
+    LessonRepository m_lessonRepository; // Lesson data source.
     LessonMode m_currentMode;
     int m_currentLessonId;
 };
