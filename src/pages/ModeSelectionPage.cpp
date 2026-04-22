@@ -31,7 +31,7 @@ static QString findAsset(const QString &relativePath)
     return {};
 }
 
-// ── Pixel button style builder ────────────────────────────────────────────
+//  Pixel button style builder 
 // bg: main color   hi: lighter highlight (top/left border)   sh: shadow (bottom/right)
 static QString pixelBtn(const QString &bg, const QString &hi,
                          const QString &sh, const QString &fg)
