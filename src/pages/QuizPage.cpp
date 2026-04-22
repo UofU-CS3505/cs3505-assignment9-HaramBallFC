@@ -19,11 +19,11 @@
 #include <random>
 
 // ── Shared style helpers (World Cup theme) ──
-static const QString kDark      = "#0B1829";   // deep navy background
-static const QString kCard      = "#112035";   // card panels
-static const QString kGreen     = "#27AE60";   // correct answer
-static const QString kRed       = "#C8102E";   // wrong answer / FIFA red
-static const QString kBlue      = "#1E3A5F";   // default answer button
+static const QString kDark = "#0B1829";   // deep navy background
+static const QString kCard = "#112035";   // card panels
+static const QString kGreen = "#27AE60";   // correct answer
+static const QString kRed = "#C8102E";   // wrong answer / FIFA red
+static const QString kBlue = "#1E3A5F";   // default answer button
 static const QString kBlueDark  = "#D4A843";   // next button (gold)
 static const QString kTextLight = "#F0F4F8";
 static const QString kTextMuted = "#5A7090";
@@ -46,25 +46,25 @@ static QString answerBtnStyle(const QString &bg, const QString &hover)
     ).arg(bg, hover);
 }
 
-// ─────────────────────────────────────────────────────
+
 QuizPage::QuizPage(QWidget *parent)
     : QWidget(parent)
 {
     setStyleSheet(QString("background-color: %1; color: #F0F4F8;").arg(kDark));
 
-    // ── Master stacked layout: quiz view vs results view ──
+    // Master stacked layout: quiz view vs results view 
     QStackedLayout *stack = new QStackedLayout(this);
     stack->setContentsMargins(0, 0, 0, 0);
 
-    // ════════════════════════════════
+    
     //  QUIZ WIDGET
-    // ════════════════════════════════
+
     m_quizWidget = new QWidget(this);
     QVBoxLayout *quizLayout = new QVBoxLayout(m_quizWidget);
     quizLayout->setContentsMargins(50, 30, 50, 24);
     quizLayout->setSpacing(14);
 
-    // ── Top row: progress + score ──
+    // Top row: progress + score 
     QHBoxLayout *topRow = new QHBoxLayout();
     m_progressLabel = new QLabel(this);
     m_progressLabel->setStyleSheet(
@@ -79,7 +79,7 @@ QuizPage::QuizPage(QWidget *parent)
     topRow->addStretch();
     topRow->addWidget(m_scoreLabel);
 
-    // ── Question label ──
+    //  Question label 
     m_questionLabel = new QLabel(this);
     m_questionLabel->setWordWrap(true);
     m_questionLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
@@ -95,7 +95,7 @@ QuizPage::QuizPage(QWidget *parent)
         "color: #FFFFFF;");
     m_questionLabel->setMinimumHeight(90);
 
-    // ── Answer buttons (2 × 2 grid) ──
+    //  Answer buttons (2 × 2 grid) 
     QGridLayout *grid = new QGridLayout();
     grid->setSpacing(12);
     grid->setColumnStretch(0, 1);
@@ -115,7 +115,7 @@ QuizPage::QuizPage(QWidget *parent)
         });
     }
 
-    // ── Feedback label ──
+    //  Feedback label 
     m_feedbackLabel = new QLabel(this);
     m_feedbackLabel->setWordWrap(true);
     m_feedbackLabel->setAlignment(Qt::AlignCenter);
@@ -123,7 +123,7 @@ QuizPage::QuizPage(QWidget *parent)
         "font-family: 'Press Start 2P'; font-size: 11px; padding: 12px;");
     m_feedbackLabel->hide();
 
-    // ── Next button (gold) ──
+    //  Next button (gold) 
     m_nextButton = new QPushButton("Next Question \u2192", this);
     m_nextButton->setCursor(Qt::PointingHandCursor);
     m_nextButton->setStyleSheet(
@@ -140,7 +140,7 @@ QuizPage::QuizPage(QWidget *parent)
     connect(m_nextButton, &QPushButton::clicked, this, []() { SoundManager::instance().playClick(); });
     connect(m_nextButton, &QPushButton::clicked, this, &QuizPage::onNextClicked);
 
-    // ── Back button (ghost) ──
+    // Back button (ghost) 
     QPushButton *backButton = new QPushButton("\u2190 Back to Lesson Menu", this);
     backButton->setCursor(Qt::PointingHandCursor);
     backButton->setStyleSheet(
@@ -165,9 +165,9 @@ QuizPage::QuizPage(QWidget *parent)
     quizLayout->addLayout(bottomRow);
     quizLayout->addStretch();
 
-    // ════════════════════════════════
+    
     //  RESULTS WIDGET
-    // ════════════════════════════════
+    
     m_resultsWidget = new QWidget(this);
     QVBoxLayout *resLayout = new QVBoxLayout(m_resultsWidget);
     resLayout->setContentsMargins(60, 60, 60, 40);
@@ -236,19 +236,19 @@ QuizPage::QuizPage(QWidget *parent)
     resLayout->addLayout(resBtns);
     resLayout->addStretch();
 
-    // ── Add both views to master stack ──
+    //  Add both views to master stack 
     stack->addWidget(m_quizWidget);    // index 0
     stack->addWidget(m_resultsWidget); // index 1
     stack->setCurrentIndex(0);
 }
 
-// ─────────────────────────────────────────────────────
+
 void QuizPage::startQuiz(int lessonId)
 {
-    m_lessonId     = lessonId;
+    m_lessonId = lessonId;
     m_currentIndex = 0;
-    m_score        = 0;
-    m_questions    = m_repo.questionsForLesson(lessonId);
+    m_score = 0;
+    m_questions = m_repo.questionsForLesson(lessonId);
 
     // Shuffle and pick questions — 10 for the Fan Mode combined quiz, 8 for all others
     std::random_device rd;
@@ -270,7 +270,7 @@ void QuizPage::startQuiz(int lessonId)
     showQuestion(0);
 }
 
-// ─────────────────────────────────────────────────────
+
 void QuizPage::showQuestion(int index)
 {
     const QuizQuestion &q = m_questions.at(index);
@@ -293,7 +293,7 @@ void QuizPage::showQuestion(int index)
     m_nextButton->hide();
 }
 
-// ─────────────────────────────────────────────────────
+
 void QuizPage::onAnswerSelected(int choiceIndex)
 {
     const QuizQuestion &q = m_questions.at(m_currentIndex);
@@ -331,7 +331,7 @@ void QuizPage::onAnswerSelected(int choiceIndex)
         QString("Score: %1 / %2").arg(m_score).arg(m_questions.size()));
 }
 
-// ─────────────────────────────────────────────────────
+
 void QuizPage::onNextClicked()
 {
     ++m_currentIndex;
@@ -342,7 +342,6 @@ void QuizPage::onNextClicked()
     }
 }
 
-// ─────────────────────────────────────────────────────
 void QuizPage::showResults()
 {
     int total = m_questions.size();
@@ -370,7 +369,7 @@ void QuizPage::showResults()
     static_cast<QStackedLayout *>(layout())->setCurrentIndex(1);
 }
 
-// ─────────────────────────────────────────────────────
+
 void QuizPage::lockAnswerButtons(bool locked)
 {
     for (int i = 0; i < 4; ++i)

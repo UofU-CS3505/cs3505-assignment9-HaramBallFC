@@ -18,12 +18,12 @@ PlayerModePage::PlayerModePage(QWidget *parent)
     root->setContentsMargins(0, 0, 0, 0);
     root->setSpacing(0);
 
-    // ── Top accent stripe (gold for player) ──────────────────────────────
+    //  Top accent stripe (gold for player) 
     QWidget *topBar = new QWidget(this);
     topBar->setFixedHeight(5);
     topBar->setStyleSheet("background-color: #D4A843;");
 
-    // ── Content ───────────────────────────────────────────────────────────
+    // Content
     QWidget *body = new QWidget(this);
     QVBoxLayout *bl = new QVBoxLayout(body);
     bl->setContentsMargins(80, 0, 80, 0);

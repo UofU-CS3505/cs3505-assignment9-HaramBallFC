@@ -112,11 +112,11 @@ PenaltyGamePage::PenaltyGamePage(QWidget *parent)
 
 
     //LABELS FOR SLIDERS
-    //QLabel *powerLabel = new QLabel("POWER", this);
+    
     powerLabel->setGeometry(width()/2 - 320, height() - 310, 100, 20);
     powerLabel->setStyleSheet("color: black; font-size: 18px; font-family: 'Press Start 2P';");
 
-    //QLabel *aimLabel = new QLabel("AIM", this);
+   
     aimLabel->setGeometry(width()/2 - 20, height() - 80, 100, 20);
     aimLabel->setStyleSheet("color: black; font-size: 18px; font-family: 'Press Start 2P';");
 
@@ -285,11 +285,9 @@ void PenaltyGamePage::updateWorld()
         int squareMargin = 30;
 
         //Left Box True
-        //QRect leftSquare(goalX + squareMargin, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
         QRect leftSquare(goalX, goalY, goalWidth/2, goalHeight);
 
         //Right Box False
-        //QRect rightSquare(goalX + goalWidth - squareMargin - boxWidth, goalY + (goalHeight-boxHeight) /2 , boxWidth, boxHeight);
         QRect rightSquare(goalX + goalWidth/2, goalY, goalWidth/2, goalHeight);
 
 
@@ -414,10 +412,8 @@ void PenaltyGamePage::paintEvent(QPaintEvent *event)
     int boxHeight = 60;
     int squareMargin = 30;
 
-    //QRect leftSquare(gx + squareMargin, gy + (h - boxHeight) / 2, boxWidth, boxHeight);
     QRect leftSquare(gx, gy, w/2, h);
 
-    //QRect rightSquare(gx + w - squareMargin - boxWidth, gy + (h - boxHeight) / 2, boxWidth, boxHeight);
     QRect rightSquare(gx + w/2, gy, w/2, h);
 
 
