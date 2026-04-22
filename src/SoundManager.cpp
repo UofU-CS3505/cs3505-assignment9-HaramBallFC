@@ -84,17 +84,37 @@ SoundManager::SoundManager()
 }
 
 // Simple wrappers for each sound effect.
-void SoundManager::playClick()   { m_click.play(); }
-void SoundManager::playCorrect() { m_correct.play(); }
-void SoundManager::playWrong()   { m_wrong.play(); }
-void SoundManager::playPass()    { m_pass.play(); }
-void SoundManager::playFail()    { m_fail.play(); }
-void SoundManager::playJuggle()  { m_juggle.play(); }
-void SoundManager::playThud()    { m_thud.play(); }
-void SoundManager::playCeiling() { m_ceiling.play(); }
+void SoundManager::playClick()   { 
+    m_click.play(); 
+}
+void SoundManager::playCorrect() { 
+    m_correct.play(); 
+}
+void SoundManager::playWrong()   { 
+    m_wrong.play(); 
+}
+void SoundManager::playPass()    { 
+    m_pass.play(); 
+}
+void SoundManager::playFail()    { 
+    m_fail.play(); 
+}
+void SoundManager::playJuggle()  { 
+    m_juggle.play(); 
+}
+void SoundManager::playThud()    { 
+    m_thud.play(); 
+}
+void SoundManager::playCeiling() { 
+    m_ceiling.play(); 
+}
 
-void SoundManager::startBgm() { m_bgmPlayer->play(); }
-void SoundManager::stopBgm()  { m_bgmPlayer->stop(); }
+void SoundManager::startBgm() { 
+    m_bgmPlayer->play(); 
+}
+void SoundManager::stopBgm()  {
+    m_bgmPlayer->stop(); 
+}
 
 void SoundManager::setBgmVolume(float v)
 {
