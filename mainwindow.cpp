@@ -67,11 +67,21 @@ MainWindow::~MainWindow()
 }
 
 // Simple page-switching helper slots.
-void MainWindow::showHomePage()         { setCurrentPage(PageId::Home); }
-void MainWindow::showModeSelectionPage(){ setCurrentPage(PageId::ModeSelection); }
-void MainWindow::showFanModePage()      { setCurrentPage(PageId::FanMode); }
-void MainWindow::showPlayerModePage()   { setCurrentPage(PageId::PlayerMode); }
-void MainWindow::showBracketPage()      { setCurrentPage(PageId::Bracket); }
+void MainWindow::showHomePage() { 
+    setCurrentPage(PageId::Home); 
+}
+void MainWindow::showModeSelectionPage() { 
+    setCurrentPage(PageId::ModeSelection); 
+}
+void MainWindow::showFanModePage() { 
+    setCurrentPage(PageId::FanMode); 
+}
+void MainWindow::showPlayerModePage() { 
+    setCurrentPage(PageId::PlayerMode); 
+}
+void MainWindow::showBracketPage() { 
+    setCurrentPage(PageId::Bracket); 
+}
 
 void MainWindow::showFanLessons()
 {
@@ -129,13 +139,13 @@ void MainWindow::buildPageStack()
     m_pageStack = new QStackedWidget(central);
 
     // Create the main application pages.
-    m_homePage          = new HomePage(m_pageStack);
+    m_homePage = new HomePage(m_pageStack);
     m_modeSelectionPage = new ModeSelectionPage(m_pageStack);
-    m_fanModePage       = new FanModePage(m_pageStack);
-    m_playerModePage    = new PlayerModePage(m_pageStack);
-    m_lessonMenuPage    = new LessonMenuPage(m_pageStack);
-    m_lessonViewerPage  = new LessonViewerPage(m_pageStack);
-    m_bracketPage       = new BracketPage(m_pageStack);
+    m_fanModePage = new FanModePage(m_pageStack);
+    m_playerModePage = new PlayerModePage(m_pageStack);
+    m_lessonMenuPage = new LessonMenuPage(m_pageStack);
+    m_lessonViewerPage = new LessonViewerPage(m_pageStack);
+    m_bracketPage = new BracketPage(m_pageStack);
 
     // Load facts used by the juggling mini-game.
     QuizRepository quizRepository;
@@ -232,18 +242,18 @@ void MainWindow::connectNavigation()
     connect(m_homePage, &HomePage::startClicked, this, &MainWindow::showModeSelectionPage);
 
     // Mode selection page navigation.
-    connect(m_modeSelectionPage, &ModeSelectionPage::fanModeSelected,    this, &MainWindow::showFanModePage);
+    connect(m_modeSelectionPage, &ModeSelectionPage::fanModeSelected, this, &MainWindow::showFanModePage);
     connect(m_modeSelectionPage, &ModeSelectionPage::playerModeSelected, this, &MainWindow::showPlayerModePage);
-    connect(m_modeSelectionPage, &ModeSelectionPage::bracketSelected,    this, &MainWindow::showBracketPage);
-    connect(m_modeSelectionPage, &ModeSelectionPage::backRequested,      this, &MainWindow::showHomePage);
+    connect(m_modeSelectionPage, &ModeSelectionPage::bracketSelected, this, &MainWindow::showBracketPage);
+    connect(m_modeSelectionPage, &ModeSelectionPage::backRequested, this, &MainWindow::showHomePage);
 
     // Fan mode page navigation.
     connect(m_fanModePage, &FanModePage::openLessonsRequested, this, &MainWindow::showFanLessons);
-    connect(m_fanModePage, &FanModePage::backRequested,        this, &MainWindow::showModeSelectionPage);
+    connect(m_fanModePage, &FanModePage::backRequested, this, &MainWindow::showModeSelectionPage);
 
     // Player mode page navigation.
     connect(m_playerModePage, &PlayerModePage::openLessonsRequested, this, &MainWindow::showPlayerLessons);
-    connect(m_playerModePage, &PlayerModePage::backRequested,        this, &MainWindow::showModeSelectionPage);
+    connect(m_playerModePage, &PlayerModePage::backRequested, this, &MainWindow::showModeSelectionPage);
     connect(m_playerModePage, &PlayerModePage::playGameClicked, this, [this]() {
         m_pageStack->setCurrentWidget(m_penaltyGamePage);
     });
@@ -255,17 +265,17 @@ void MainWindow::connectNavigation()
 
     // Lesson menu navigation depends on current mode.
     connect(m_lessonMenuPage, &LessonMenuPage::lessonSelected, this, &MainWindow::openLessonById);
-    connect(m_lessonMenuPage, &LessonMenuPage::backRequested,  this, [this]() {
-        if      (m_currentMode == LessonMode::Fan)    showFanModePage();
+    connect(m_lessonMenuPage, &LessonMenuPage::backRequested, this, [this]() {
+        if (m_currentMode == LessonMode::Fan) showFanModePage();
         else if (m_currentMode == LessonMode::Player) showPlayerModePage();
-        else                                          showModeSelectionPage();
+        else showModeSelectionPage();
     });
     connect(m_lessonMenuPage, &LessonMenuPage::homeRequested, this, &MainWindow::showHomePage);
 
     // Lesson viewer navigation.
-    connect(m_lessonViewerPage, &LessonViewerPage::backRequested,  this, &MainWindow::returnToLessonMenu);
-    connect(m_lessonViewerPage, &LessonViewerPage::homeRequested,  this, &MainWindow::showHomePage);
-    connect(m_lessonViewerPage, &LessonViewerPage::quizRequested,  this, &MainWindow::showQuizPage);
+    connect(m_lessonViewerPage, &LessonViewerPage::backRequested, this, &MainWindow::returnToLessonMenu);
+    connect(m_lessonViewerPage, &LessonViewerPage::homeRequested, this, &MainWindow::showHomePage);
+    connect(m_lessonViewerPage, &LessonViewerPage::quizRequested, this, &MainWindow::showQuizPage);
 
     // Quiz page navigation.
     connect(m_quizPage, &QuizPage::backRequested, this, &MainWindow::returnToLessonMenu);
@@ -273,7 +283,7 @@ void MainWindow::connectNavigation()
 
     // Other page back buttons.
     connect(m_jugglingGame, &JugglingGame::backRequested, this, &MainWindow::returnToLessonMenu);
-    connect(m_bracketPage,  &BracketPage::backRequested,  this, &MainWindow::showHomePage);
+    connect(m_bracketPage,  &BracketPage::backRequested, this, &MainWindow::showHomePage);
 }
 
 void MainWindow::setCurrentPage(PageId pageId)
@@ -296,7 +306,7 @@ void MainWindow::repositionVolumeWidget()
 
     // Keep volume widget in the bottom-right corner.
     m_volumeWidget->move(
-        centralWidget()->width()  - m_volumeWidget->width()  - margin,
+        centralWidget()->width() - m_volumeWidget->width() - margin,
         centralWidget()->height() - m_volumeWidget->height() - margin);
     m_volumeWidget->raise();
 }
@@ -307,9 +317,9 @@ void MainWindow::loadLessonsForMode(LessonMode mode)
     QVector<Lesson> lessons = m_lessonRepository.lessonsForMode(mode);
 
     // Update title based on which mode is active.
-    if      (mode == LessonMode::Fan)    m_lessonMenuPage->setPageTitle("Fan Mode Lessons");
+    if (mode == LessonMode::Fan) m_lessonMenuPage->setPageTitle("Fan Mode Lessons");
     else if (mode == LessonMode::Player) m_lessonMenuPage->setPageTitle("Player Mode Lessons");
-    else                                 m_lessonMenuPage->setPageTitle("Lessons");
+    else m_lessonMenuPage->setPageTitle("Lessons");
 
     m_lessonMenuPage->setLessons(lessons);
 }
